@@ -2,7 +2,6 @@
 /*
 
 # Add directories with soure code
-!config/
 !kubejs/
 
 # Add files in main directory

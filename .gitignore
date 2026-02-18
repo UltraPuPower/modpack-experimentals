@@ -1,0 +1,11 @@
+# Ignore eveything so repository can be used in game instance
+/*
+
+# Add directories with soure code
+!config/
+!kubejs/
+
+# Add files in main directory
+!.gitignore
+!LICENSE
+!README.md

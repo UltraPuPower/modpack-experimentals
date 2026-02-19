@@ -1,6 +1,10 @@
 // priority: 50000
 
+global.ComponentHandler.create('dust')
+    .register();
+
 global.ComponentHandler.create('ingot')
+    .setDependencies(['dust'])
     .register();
 
 global.ComponentHandler.create('plate')
@@ -39,7 +43,6 @@ global.ComponentHandler.create('nugget')
     .setDependencies(['ingot'])
     .register();
 
-global.ComponentHandler.create('dust')
+global.ComponentHandler.create('gem')
+    .setDependencies(['dust'])
     .register();
-
-console.log('Finished component registry')

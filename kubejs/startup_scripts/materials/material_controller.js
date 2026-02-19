@@ -7,8 +7,9 @@ global.MaterialHandler = {
     colors: [],
     composition: [],
     components: new Set([]),
-    overrides: {},
     textureSet: "default",
+    textureOverrides: {},
+    itemOverrides: {},
 
     create: (id) => {
         global.MaterialHandler.id = id;
@@ -37,8 +38,13 @@ global.MaterialHandler = {
         return global.MaterialHandler;
     },
 
-    setOverride: (component, location) => {
-        global.MaterialHandler.overrides[component] = location;
+    setOverrideTexture: (component, location) => {
+        global.MaterialHandler.textureOverrides[component] = location;
+        return global.MaterialHandler;
+    },
+
+    setOverrideItem: (component, itemId) => {
+        global.MaterialHandler.itemOverrides[component] = itemId;
         return global.MaterialHandler;
     },
 
@@ -72,14 +78,15 @@ global.MaterialHandler = {
         global.MaterialHandler.colors = [];
         global.MaterialHandler.composition = [];
         global.MaterialHandler.components = new Set([]);
-        global.MaterialHandler.overrides = {};
         global.MaterialHandler.textureSet = "default";
+        global.MaterialHandler.textureOverrides = {};
+        global.MaterialHandler.itemOverrides = {};
     },
 
     // ==========[Utils]========== \\
     findNestedComponents: (component, grade) => {        
         let dependencies = [];
-        let foundComponent = global.componentList.find(storedComponent => storedComponent.id == component);
+        let foundComponent = global.ComponentList.find(storedComponent => storedComponent.id == component);
         if (!foundComponent && component != "") {
             console.error(`[MaterialHandler] component "${component}" does not exist (material: "${global.MaterialHandler.id}")`);
             return

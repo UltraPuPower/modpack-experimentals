@@ -3,30 +3,36 @@
 StartupEvents.registry('item', event => {
     const materials = global.MaterialList;
 
-    const secondaryList = ['dust']
-    const overlayList = ['wire']
+    const secondaryList = {
+        default: ['dust']
+    };
+    const overlayList = {
+        default: ['wire']
+    };
 
     materials.forEach(material => {
-        const { id, colors, components, composition, overrides, textureSet } = material
+        const { id, colors, components, composition, textureSet, textureOverrides, itemOverrides } = material
         for (let i = 0; i < components.length; i++) {
             let component = components[i]
-            let textureLayer = 1;
+            if (itemOverrides[component]) continue;
+
             let newComponent = event.create(`${id}_${component}`).tag(`c:${component}s`).tag(`c:${component}s/${id}`);
 
-            if(overrides[component]) {
-                newComponent.texture(`kubejs:item/material/overrides/${id}_${component}`);
+            if(textureOverrides[component]) {
+                newComponent.texture(textureOverrides[component]);
                 continue;
             }
 
-            newComponent.texture('layer0', `kubejs:item/material/${textureSet}/${component}`).color(0, colors[0]);
+            let textureLayer = 1;
+            newComponent.texture('layer0', `kubejs:item/materials/${textureSet}/${component}`).color(0, colors[0]);
 
-            if(colors[1] && secondaryList.includes(component)) {
-                newComponent.texture(`layer${textureLayer}`, `kubejs:item/material/${textureSet}/${component}_secondary`).color(textureLayer, colors[1]);
+            if(colors[1] && secondaryList[textureSet].includes(component)) {
+                newComponent.texture(`layer${textureLayer}`, `kubejs:item/materials/${textureSet}/${component}_secondary`).color(textureLayer, colors[1]);
                 textureLayer++;
             }
 
-            if(overlayList.includes(component)) {
-                newComponent.texture(`layer${textureLayer}`, `kubejs:item/material/${textureSet}/${component}_overlay`);
+            if(overlayList[textureSet].includes(component)) {
+                newComponent.texture(`layer${textureLayer}`, `kubejs:item/materials/${textureSet}/${component}_overlay`);
                 textureLayer++;
             }
         }

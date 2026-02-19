@@ -1,6 +1,6 @@
 // priority: 100000
 
-global.componentList = [];
+global.ComponentList = [];
 
 global.ComponentHandler = {
     id: '',
@@ -14,7 +14,7 @@ global.ComponentHandler = {
     setDependencies: (dependencies) => {
         for (let i = 0; i < dependencies.length; i++) {
             let component = dependencies[i]
-            let foundComponent = global.componentList.find(storedComponent => storedComponent.id == component)
+            let foundComponent = global.ComponentList.find(storedComponent => storedComponent.id == component)
             if (!foundComponent && component != "") {
                 console.error(`[ComponentHandler] component "${component}" does not exist (component: "${global.ComponentHandler.id}")`)
                 continue
@@ -34,7 +34,7 @@ global.ComponentHandler = {
             componentObj[property] = global.ComponentHandler[property];
         };
         
-        global.componentList.push(componentObj);
+        global.ComponentList.push(componentObj);
         global.ComponentHandler.reset()
     },
 

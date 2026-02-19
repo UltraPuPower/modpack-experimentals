@@ -1,8 +1,10 @@
+// priority: 5000
+
 global.MaterialHandler.create('bronze')
     .setColors('#ffc370', '#69993B')
     .setComposition(['1x tin', '3x copper'])
     .setComponents(['ingot', 'plate', 'dust'])
-    .setOverride("dust", "bronze_dust")
+    .setOverrideTexture('dust', 'kubejs:item/materials/overrides/bronze_dust')
     .register();
 
 global.MaterialHandler.create('brass')
@@ -21,4 +23,11 @@ global.MaterialHandler.create('rose_gold')
     .setColors('#E59C3C', 0)
     .setComposition(['1x copper', '4x gold'])
     .setComponents(['wire'])
+    .register();
+
+global.MaterialHandler.create('diamond')
+    .setColors('#93F6FB', 0)
+    .setComposition([''])
+    .setComponents(['gem'])
+    .setOverrideItem('gem', 'minecraft:diamond')
     .register();

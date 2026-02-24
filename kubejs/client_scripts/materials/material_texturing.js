@@ -1,89 +1,121 @@
 let fileExists = (path) => { // Thanks to @lexxieblack for figuring this out (https://discord.com/channels/303440391124942858/1473769843172970577/1474759303301959844)
     try {
         JsonIO.read(path)
-        return true
     } catch (e) {
         if (String(e).includes('java.nio.charset.MalformedInputException')) return true
     }
     return false
 }
 
-const generateTextureData = () => {
+ClientEvents.generateAssets('after_mods', event => {
+
+    const logBool = false;
+
+    let specialLogger = (message) => {
+        if (logBool) {
+            console.log(message)
+        }
+    }
+
     const materials = global.MaterialList;
     const rawTextureList =[];
 
-    let checkList = ['bronze_dust', 'rose_gold_wire', 'diamond_dust']
-
     materials.forEach(material => {
         const { id, colors, components, composition, textureSet, textureOverrides, itemOverrides } = material
+        specialLogger(`going over ${material.id} for the following components:`)
+        let logString = ''
+        components.forEach(component => {
+            if (logString) logString += ', '
+            logString += component
+        });
+        specialLogger(logString)
         for (let i = 0; i < components.length; i++) {
+            
             let component = components[i]
-
-            if (itemOverrides[component]) continue;
-
             let itemID = `${id}_${component}`;
 
-            let intermediateTextureObject = {id: itemID};
+            specialLogger(component);
+
+            if (itemOverrides[component]) continue;
+            specialLogger('   passed item override');
+
+            let intermediateTextureObject = {
+                id: itemID,
+                texture: []
+            };
+
+            let ObjTextureLocation = intermediateTextureObject.texture;
+            specialLogger(typeof ObjTextureLocation);
 
             if(textureOverrides[component]) {
-                rawTextureList.push(intermediateTextureObject.texture = textureOverrides[component]);
+                rawTextureList.push(ObjTextureLocation = textureOverrides[component]);
+                specialLogger('   hanged on special texture override')
                 continue;
             }
+            specialLogger('   passed special texture override');
 
             if (fileExists(`kubejs/assets/kubejs/textures/item/overrides/${id}_${component}.png`)) {
-                rawTextureList.push(intermediateTextureObject.texture = `kubejs:item/overrides/${id}_${component}.png`);
+                rawTextureList.push(ObjTextureLocation = `kubejs:item/overrides/${id}_${component}.png`);
+                specialLogger('   hanged on normal texture override')
                 continue;
             }
+            specialLogger('   passed normal texture override');
 
             let directMaterialDirection = 'kubejs/assets/kubejs/textures/item/materials';
             let realMaterialDirection = 'kubejs:item/materials';
             let defaultSet;
             let textureLayer = 0
 
-            if (fileExists(`${directMaterialDirection}/${textureSet}/${id}_${component}.png`)) {
-                intermediateTextureObject.texture[textureLayer] = {
-                    texture: `${realMaterialDirection}/${textureSet}/${id}_${component}.png`,
+            specialLogger(colors)
+
+            if (fileExists(`${directMaterialDirection}/${textureSet}/${component}.png`)) {
+                ObjTextureLocation.push({
+                    texture: `${realMaterialDirection}/${textureSet}/${component}.png`,
                     color: `0x${colors[0].split('#')[1]}`
-                };
+                });
+                specialLogger('   found defined set texture');
                 textureLayer += 1;
-            } else if (fileExists(`${directMaterialDirection}/default/${id}_${component}.png`)) {
-                intermediateTextureObject.texture[textureLayer] = {
-                    texture: `${realMaterialDirection}/default/${id}_${component}.png`,
+            } else if (fileExists(`${directMaterialDirection}/default/${component}.png`)) {
+                ObjTextureLocation.push({
+                    texture: `${realMaterialDirection}/default/${component}.png`,
                     color: `0x${colors[0].split('#')[1]}`
-                };
+                });
+                specialLogger('   found default set texture');
                 defaultSet = true
                 textureLayer += 1;
             } else console.warn(`No valid texture found for ${id}_${component} in both ${textureSet} and default texture sets`);
             
             let set = defaultSet ? 'default' : textureSet;
 
-            if (fileExists(`${directMaterialDirection}/${set}/${id}_${component}_secondary.png`)) {
-                intermediateTextureObject.texture[textureLayer] = {
-                    texture: `${realMaterialDirection}/default/${id}_${component}_secondary.png`,
+            if (fileExists(`${directMaterialDirection}/${set}/${component}_secondary.png`) && colors[1]) {
+                ObjTextureLocation.push({
+                    texture: `${realMaterialDirection}/default/${component}_secondary.png`,
                     color: `0x${colors[1].split('#')[1]}`
-                };
+                });
                 textureLayer += 1;
+                specialLogger('   found secondary texture');
             }
 
-            if (fileExists(`${directMaterialDirection}/${set}/${id}_${component}_overlay.png`)) {
-                intermediateTextureObject.texture[textureLayer] = `${realMaterialDirection}/default/${id}_${component}_secondary.png`;
+            if (fileExists(`${directMaterialDirection}/${set}/${component}_overlay.png`)) {
+                ObjTextureLocation.push({
+                    texture: `${realMaterialDirection}/default/${component}_secondary.png`
+                });
                 textureLayer += 1;
+                specialLogger('   found overlay texture');
             }
 
-            if (checkList.includes(itemID)) {
-                console.log(intermediateTextureObject);
-            }
+            specialLogger(`handled ${itemID}`);
 
             rawTextureList.push(intermediateTextureObject);
 
             // // assembled
             // listObj = {
             //     itemId: '',
-            //     texture = {
-            //         0: {texture: '', color: ''},
-            //         1: {texture: '', color: ''},
-            //         2: texture: ''
-            //     }
+            //     texture = [
+            //         {texture: '', color: ''},
+            //         {texture: '', color: ''},
+            //         {texture: ''}
+            //     ]
             // }
 
             // // override
@@ -94,20 +126,59 @@ const generateTextureData = () => {
         }
     });
 
-    return rawTextureList
-}
+    specialLogger('finished texture formatting\n===========================================================================');
 
-ClientEvents.generateAssets('after_mods', event => {
+    for (let i = 0; i < rawTextureList.length; i++) {
+        let { textureId, texture } = rawTextureList[i]
 
-    const defaultSetTexture = fileExists('kubejs/assets/kubejs/textures/item/materials/default/dust.png');
-    const customSetTexture = fileExists('kubejs/assets/kubejs/textures/item/materials/special/dust.png');
-    const overrideTexture = fileExists('kubejs/assets/kubejs/textures/item/overrides/bronze_dust.png');
+        console.log('==============')
+        console.log(textureId)
+        console.log(`   ${typeof texture}`)
+        console.log(texture)
 
-    console.log(`default exists: ${defaultSetTexture}`);
-    console.log(`custom exists: ${customSetTexture}`);
-    console.log(`override exists: ${overrideTexture}`);
+        if(typeof texture == 'string') {
+            event.itemModel(`kubejs:models/item/bronze_dust.json`, {
+                "parent": "item/generated",
+                "textures": {
+                    "layer0": texture,
+                }
+            });
+            continue
+        }
 
-    const rawTextureList = generateTextureData();
+        let textureObj = {};
+        let layersObj = {};
+        if (typeof texture == "array") {
+            for(let i = 0; i < texture.length; i++) {
+                let textureDataObj = texture[i];
+                if (textureDataObj.color) {
+                    textureObj[`layer${i}`] = textureDataObj["texture"];
+                    layersObj[i] = {"color": textureDataObj.color};
+                } else {
+                    textureObj[`layer${i}`] = textureDataObj["texture"];
+                }
+            }
+        } else if(typeof texture == 'object') {
+            if (texture.color) {
+                textureObj[`layer${i}`] = texture["texture"];
+                layersObj[i] = {"color": texture.color};
+            } else {
+                textureObj[`layer${i}`] = texture["texture"];
+            }
+        } else {
+            console.warn('  texture seems to be invalid')
+        }
+        
+        event.itemModel(`kubejs:models/item/bronze_dust.json`, {
+            "loader": "neoforge:item_layers",
+            "parent": "item/generated",
+            "textures": textureObj,
+            "neoforge_data": {
+                "layers": layersObj
+            }
+        });
+
+    };
 
     event.itemModel(`kubejs:models/item/bronze_dust.json`, {
         "loader": "neoforge:item_layers",
@@ -119,10 +190,10 @@ ClientEvents.generateAssets('after_mods', event => {
         "neoforge_data": {
             "layers": {
                 "0": {
-                    "color": "0xffc370",
+                    "color": "0xffc370"
                 },
                 "1": {
-                    "color": "0x69993B",
+                    "color": "0x69993B"
                 }
             }
         }

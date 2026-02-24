@@ -134,21 +134,20 @@ The inner workings of texture sets, and how to create them will be covered later
 #### Overriding textures
 Having auto-generated textures for your items is really convenient, but what if you want to use a different texture?
 
-For that purpose, we have the method `.setOverrideTexture()`.
+To use a custom texture for your item, simply add your texture to the `kubejs:item/materials/overrides/` folder.
+
+This will cause the scripts to overwrite the texture without having to use the `.setOverrideTexture()` method.
+
+The aformentioned `.setOverrideTexture()` method can be used for replacing a texture with a texture from another mod.
 
 Here is a simple example that overrides the texture for the `dust` component of our `gold` material:
 ```js
 global.MaterialHandler.create('gold')
     .setComponents(['plate'])
-    .setOverrideTexture('dust', 'kubejs:item/materials/overrides/gold_dust')
+    .setOverrideTexture('dust', 'mekanism:item/dust_gold')
     .register();
 ```
-If we restart the game after this change, we can see that `kubejs:gold_dust` now has taken on the texture located at `kubejs:item/materials/overrides/gold_dust`
-
-It is important to note that the location does not matter at all, as long as it is a valid path.
-The example uses the `item/materials/overrides/` path simply to demonstrate using a custom texture, but the path `mymod:item/folder/item` is just as valid.
-
-It is recommend to keep your overrides in `item/materials/overrides/`, as it does help keeping track of all your textures.
+If we restart the game after this change, we can see that `kubejs:gold_dust` now has taken on the texture located at `mekanism:item/dust_gold`
 
 #### Overriding items
 Now that we can override textures, you might wonder whether we can also overwrite items in their entirety.
@@ -182,16 +181,7 @@ the naming scheme for the textures is as follows:
 - Secondary layer: `<component_name>_secondary.png`
 - Overlay layer: `<component_name>_overlay.png`
 
-**important notice** Currently there is no implemented set fallback textures. 
-
-This means that if your material tries to find a component texture in a set that does not exist, it won't fall back on the default set.
-
-So, make sure all your sets contain all possible components
-
-#### Secondary and overlay textures
-Currently, due to the same reasons we do not have set fallback textures, we can't dynamically check whether secondary or overlay textures exist for a set and component.
-
-To still allow for this mechanic, you will have to manually define these inside `.../instance/kubejs/startup_scripts/materials/material_registry` in the `secondaryList` and `overlayList` for each texture set.
+If a component is missing from a set it will attempt to fall back to the default set before issuing a warning
 
 ### Adding new components
 #### Creating a component
@@ -210,6 +200,8 @@ Unlike material creation, just these 2 methods will result in a fully usable com
 To give your component an actual texture, you need to add it to your texture sets.
 
 This works the same as adding a new texture set, except that instead of creating a new folder for your textures, you drop the new texture into the existing sets.
+
+We recommend adding the texture to the default set, to avoid any textures breaking
 
 #### Cascading components
 Like discussed in the material section, there is something called component cascading.

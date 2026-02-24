@@ -4,7 +4,6 @@ global.MaterialHandler.create('bronze')
     .setColors('#ffc370', '#69993B')
     .setComposition(['1x tin', '3x copper'])
     .setComponents(['ingot', 'plate', 'dust'])
-    .setOverrideTexture('dust', 'kubejs:item/materials/overrides/bronze_dust')
     .register();
 
 global.MaterialHandler.create('brass')

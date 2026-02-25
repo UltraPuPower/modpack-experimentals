@@ -3,7 +3,7 @@
 global.MaterialHandler.create('bronze')
     .setColors('#ffc370', '#69993B')
     .setComposition(['1x tin', '3x copper'])
-    .setComponents(['ingot', 'plate', 'dust'])
+    .setComponents(['plate', 'nugget', 'liquid'])
     .register();
 
 global.MaterialHandler.create('brass')
@@ -29,4 +29,10 @@ global.MaterialHandler.create('diamond')
     .setComposition([''])
     .setComponents(['gem'])
     .setOverrideItem('gem', 'minecraft:diamond')
+    .register();
+
+global.MaterialHandler.create('sapphire')
+    .setColors('#3442BF', 0)
+    .setComposition([''])
+    .setComponents(['gem', 'gem_block'])
     .register();

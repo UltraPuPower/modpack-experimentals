@@ -5,6 +5,8 @@ global.ComponentList = [];
 global.ComponentHandler = {
     id: '',
     dependencies: new Set([]),
+    liquidAmount: 0,
+    generateMoldItem: false,
 
     create: (id) => {
         global.ComponentHandler.id = id;
@@ -21,6 +23,16 @@ global.ComponentHandler = {
             }
             global.ComponentHandler.dependencies.add(component)
         }
+        return global.ComponentHandler
+    },
+
+    generateMold: () => {
+        global.ComponentHandler.generateMoldItem = true;
+        return global.ComponentHandler
+    },
+
+    setLiquidAmount: (amount) => {
+        global.ComponentHandler.liquidAmount = amount
         return global.ComponentHandler
     },
 
@@ -41,5 +53,7 @@ global.ComponentHandler = {
     reset: () => {
         global.ComponentHandler.id = '';
         global.ComponentHandler.dependencies = new Set([]);
+        global.ComponentHandler.liquidAmount = 0;
+        global.ComponentHandler.generateMoldItem = false;
     }
 };

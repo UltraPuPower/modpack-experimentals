@@ -1,8 +1,20 @@
 // priority: 10000
+/**
+ * @typedef {String} assetLocation String describing a valid minecraft asset location (e.g. minecraft:item/iron_ingot)
+ */
+
+/**
+ * @typedef {String} textureSet String describing a texture set. These are located at .../instance/kubejs/assets/kubejs/textures/<item/block>/materiallib/, depending on whether the set exists for items, blocks or both
+ */
+
 
 global.MaterialList = [];
 
-global.MaterialHandler = {
+
+/**
+ * @typedef {Object} MaterialHandler The handler for material registry
+ */
+const MaterialHandler = {
     id: '',
     colors: [],
     composition: [],
@@ -11,91 +23,139 @@ global.MaterialHandler = {
     textureOverrides: {},
     itemOverrides: {},
 
+    /**
+     * Sets the liquid volume of the component
+     * @param {string[]} amount - The amount of millibuckets the component gives when liquefied
+     * @returns {MaterialHandler} Material Handler, allows for method chaining
+     */
     create: (id) => {
-        global.MaterialHandler.id = id;
-        return global.MaterialHandler;
+        MaterialHandler.id = id;
+        return MaterialHandler;
     },
 
+    /**
+     * Sets the liquid volume of the component
+     * @param {string[]} amount - The amount of millibuckets the component gives when liquefied
+     * @returns {MaterialHandler} Material Handler, allows for method chaining
+     */
     setColors: (primaryColor, secondaryColor) => {
-        global.MaterialHandler.colors = [primaryColor, secondaryColor];
-        return global.MaterialHandler;
+        MaterialHandler.colors = [primaryColor, secondaryColor];
+        return MaterialHandler;
     },
 
+    /**
+     * Sets the liquid volume of the component
+     * @param {string[]} composition - An array of submaterials that make up this material
+     * @returns {MaterialHandler} Material Handler, allows for method chaining
+     */
     setComposition: (composition) => {
-        global.MaterialHandler.composition = composition;
-        return global.MaterialHandler;
+        MaterialHandler.composition = composition;
+        return MaterialHandler;
     },
 
+    /**
+     * Sets the components for the material
+     * @param {string[]} components - All components that should be generated for the material
+     * @returns {MaterialHandler} Material Handler, allows for method chaining
+     */
     setComponents: (components) => {
         for (let i = 0; i < components.length; i++) {
-            global.MaterialHandler.findNestedComponents(components[i], 1);
+            MaterialHandler.findNestedComponents(components[i], 1);
         }
-        return global.MaterialHandler;
+        return MaterialHandler;
     },
 
+    /**
+     * Sets the texture set used by the material for component texture generation
+     * @param {textureSet} set - A texture set
+     * @returns {MaterialHandler} Material Handler, allows for method chaining
+     */
     useTextureSet: (set) => {
-        global.MaterialHandler.textureSet = set;
-        return global.MaterialHandler;
+        MaterialHandler.textureSet = set;
+        return MaterialHandler;
     },
 
+    /**
+     * Flags a component to be given a custom texture instead of the auto generated one
+     * @param {string} component - The component for which the asset will be replaced
+     * @param {assetLocation} location - The location of the replacement asset
+     * @returns {MaterialHandler} Material Handler, allows for method chaining
+     */
     setOverrideTexture: (component, location) => {
-        global.MaterialHandler.textureOverrides[component] = location;
-        return global.MaterialHandler;
+        MaterialHandler.textureOverrides[component] = location;
+        return MaterialHandler;
     },
 
+    /**
+     * Flags a component to be skipped on material generation and provides an alternative item for recipe generation
+     * @param {string} component - The component that will be replaced
+     * @param {string} itemId - The id of the item that serves as the replacement for the auto generated item
+     * @returns {MaterialHandler} Material Handler, allows for method chaining
+     */
     setOverrideItem: (component, itemId) => {
-        global.MaterialHandler.itemOverrides[component] = itemId;
-        return global.MaterialHandler;
+        MaterialHandler.itemOverrides[component] = itemId;
+        return MaterialHandler;
     },
 
+    /**
+     * Finishes the creation of a material by registering it and cleaning the handler
+     */
     register: () => {
         const materialObj = {};
-        const propertyArray = Object.getOwnPropertyNames(global.MaterialHandler);
+        const propertyArray = Object.getOwnPropertyNames(MaterialHandler);
         for (let i = 0; i < propertyArray.length; i++) {
             let property = propertyArray[i];
 
-            let type = typeof global.MaterialHandler[property];
+            let type = typeof MaterialHandler[property];
             if (type == 'function') continue;
             
             // Done for debug purposes, Rhino does not like logging sets
             if (!(property == 'components')) {
-                materialObj[property] = global.MaterialHandler[property];
+                materialObj[property] = MaterialHandler[property];
                 continue;
             }
             
             materialObj[property] = [];
-            global.MaterialHandler[property].forEach(component => {
+            MaterialHandler[property].forEach(component => {
                 materialObj[property].push(component);
             });
         };
         
         global.MaterialList.push(materialObj);
-        global.MaterialHandler.reset();
+        MaterialHandler.reset();
     },
 
+    /**
+     * Resets the material creation handler, not meant for usage outside of handler
+     */
     reset: () => {
-        global.MaterialHandler.id = '';
-        global.MaterialHandler.colors = [];
-        global.MaterialHandler.composition = [];
-        global.MaterialHandler.components = new Set([]);
-        global.MaterialHandler.textureSet = "default";
-        global.MaterialHandler.textureOverrides = {};
-        global.MaterialHandler.itemOverrides = {};
+        MaterialHandler.id = '';
+        MaterialHandler.colors = [];
+        MaterialHandler.composition = [];
+        MaterialHandler.components = new Set([]);
+        MaterialHandler.textureSet = "default";
+        MaterialHandler.textureOverrides = {};
+        MaterialHandler.itemOverrides = {};
     },
 
     // ==========[Utils]========== \\
+    /**
+     * Loops through component dependencies and adds all to the component set
+     * @param {string} component - Id of the root component
+     * @param {string[]} grade - The current nesting grade
+     */
     findNestedComponents: (component, grade) => {        
         let dependencies = [];
         let foundComponent = global.ComponentList.find(storedComponent => storedComponent.id == component);
         if (!foundComponent && component != "") {
-            console.error(`[MaterialHandler] component "${component}" does not exist (material: "${global.MaterialHandler.id}")`);
+            console.error(`[MaterialHandler] component "${component}" does not exist (material: "${MaterialHandler.id}")`);
             return
         }
-        global.MaterialHandler.components.add(component);
+        MaterialHandler.components.add(component);
         dependencies = global.setViewer(foundComponent.dependencies);
         if (dependencies) {
             for (let i = 0; i < dependencies.length; i++) {
-                global.MaterialHandler.findNestedComponents(dependencies[i], grade+1);
+                MaterialHandler.findNestedComponents(dependencies[i], grade+1);
             }
         }
         

@@ -1,75 +1,75 @@
 // priority: 50000
 
-global.ComponentHandler.create('dust')
+ComponentHandler.create('dust')
     .register();
 
-global.ComponentHandler.create('liquid')
+ComponentHandler.create('liquid')
     .register();
 
-global.ComponentHandler.create('ingot')
+ComponentHandler.create('ingot')
     .setDependencies(['dust'])
     .setLiquidAmount(144)
     .generateMold()
     .register();
 
-global.ComponentHandler.create('plate')
+ComponentHandler.create('plate')
     .setDependencies(['ingot'])
     .setLiquidAmount(144)
     .generateMold()
     .register();
 
-global.ComponentHandler.create('rod')
+ComponentHandler.create('rod')
     .setDependencies(['ingot'])
     .setLiquidAmount(144/2)
     .register();
 
-global.ComponentHandler.create('gear')
+ComponentHandler.create('gear')
     .setDependencies(['plate', 'rod'])
     .setLiquidAmount(144*4)
     .generateMold()
     .register();
 
-global.ComponentHandler.create('bolt')
+ComponentHandler.create('bolt')
     .setDependencies(['rod'])
     .setLiquidAmount(144/8)
     .register();
 
-global.ComponentHandler.create('screw')
+ComponentHandler.create('screw')
     .setDependencies(['bolt'])
     .setLiquidAmount(144/8)
     .register();
 
-global.ComponentHandler.create('ring')
+ComponentHandler.create('ring')
     .setDependencies(['rod'])
     .setLiquidAmount(144/4)
     .register();
 
-global.ComponentHandler.create('wire')
+ComponentHandler.create('wire')
     .setDependencies(['plate'])
     .setLiquidAmount(144/2)
     .register();
 
-global.ComponentHandler.create('foil')
+ComponentHandler.create('foil')
     .setDependencies(['plate'])
     .setLiquidAmount(144/4)
     .register();
 
-global.ComponentHandler.create('nugget')
+ComponentHandler.create('nugget')
     .setDependencies(['ingot'])
     .setLiquidAmount(144/9)
     .generateMold()
     .register();
 
-global.ComponentHandler.create('block')
+ComponentHandler.create('block')
     .setDependencies(['ingot'])
     .setLiquidAmount(144*9)
     .generateMold()
     .register();
 
-global.ComponentHandler.create('gem')
+ComponentHandler.create('gem')
     .setDependencies(['dust'])
     .register();
 
-global.ComponentHandler.create('gem_block')
+ComponentHandler.create('gem_block')
     .setDependencies(['gem'])
     .register();

@@ -36,7 +36,7 @@ if the given `<time>`'s are quite large, this means that you are spending a lot 
 #### Creating a material
 All you really need to create a material is the following code:
 ```js
-global.MaterialHandler.create('material')
+MaterialHandler.create('material')
     .register();
 ```
 The `.create()` method initiates a new material, and gives it an id.
@@ -51,7 +51,7 @@ To actually have items show up in-game, you need to tell the `MaterialHandler` w
 Let's say we want to create an gold plate. To do so, we can use the following code:
 > this code assumes a `plate` component already exists.
 ```js
-global.MaterialHandler.create('gold')
+MaterialHandler.create('gold')
     .setComponents(['plate'])
     .register();
 ```
@@ -82,7 +82,7 @@ These are grayscale textures that represent how an item is shaded. Using some si
 
 Now, let's make our gold have the color `#fdf55f`:
 ```js
-global.MaterialHandler.create('gold')
+MaterialHandler.create('gold')
     .setComponents(['plate'])
     .setColors('#FDF55F', 0)
     .register();
@@ -102,7 +102,7 @@ You and I might know that brass exists out of 3 parts copper and 1 part zinc, bu
 
 For this, we can use a new method called `.setComposition()`:
 ```js
-global.MaterialHandler.create('brass')
+MaterialHandler.create('brass')
     .setColors('#A2EB66', 0)
     .setComposition(['1x zinc', '3x copper'])
     .setComponents(['gear'])
@@ -122,7 +122,7 @@ Texture sets are those templates. Each set has custom templates for components. 
 If you want to switch texture sets, you can use the following code:
 > this code assumes a `better_textures` texture set exists (more about that later)
 ```js
-global.MaterialHandler.create('gold')
+MaterialHandler.create('gold')
     .setComponents(['plate'])
     .useTextureSet('better_textures')
     .register();
@@ -142,7 +142,7 @@ The aformentioned `.setOverrideTexture()` method can be used for replacing a tex
 
 Here is a simple example that overrides the texture for the `dust` component of our `gold` material:
 ```js
-global.MaterialHandler.create('gold')
+MaterialHandler.create('gold')
     .setComponents(['plate'])
     .setOverrideTexture('dust', 'mekanism:item/dust_gold')
     .register();
@@ -159,7 +159,7 @@ If we want to keep our `minecraft:diamond` item, but want to create the other it
 
 This method is the similarly sounding `.setOverrideItem()`, and here is the above functionality in code:
 ```js
-global.MaterialHandler.create('diamond')
+MaterialHandler.create('diamond')
     .setColors('#93F6FB', 0)
     .setComposition([''])
     .setComponents(['gem'])
@@ -187,7 +187,7 @@ If a component is missing from a set it will attempt to fall back to the default
 #### Creating a component
 All you really need to create a component is the following code:
 ```js
-global.ComponentHandler.create('component')
+ComponentHandler.create('component')
     .register();
 ```
 The `.create()` method initiates a new component, and gives it an id.
@@ -207,7 +207,7 @@ If you also want fluid casting to be available (e.g. being able to turn a liquid
 
 Here is an example for the ingot component, that tells the system it is 144mb, and that it can be solidified from fluids directly:
 ```js
-global.ComponentHandler.create('ingot')
+ComponentHandler.create('ingot')
     .setDependencies(['dust'])
     .setLiquidAmount(144)
     .generateMold()
@@ -232,7 +232,7 @@ When you create a component, you need to set the component dependencies in order
 
 For this we have the `.setDependencies()` method, as shown here:
 ```js
-global.ComponentHandler.create('ingot')
+ComponentHandler.create('ingot')
     .setDependencies(['dust'])
     .register();
 ```

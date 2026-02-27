@@ -12,7 +12,7 @@ RecipeTypeHandler.create('blasting')
     .setUsableMachines(['blast_furnace'])
     .register();
 
-RecipeTypeHandler.create('crafting')
+RecipeTypeHandler.create('shaped')
     .setUsableMachines(['shaped'])
     .register();
 

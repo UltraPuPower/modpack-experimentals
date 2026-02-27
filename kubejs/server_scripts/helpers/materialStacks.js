@@ -61,7 +61,7 @@ const fluidHandler = {
      * @returns {$FluidStack} Valid recipe fluid stack
      */
     getFluidOf: (fluidStack) => {
-        return Fluid.of(fluidStack.id, fluidStack.count);
+        return Fluid.of(fluidStack.id, fluidStack.amount);
     },
 
     /**

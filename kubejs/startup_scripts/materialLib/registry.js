@@ -97,3 +97,5 @@ StartupEvents.registry('armor_material', event => {
 //         .texture('<exampleid>:item/<material>_chestplate')
 //         .material('<exampleid>:<material>');
 // });
+
+// Platform.mods.materiallib.name = 'Material Lib'

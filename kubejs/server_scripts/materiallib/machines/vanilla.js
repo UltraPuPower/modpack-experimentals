@@ -32,7 +32,7 @@ MachineHandler.create('shaped')
             output.push(itemHandler.getItemOf(item));
         });
 
-        let recipeId = `materiallib:shaped/${itemI[0].id.split(':')[1]}`
+        let recipeId = `materiallib:shaped/${itemO[0].id.split(':')[1]}`
         event.shaped(output[0], recipeData.shaped.pattern, recipeData.shaped.key).id(recipeId);
     })
     .register();

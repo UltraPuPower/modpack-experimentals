@@ -47,10 +47,10 @@ MachineHandler.create('mechanical_mixer')
             output.push(itemHandler.getItemOf(item));
         });
         fluidI.forEach(fluid => {
-            input.push(fluidHandler.getItemOf(fluid));
+            input.push(fluidHandler.getFluidOf(fluid));
         });
         fluidO.forEach(fluid => {
-            output.push(fluidHandler.getItemOf(fluid));
+            output.push(fluidHandler.getFluidOf(fluid));
         });
 
         let firstInput = (itemI[0]) ? itemI[0].id : fluidI[0].id

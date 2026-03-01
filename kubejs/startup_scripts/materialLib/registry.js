@@ -17,7 +17,7 @@ const readMaterialDirection = 'kubejs:item/materiallib';
 StartupEvents.registry('fluid', event => {
     materialList.forEach(material => {
         if (material.components.find(component => component == 'liquid')) {
-            event.create(`materiallib:liquid_${material.id}`, 'kubejs:thick')
+            event.create(`materiallib:${material.id}_liquid`, 'kubejs:thick')
                 .tint(material.colors[0])
                 .noBlock();
         }

@@ -4,6 +4,7 @@ ComponentHandler.create('dust')
     .register();
 
 ComponentHandler.create('liquid')
+    .setMaterialState('liquid')
     .register();
 
 ComponentHandler.create('ingot')

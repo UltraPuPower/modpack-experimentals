@@ -5,7 +5,7 @@
  * @property {number} count - Amount of items in the stack
  */
 
-const itemHandler = {
+global.itemHandler = {
     /**
      * Creates an intermediate item stack for usage by other functions
      * @param {string} id - The id of the item in the stack
@@ -16,13 +16,25 @@ const itemHandler = {
         return {id: itemId, count: amount}
     },
 
+    createComponentItemStack: (material, component, count) => {
+        let itemId = `materiallib:${material}_${component}`;
+
+        let materialObj = materialList.find(materialObj => materialObj.id == material);
+        if (materialObj.itemOverrides[component]) itemId = materialObj.itemOverrides[component]
+
+        return {id: itemId, count: count}
+    },
+
     /**
      * Creates a valid recipe itemstack from an intermediate item stack
      * @param {intermediateItemStack} id - An intermediate item stack as created by .createItemStack()
      * @returns {$ItemStack} Valid recipe item stack
      */
     getItemOf: (itemStack) => {
-        return Item.of(itemStack.id, itemStack.count);
+        console.log('getItemOf')
+        console.log(itemStack)
+        let newItemStack = Item.of(itemStack.id, itemStack.count);
+        return newItemStack;
     },
 
     /**
@@ -44,7 +56,7 @@ const itemHandler = {
  * @property {number} amount - Amount of millibuckets in the stack
  */
 
-const fluidHandler = {
+global.fluidHandler = {
     /**
      * Creates an intermediate fluid stack for usage by other functions
      * @param {string} id - The id of the fluid in the stack
@@ -52,6 +64,15 @@ const fluidHandler = {
      * @returns {intermediateFluidStack} Valid intermediate fluid stack
      */
     createFluidStack: (fluidId, amount) => {
+        return {id: fluidId, amount: amount}
+    },
+
+    createComponentFluidStack: (material, component, amount) => {
+        let fluidId = `materiallib:${material}_${component}`;
+
+        let materialObj = materialList.find(materialObj => materialObj.id == material);
+        if (materialObj.itemOverrides[component]) fluidId = materialObj.itemOverrides[component]
+
         return {id: fluidId, amount: amount}
     },
 

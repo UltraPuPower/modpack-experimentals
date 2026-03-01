@@ -1,6 +1,9 @@
 // priority: 100000
 const MachineList = [];
 
+const itemHandler = global.itemHandler;
+const fluidHandler = global.fluidHandler;
+
 const functionBlockList = ['create', 'setIO', 'setRecipeFunction', 'register', 'reset']
 
 console.log('registering machines:');
@@ -13,7 +16,7 @@ const MachineHandler = {
         fluidInput: 0,
         fluidOutput: 0
     },
-    recipeFunction: (event, itemI, itemO, fluidI, fluidO, recipeData) => {
+    recipeFunction: (event, itemI, itemO, fluidI, fluidO, recipeData, recipeId) => {
         console.warn(`Can't find a recipe function for ${MachineHandler.machineId}`);
     },
 
@@ -58,7 +61,7 @@ const MachineHandler = {
             fluidInput: 0,
             fluidOutput: 0
         };
-        MachineHandler.recipeFunction = (event, itemI, itemO, fluidI, fluidO, recipeData) => {
+        MachineHandler.recipeFunction = (event, itemI, itemO, fluidI, fluidO, recipeData, recipeId) => {
             console.warn(`Can't find a recipe function for ${MachineHandler.machineId}`);
         }
     }

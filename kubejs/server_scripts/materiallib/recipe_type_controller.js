@@ -6,7 +6,6 @@ console.log('registering recipe types:');
 const RecipeTypeHandler = {
     recipeTypeId: '',
     usableMachines: [],
-    componentTransformations: {},
 
     create: (id) => {
         RecipeTypeHandler.recipeTypeId = id;
@@ -23,11 +22,6 @@ const RecipeTypeHandler = {
                 RecipeTypeHandler.usableMachines.push(usableMachine);
             } else console.warn(`invalid machine for ${RecipeTypeHandler.recipeTypeId}: ${usableMachine}`)
         });
-        return RecipeTypeHandler;
-    },
-
-    setComponentTransmutation: (transformations) => {
-        RecipeTypeHandler.componentTransformations = transformations;
         return RecipeTypeHandler;
     },
 

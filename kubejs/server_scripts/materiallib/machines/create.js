@@ -3,7 +3,7 @@
 
 MachineHandler.create('mechanical_press')
     .setIO(1, 1, false, false)
-    .setRecipeFunction((event, itemI, itemO, fluidI, fluidO, recipeData) => {
+    .setRecipeFunction((event, itemI, itemO, fluidI, fluidO, recipeData, recipeId) => {
         let input = [];
         let output = [];
         itemI.forEach(item => {
@@ -13,14 +13,13 @@ MachineHandler.create('mechanical_press')
             output.push(itemHandler.getItemOf(item));
         });
 
-        let recipeId = `materiallib:pressing/${itemI[0].id.split(':')[1]}`
-        event.recipes.create.pressing(output, input).id(recipeId);
+        event.recipes.create.pressing(output, input).id(`materiallib:pressing/${recipeId}`);
     })
     .register();
 
 MachineHandler.create('mechanical_saw')
     .setIO(1, true, false, false)
-    .setRecipeFunction((event, itemI, itemO, fluidI, fluidO, recipeData) => {
+    .setRecipeFunction((event, itemI, itemO, fluidI, fluidO, recipeData, recipeId) => {
         let input = [];
         let output = [];
         itemI.forEach(item => {
@@ -30,19 +29,27 @@ MachineHandler.create('mechanical_saw')
             output.push(itemHandler.getItemOf(item));
         });
 
-        let recipeId = `materiallib:cutting/${itemI[0].id.split(':')[1]}`
-        event.recipes.create.cutting(output, input).id(recipeId);
+        event.recipes.create.cutting(output, input).id(`materiallib:cutting/${recipeId}`);
     })
     .register();
 
 MachineHandler.create('mechanical_mixer')
     .setIO(true, true, true, true)
-    .setRecipeFunction((event, itemI, itemO, fluidI, fluidO, recipeData) => {
+    .setRecipeFunction((event, itemI, itemO, fluidI, fluidO, recipeData, recipeId) => {
         let input = [];
         let output = [];
+        console.log('setRecipeFunction:')
+        console.log(itemI)
+        console.log('looping')
         itemI.forEach(item => {
-            input.push(itemHandler.getItemOf(item));
+            console.log(item)
+            console.log(`   looking over ${item.count} instances of ${item.id}:`)
+            let fullItemStack = itemHandler.getItemOf(item);
+            console.log('   handled')
+            input.push(fullItemStack);
+            console.log('   pushed')
         });
+        console.log('done')
         itemO.forEach(item => {
             output.push(itemHandler.getItemOf(item));
         });
@@ -53,10 +60,7 @@ MachineHandler.create('mechanical_mixer')
             output.push(fluidHandler.getFluidOf(fluid));
         });
 
-        let firstInput = (itemI[0]) ? itemI[0].id : fluidI[0].id
-        let recipeId = `materiallib:mixing/${firstInput.split(':')[1]}`
-
-        let recipe = event.recipes.create.mixing(output, input).id(recipeId);
+        let recipe = event.recipes.create.mixing(output, input).id(`materiallib:mixing/${recipeId}`);
         if (!recipeData.heatlevel || recipeData.heatlevel > 1000) return;
         if (recipeData.heatlevel > 500) {recipe.superheated(); return;}
         if (recipeData.heatlevel > 300) recipe.heated()
@@ -65,7 +69,7 @@ MachineHandler.create('mechanical_mixer')
 
 MachineHandler.create('millstone')
     .setIO(1, true, false, false)
-    .setRecipeFunction((event, itemI, itemO, fluidI, fluidO, recipeData) => {
+    .setRecipeFunction((event, itemI, itemO, fluidI, fluidO, recipeData, recipeId) => {
         let input = [];
         let output = [];
         itemI.forEach(item => {
@@ -75,15 +79,14 @@ MachineHandler.create('millstone')
             output.push(itemHandler.getItemOf(item));
         });
 
-        let recipeId = `materiallib:milling/${itemI[0].id.split(':')[1]}`
-        if (!recipeData.toughness || recipeData.toughness < 200) event.recipes.create.milling(output, input).id(recipeId);
+        if (!recipeData.toughness || recipeData.toughness < 200) event.recipes.create.milling(output, input).id(`materiallib:milling/${recipeId}`);
         
     })
     .register();
 
 MachineHandler.create('crushing_wheel')
     .setIO(1, true, false, false)
-    .setRecipeFunction((event, itemI, itemO, fluidI, fluidO, recipeData) => {
+    .setRecipeFunction((event, itemI, itemO, fluidI, fluidO, recipeData, recipeId) => {
         let input = [];
         let output = [];
         itemI.forEach(item => {
@@ -93,7 +96,6 @@ MachineHandler.create('crushing_wheel')
             output.push(itemHandler.getItemOf(item));
         });
 
-        let recipeId = `materiallib:crushing/${itemI[0].id.split(':')[1]}`
-        event.recipes.create.crushing(output, input).id(recipeId);
+        event.recipes.create.crushing(output, input).id(`materiallib:crushing/${recipeId}`);
     })
     .register();

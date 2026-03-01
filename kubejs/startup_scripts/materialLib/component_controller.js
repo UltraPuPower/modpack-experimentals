@@ -13,11 +13,14 @@
  */
 global.ComponentList = [];
 
+let materialStates = ['solid', 'liquid', 'gas', 'plasma']
+
 const ComponentHandler = {
     id: '',
     dependencies: new Set([]),
     liquidAmount: 0,
     generateMoldItem: false,
+    state: 'solid',
 
     /**
      * Initiates the creation of a component by setting the id
@@ -57,6 +60,17 @@ const ComponentHandler = {
     },
 
     /**
+     * Sets the state of the material that this component is in
+     * @returns {Handler} Component Handler, allows for method chaining
+     */
+    setMaterialState: (state) => {
+        if (materialStates.includes(state)) {
+            ComponentHandler.state = state;
+        } else console.warn(`Invalid state for ${ComponentHandler.id}: ${state}`)
+        return ComponentHandler
+    },
+
+    /**
      * Sets the liquid volume of the component
      * @param {string[]} amount - The amount of millibuckets the component gives when liquefied
      * @returns {Handler} Component Handler, allows for method chaining
@@ -91,5 +105,6 @@ const ComponentHandler = {
         ComponentHandler.dependencies = new Set([]);
         ComponentHandler.liquidAmount = 0;
         ComponentHandler.generateMoldItem = false;
+        ComponentHandler.state = 'solid';
     }
 };

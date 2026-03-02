@@ -99,3 +99,4 @@ StartupEvents.registry('armor_material', event => {
 // });
 
 // Platform.mods.materiallib.name = 'Material Lib'
+Platform.setModName("materiallib", "Material Lib");

@@ -9,3 +9,6 @@
 !LICENSE
 !README.md
 .probe
+
+# Specific exclusion
+kubejs/assets/kubejs/textures/item/materiallib/

@@ -14,3 +14,5 @@ global.setViewer = (set) => {
 
 global.itemRegex = /([0-9]*)x ([a-z_]*:[a-z_]*)/;
 global.fluidRegex = /([a-z_]*:[a-z]_*) ([0-9]*)/;
+
+global.isotopeRegex = /([0-9]*)x ([a-z_]*)/;

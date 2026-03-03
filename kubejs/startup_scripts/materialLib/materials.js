@@ -1,4 +1,4 @@
-// priority: 5000
+// priority: 10000
 
 MaterialHandler.create('bronze')
     .setColors('#ffc370', '#69993B')

@@ -4,7 +4,7 @@ ComponentHandler.create('dust')
     .register();
 
 ComponentHandler.create('liquid')
-    .setMaterialState('liquid')
+    .setComponentState('liquid')
     .register();
 
 ComponentHandler.create('ingot')
@@ -64,6 +64,7 @@ ComponentHandler.create('nugget')
 ComponentHandler.create('block')
     .setDependencies(['ingot'])
     .setLiquidAmount(144*9)
+    .setComponentType('block')
     .generateMold()
     .register();
 
@@ -73,4 +74,5 @@ ComponentHandler.create('gem')
 
 ComponentHandler.create('gem_block')
     .setDependencies(['gem'])
+    .setComponentType('block')
     .register();

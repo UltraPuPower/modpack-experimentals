@@ -8,16 +8,62 @@ let fileExists = (path) => { // Thanks to @lexxieblack for figuring this out (ht
     return false
 }
 
+const generateName = (string) => {
+    let words = string.split(' ');
+    for (let i = 0; i < words.length; i++) {
+        let word = words[i];
+        let firstLetter = word.slice(0,1);
+        let rest = word.slice(1);
+        words[i] = firstLetter.toUpperCase() + rest;
+    }
+
+    let returnString = words[0];
+    for (let i = 1; i < words.length; i++) {
+        returnString += ' '+words[i];
+    }
+    
+    return returnString;
+};
+
 const materialList = global.MaterialList;
 const componentList = global.ComponentList;
 
-const directMaterialDirection = 'kubejs/assets/kubejs/textures/item/materiallib';
-const readMaterialDirection = 'kubejs:item/materiallib';
+const directMaterialDirection = {
+    item: 'kubejs/assets/kubejs/textures/item/materiallib',
+    block: 'kubejs/assets/kubejs/textures/block/materiallib'
+};
+const readMaterialDirection = {
+    item: 'kubejs:item/materiallib',
+    block: 'kubejs:block/materiallib'
+};
+
+const eventStorage = {
+    startup: {
+        itemEvent: false,
+        fluidEvent: false,
+        blockEvent: false,
+        armorMaterialEvent: false,
+
+        setItemEvent: (input) => {
+            eventStorage.itemEvent = input
+        },
+        setFluidEvent: (input) => {
+            eventStorage.fluidEvent = input
+        },
+        setBlockEvent: (input) => {
+            eventStorage.blockEvent = input
+        },
+        setArmorMaterialEvent: (input) => {
+            eventStorage.armorMaterialEvent = input
+        }
+    }
+}
 
 StartupEvents.registry('fluid', event => {
     materialList.forEach(material => {
         if (material.components.find(component => component == 'liquid')) {
             event.create(`materiallib:${material.id}_liquid`, 'kubejs:thick')
+                .displayName(`Liquid ${generateName(material.id)}`)
                 .tint(material.colors[0])
                 .noBlock();
         }
@@ -25,15 +71,18 @@ StartupEvents.registry('fluid', event => {
 });
 
 StartupEvents.registry('item', event => {
+
+    eventStorage.setItemEvent(event);
+
     for (let i = 0; i < componentList.length; i++) {
         let component = componentList[i]
         if(!component.generateMoldItem) continue
 
-        if(!fileExists(`${directMaterialDirection}/default/${component.id}.png`)) {
+        if(!fileExists(`${directMaterialDirection.item}/default/${component.id}.png`)) {
             console.warn(`Warning, could not find component texture for ${component.id} in default set`);
         }
 
-        let newLiquidMold = event.create(`materiallib:empty_${component.id}_casting_mold`);
+        let newLiquidMold = eventStorage.itemEvent.create(`materiallib:empty_${component.id}_casting_mold`);
     };
 
     materialList.forEach(material => {
@@ -48,7 +97,7 @@ StartupEvents.registry('item', event => {
 
             let textureLayer = 0;
 
-            let newComponent = event.create(`materiallib:${itemID}`).tag(`c:${component}s`).tag(`c:${component}s/${id}`);
+            let newComponent = eventStorage.itemEvent.create(`materiallib:${itemID}`).tag(`c:${component}s`).tag(`c:${component}s/${id}`);
 
             if(textureOverrides[component]) {
                 newComponent.texture(textureOverrides[component]);
@@ -56,28 +105,28 @@ StartupEvents.registry('item', event => {
                 continue;
             }
 
-            if(fileExists(`${directMaterialDirection}/overrides/${itemID}.png`)) {
-                newComponent.texture(`${readMaterialDirection}/overrides/${itemID}`);
+            if(fileExists(`${directMaterialDirection.item}/overrides/${itemID}.png`)) {
+                newComponent.texture(`${readMaterialDirection.item}/overrides/${itemID}`);
                 console.log(`found alternative texture for ${itemID}`)
                 continue;
             }
 
-            if(fileExists(`${directMaterialDirection}/${textureSet}/${component}.png`)) {
-                newComponent.texture('layer0', `${readMaterialDirection}/${textureSet}/${component}`).color(0, colors[0]);
+            if(fileExists(`${directMaterialDirection.item}/${textureSet}/${component}.png`)) {
+                newComponent.texture('layer0', `${readMaterialDirection.item}/${textureSet}/${component}`).color(0, colors[0]);
                 textureLayer++;
-            } else if (fileExists(`${directMaterialDirection}/deafult/${component}.png`)) {
-                newComponent.texture('layer0', `${readMaterialDirection}/default/${component}`).color(0, colors[0]);
+            } else if (fileExists(`${directMaterialDirection.item}/deafult/${component}.png`)) {
+                newComponent.texture('layer0', `${readMaterialDirection.item}/default/${component}`).color(0, colors[0]);
                 textureSet = 'default';
                 textureLayer++;
             } else console.warn(`No component texture found for ${itemID} in both ${textureSet} and default texture set`)
 
-            if(colors[1] && fileExists(`${directMaterialDirection}/${textureSet}/${component}_secondary.png`)) {
-                newComponent.texture(`layer${textureLayer}`, `${readMaterialDirection}/${textureSet}/${component}_secondary`).color(textureLayer, colors[1]);
+            if(colors[1] && fileExists(`${directMaterialDirection.item}/${textureSet}/${component}_secondary.png`)) {
+                newComponent.texture(`layer${textureLayer}`, `${readMaterialDirection.item}/${textureSet}/${component}_secondary`).color(textureLayer, colors[1]);
                 textureLayer++;
             }
 
-            if(fileExists(`${directMaterialDirection}/${textureSet}/${component}_overlay.png`)) {
-                newComponent.texture(`layer${textureLayer}`, `${readMaterialDirection}/${textureSet}/${component}_overlay`);
+            if(fileExists(`${directMaterialDirection.item}/${textureSet}/${component}_overlay.png`)) {
+                newComponent.texture(`layer${textureLayer}`, `${readMaterialDirection.item}/${textureSet}/${component}_overlay`);
                 textureLayer++;
             }
         }
@@ -98,5 +147,4 @@ StartupEvents.registry('armor_material', event => {
 //         .material('<exampleid>:<material>');
 // });
 
-// Platform.mods.materiallib.name = 'Material Lib'
 Platform.setModName("materiallib", "Material Lib");

@@ -1,4 +1,4 @@
-// priority: 10000
+// priority: 50000
 /**
  * @typedef {String} assetLocation String describing a valid minecraft asset location (e.g. minecraft:item/iron_ingot)
  */
@@ -7,7 +7,20 @@
  * @typedef {String} textureSet String describing a texture set. These are located at .../instance/kubejs/assets/kubejs/textures/<item/block>/materiallib/, depending on whether the set exists for items, blocks or both
  */
 
+/**
+ * @typedef {Object} MaterialObject
+ * @property {string} id - Id of the material
+ * @property {string[]} colors - Array containing primary and possible secondary color
+ * @property {string[]} composition - Dependency components for this component
+ * @property {Set} components - Which component to generate for the material
+ * @property {textureSet} textureSet - The used texture set for component generation
+ * @property {Object} textureOverrides - Sets a custom texture for the component instead of the default texture generation
+ * @property {Object} itemOverrides - Sets an item to replace a component
+ */
 
+/**
+ * @param {Array<MaterialObject>} MaterialList
+ */
 global.MaterialList = [];
 
 
@@ -24,8 +37,8 @@ const MaterialHandler = {
     itemOverrides: {},
 
     /**
-     * Sets the liquid volume of the component
-     * @param {string[]} amount - The amount of millibuckets the component gives when liquefied
+     * Sets identifier for the material
+     * @param {string[]} amount - The id for the material
      * @returns {MaterialHandler} Material Handler, allows for method chaining
      */
     create: (id) => {
@@ -34,8 +47,9 @@ const MaterialHandler = {
     },
 
     /**
-     * Sets the liquid volume of the component
-     * @param {string[]} amount - The amount of millibuckets the component gives when liquefied
+     * Sets the primary and secondary colors of the materials
+     * @param {string} primaryColor - The primary color, must be a valid color code using # hexadecimal notation
+     * @param {string} secondaryColor - The primary color, can be a valid color code using # hexadecimal notation or 0 for ignoring secondary color
      * @returns {MaterialHandler} Material Handler, allows for method chaining
      */
     setColors: (primaryColor, secondaryColor) => {
@@ -44,7 +58,7 @@ const MaterialHandler = {
     },
 
     /**
-     * Sets the liquid volume of the component
+     * Sets the composition of the material in elements or other materials
      * @param {string[]} composition - An array of submaterials that make up this material
      * @returns {MaterialHandler} Material Handler, allows for method chaining
      */

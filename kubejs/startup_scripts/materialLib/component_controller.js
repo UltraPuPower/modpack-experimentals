@@ -13,7 +13,8 @@
  */
 global.ComponentList = [];
 
-let materialStates = ['solid', 'liquid', 'gas', 'plasma']
+let componentStates = ['solid', 'liquid', 'gas', 'plasma'];
+let componentTypes = ['item', 'block', 'fluid'];
 
 const ComponentHandler = {
     id: '',
@@ -21,6 +22,7 @@ const ComponentHandler = {
     liquidAmount: 0,
     generateMoldItem: false,
     state: 'solid',
+    type: 'item',
 
     /**
      * Initiates the creation of a component by setting the id
@@ -61,12 +63,25 @@ const ComponentHandler = {
 
     /**
      * Sets the state of the material that this component is in
+     * @param {string} state - A state of matter: solid, liquid, gas, plasma
      * @returns {Handler} Component Handler, allows for method chaining
      */
-    setMaterialState: (state) => {
-        if (materialStates.includes(state)) {
+    setComponentState: (state) => {
+        if (componentStates.includes(state)) {
             ComponentHandler.state = state;
         } else console.warn(`Invalid state for ${ComponentHandler.id}: ${state}`)
+        return ComponentHandler
+    },
+
+    /**
+     * Sets the state of the material that this component is in
+     * @param {string} type - A type of component: item, block, fluid
+     * @returns {Handler} Component Handler, allows for method chaining
+     */
+    setComponentType: (type) => {
+        if (componentTypes.includes(type)) {
+            ComponentHandler.type = type;
+        } else console.warn(`Invalid type for ${ComponentHandler.id}: ${type}`)
         return ComponentHandler
     },
 
@@ -106,5 +121,6 @@ const ComponentHandler = {
         ComponentHandler.liquidAmount = 0;
         ComponentHandler.generateMoldItem = false;
         ComponentHandler.state = 'solid';
+        ComponentHandler.type = 'item';
     }
 };

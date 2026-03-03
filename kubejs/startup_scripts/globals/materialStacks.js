@@ -31,8 +31,6 @@ global.itemHandler = {
      * @returns {$ItemStack} Valid recipe item stack
      */
     getItemOf: (itemStack) => {
-        console.log('getItemOf')
-        console.log(itemStack)
         let newItemStack = Item.of(itemStack.id, itemStack.count);
         return newItemStack;
     },

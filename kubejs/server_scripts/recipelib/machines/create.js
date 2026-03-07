@@ -38,18 +38,10 @@ MachineHandler.create('mechanical_mixer')
     .setRecipeFunction((event, itemI, itemO, fluidI, fluidO, recipeData, recipeId) => {
         let input = [];
         let output = [];
-        console.log('setRecipeFunction:')
-        console.log(itemI)
-        console.log('looping')
         itemI.forEach(item => {
-            console.log(item)
-            console.log(`   looking over ${item.count} instances of ${item.id}:`)
             let fullItemStack = itemHandler.getItemOf(item);
-            console.log('   handled')
             input.push(fullItemStack);
-            console.log('   pushed')
         });
-        console.log('done')
         itemO.forEach(item => {
             output.push(itemHandler.getItemOf(item));
         });

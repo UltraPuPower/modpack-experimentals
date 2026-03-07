@@ -166,7 +166,7 @@ const MaterialHandler = {
             return
         }
         MaterialHandler.components.add(component);
-        dependencies = global.setViewer(foundComponent.dependencies);
+        dependencies = global.setToArray(foundComponent.dependencies);
         if (dependencies) {
             for (let i = 0; i < dependencies.length; i++) {
                 MaterialHandler.findNestedComponents(dependencies[i], grade+1);

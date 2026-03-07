@@ -5,6 +5,8 @@ ComponentHandler.create('dust')
 
 ComponentHandler.create('liquid')
     .setComponentState('liquid')
+    .setComponentType('fluid')
+    .setComponentAffix('prefix')
     .register();
 
 ComponentHandler.create('ingot')

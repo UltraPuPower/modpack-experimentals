@@ -13,16 +13,18 @@ global.itemHandler = {
      * @returns {intermediateItemStack} Valid intermediate item stack
      */
     createItemStack: (itemId, amount) => {
-        return {id: itemId, count: amount}
+        return {id: itemId, count: amount};
     },
 
     createComponentItemStack: (material, component, count) => {
-        let itemId = `materiallib:${material}_${component}`;
+        let itemId = '';
+        if(global.dataObject.prefixList.includes(component)) itemId = `materiallib:${component}_${material}`;
+        if(global.dataObject.suffixList.includes(component)) itemId = `materiallib:${material}_${component}`;
 
         let materialObj = materialList.find(materialObj => materialObj.id == material);
-        if (materialObj.itemOverrides[component]) itemId = materialObj.itemOverrides[component]
+        if (materialObj.itemOverrides[component]) itemId = materialObj.itemOverrides[component];
 
-        return {id: itemId, count: count}
+        return {id: itemId, count: count};
     },
 
     /**
@@ -62,16 +64,18 @@ global.fluidHandler = {
      * @returns {intermediateFluidStack} Valid intermediate fluid stack
      */
     createFluidStack: (fluidId, amount) => {
-        return {id: fluidId, amount: amount}
+        return {id: fluidId, amount: amount};
     },
 
     createComponentFluidStack: (material, component, amount) => {
-        let fluidId = `materiallib:${material}_${component}`;
+        let fluidId = '';
+        if(global.dataObject.prefixList.includes(component)) fluidId = `materiallib:${component}_${material}`;
+        if(global.dataObject.suffixList.includes(component)) fluidId = `materiallib:${material}_${component}`;
 
         let materialObj = materialList.find(materialObj => materialObj.id == material);
-        if (materialObj.itemOverrides[component]) fluidId = materialObj.itemOverrides[component]
+        if (materialObj.itemOverrides[component]) fluidId = materialObj.itemOverrides[component];
 
-        return {id: fluidId, amount: amount}
+        return {id: fluidId, amount: amount};
     },
 
     /**

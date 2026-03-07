@@ -15,6 +15,7 @@ global.ComponentList = [];
 
 let componentStates = ['solid', 'liquid', 'gas', 'plasma'];
 let componentTypes = ['item', 'block', 'fluid'];
+let componentAffixes = ['prefix', 'suffix'];
 
 const ComponentHandler = {
     id: '',
@@ -23,6 +24,7 @@ const ComponentHandler = {
     generateMoldItem: false,
     state: 'solid',
     type: 'item',
+    affixType: 'suffix',
 
     /**
      * Initiates the creation of a component by setting the id
@@ -96,6 +98,18 @@ const ComponentHandler = {
     },
 
     /**
+     * Sets the type of affix the component is
+     * @param {string} affix - The affix of the component: prefix, suffix
+     * @returns {Handler} Component Handler, allows for method chaining
+     */
+    setComponentAffix: (affix) => {
+        if (componentAffixes.includes(affix)) {
+            ComponentHandler.affixType = affix;
+        } else console.warn(`Invalid affix for ${ComponentHandler.id}: ${affix}`)
+        return ComponentHandler
+    },
+
+    /**
      * Finishes the creation of a component by registering it and cleaning the handler
      */
     register: () => {
@@ -122,5 +136,6 @@ const ComponentHandler = {
         ComponentHandler.generateMoldItem = false;
         ComponentHandler.state = 'solid';
         ComponentHandler.type = 'item';
+        ComponentHandler.affixType = 'suffix';
     }
 };

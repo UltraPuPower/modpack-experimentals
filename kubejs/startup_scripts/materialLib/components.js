@@ -1,4 +1,4 @@
-// priority: 50000
+// priority: 99998
 
 ComponentHandler.create('dust')
     .register();

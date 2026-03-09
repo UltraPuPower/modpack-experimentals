@@ -1,4 +1,4 @@
-// priority: 50000
+// priority: 99997
 /**
  * @typedef {String} assetLocation String describing a valid minecraft asset location (e.g. minecraft:item/iron_ingot)
  */
@@ -106,8 +106,10 @@ const MaterialHandler = {
      * @param {string} itemId - The id of the item that serves as the replacement for the auto generated item
      * @returns {MaterialHandler} Material Handler, allows for method chaining
      */
-    setOverrideItem: (component, itemId) => {
-        MaterialHandler.itemOverrides[component] = itemId;
+    setOverrideItem: (overrideArray) => {
+        overrideArray.forEach(override => {
+            MaterialHandler.itemOverrides[override.component] = override.item;
+        });
         return MaterialHandler;
     },
 

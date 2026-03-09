@@ -1,4 +1,4 @@
-// priority: 100000
+// priority: 99999
 
 /**
  * @typedef {Object} ComponentObject

@@ -1,4 +1,4 @@
-# Material scripts (startup)
+# MaterialLib (startup)
 
 ## General usage
 ### Script priority
@@ -12,27 +12,13 @@ If you are gonna bother, just remember these simple rules:
 - All materials must be loaded before the `material_registry.js` file
 
 To achieve these rules, a few default priorities are used
-- The controllers for components and materials are kept at priority `100000` and `10000` respectfully
-- Components are created at priority `50000` (do keep in mind that dependant components must be created after their dependencies)
-- Materials are created at priority `5000` (these do not care about dependant order, as all matters related to that are handled later)
+- The controllers for components and materials are kept at priority `99999` and `99997` respectively
+- Components are created at priority `99998` (do keep in mind that dependant components must be created after their dependencies)
+- Materials are created at priority `99996` (these do not care about dependant order, as all matters related to that are handled later)
 - Materials are registered at priority `-1`
 
-### Performance
-The entire material registry process should not have a great impact on start-up time, but there are ways to slightly increase performance at the cost of flexibility.
-
-If you want to, you can print out the entire `global.ComponentList` or `global.MaterialList` and replace the empty one in the `component_controller.js` and `material_controller.js` files with it. After doing this you can delete the `.create()` calls for all of the components/materials, since they are now hardcoded.
-
-This won't reduce the time used for actually registering the materials, but will eliminate the time needed for component and material logic. If you want to know whether this can impact your performance, check the following lines in your `startup.log` located at `.../instance/logs/kubejs`.
-```
-[<timestamp>] [INFO] Loaded script startup_scripts:materiallib/component_controller.js in <time> s
-[<timestamp>] [INFO] Loaded script startup_scripts:materiallib/components.js in <time> s
-[<timestamp>] [INFO] Loaded script startup_scripts:materiallib/material_controller.js in <time> s
-[<timestamp>] [INFO] Loaded script startup_scripts:materiallib/materials.js in <time> s
-```
-if the given `<time>`'s are quite large, this means that you are spending a lot of time on material creation, and the aformentioned method could yield results.
-
 ## Capabilities
-### Adding new materials
+### Materials
 #### Creating a material
 All you really need to create a material is the following code:
 ```js
@@ -57,24 +43,7 @@ MaterialHandler.create('gold')
 ```
 If we now open the game, we will see that there is now an item called `kubejs:gold_plate`
 
-However, it doesn't really look like gold. We can fix that, but first we need to adress cascading components
-
-Cascading components are usefull for the server side material handling (e.g. recipe generation).
-
-If we imagine a scenario where we use the above material, than our script will attempt to generate a recipe for this gold plate.
-
-This would be done using a `plate_maker` machine recipe (any recipe that we deem to be able to generate plates).
-
-However, what is the input of such a recipe? It is, quite obviously, an ingot, and so we need to create an ingot item.
-
-To us, this is just obvious, but our code doesn't do things that feel obvious, it only does what we tell it to, and we did not tell it to do that.
-However, having to manually add all needed components to your material is a chore, and luckily one that can be automated.
-
-When we create a component (more about that later), we can tell it what other components it requires **directly**.
-
-When a material is created, it automatically checks those dependencies, and if they exist, their dependencies, and adds them all to the list of components that need to be generated.
-
-This is why we can create a material with only the `gear` component, and it will automatically decide to also create the needed `rod`, `plate`, `ingot` and `dust` components.
+However, it doesn't really look like gold. To fix that, we will need to specify a color.
 
 #### Coloring your item
 Since we do not want to make a texture for each new item we create, materials use template textures.
@@ -170,11 +139,11 @@ This snippet does 2 things:
 - It blocks the creation of a `kubejs:diamond_gem`
 - It tells the recipe generator to use `minecraft:diamond` as a replacement for said item (more about recipes can be found in `.../instance/kubejs/server_scripts/materiallib/materials.md`).
 
-### Adding new texture sets
+### Texture Sets
 #### Location
 Texture sets are easy to add by design. I encourage all of you to create some better looking components than the textures I created.
 
-All you need to do to create and register a component set called `better_textures` is creating a folder called `better_textures` at `.../instance/kubejs/assets/item/materials`, and add all your textures in there.
+All you need to do to create and register a texture set called `better_textures` is creating a folder called `better_textures` at `.../instance/kubejs/assets/item/materiallib/`, and add all your textures in there.
 
 the naming scheme for the textures is as follows:
 - Default layer: `<component_name>.png`
@@ -183,7 +152,7 @@ the naming scheme for the textures is as follows:
 
 If a component is missing from a set it will attempt to fall back to the default set before issuing a warning
 
-### Adding new components
+### Components
 #### Creating a component
 All you really need to create a component is the following code:
 ```js
@@ -216,6 +185,66 @@ ComponentHandler.create('ingot')
 
 The method `.generateMold()` is called so because it will also generate a casting mold for your component, as these are required for solidification recipes.
 
+#### Component naming schemes
+The name of your component as a material is automatically generated and connected to the item ID, and as such can't be changed easily. However, sometimes you might want to shift the position of your component in the name.
+
+Normally a component name/id is formatted with the material name first, and the component name after (e.g. Bronze Plate), but this can sound weird in some cases, such as Bronze Liquid.
+
+Most people would prefer Liquid Bronze as the name for this, and we can achieve this by telling our component to be a prefix instead of a suffix.
+
+Here is an example in the form of the liquid component:
+```js
+ComponentHandler.create('liquid')
+    .setComponentAffix('prefix')
+    .register();
+```
+Quite simple, and works like a charm. You should be aware it does change the item id alongside it, to account for this it is recommended to use the `MaterialStacks.js` tools when dealing with components in recipes.
+
+Currently. these affixes are accepted:
+- `prefix`
+- `suffix`
+
+*When `.setComponentAffix()` is not called, the component defaults to `suffix`
+
+#### Component States
+The state of your component refers to the physical state of the component.
+
+Changing the state of your component has some minor effects on things such as textures, and is not necessary if you so wish to avoid it.
+
+Here is a piece of code that tells the component handler that the liquid component is indeed a liquid:
+```js
+ComponentHandler.create('liquid')
+    .setComponentState('liquid')
+    .register();
+```
+Currently, these states are accepted:
+- `solid`
+- `liquid`
+- `gas`
+- `plasma`
+
+*When `.setComponentState()` is not called, the component defaults to `solid`
+
+#### Component Types
+Component types sound similair to states, but slightly differ.
+
+Where states are mostly cosmetic, and for recipe handling, types are used for registering your components.
+
+Using states, we can determine whether the component corresponds to an item, fluid or block, and register it accordingly.
+
+Here is the liquid component once again to showcase this:
+```js
+ComponentHandler.create('liquid')
+    .setComponentType('fluid')
+    .register();
+```
+Currently, these types are accepted:
+- `item`
+- `block`
+- `fluid`
+
+*When `.setComponentType()` is not called, the component defaults to `item`
+
 #### Adding textures
 To give your component an actual texture, you need to add it to your texture sets.
 
@@ -223,12 +252,25 @@ This works the same as adding a new texture set, except that instead of creating
 
 We recommend adding the texture to the default set, to avoid any textures breaking
 
-#### Cascading components
-Like discussed in the material section, there is something called component cascading.
+#### Cascading Components
+Cascading components are usefull for the server side material handling (e.g. recipe generation).
 
-We learned that it works by checking what the component required as a dependency, and adding those to the material components list.
+If we imagine a scenario where we create a material called super material and give it the plate component, then our script will attempt to generate a recipe for this super material plate.
 
-When you create a component, you need to set the component dependencies in order for this process to take place.
+This would be done using a `plate_maker` machine recipe (any recipe that we deem to be able to generate plates).
+
+However, what is the input of such a recipe? It is, quite obviously, an ingot, and so we need to create an ingot item.
+
+To us, this is just obvious, but our code doesn't do things that feel obvious, it only does what we tell it to, and we did not tell it to do that.
+However, having to manually add all needed components to your material is a chore, and luckily one that can be automated.
+
+When we create a component, we can tell it what other components it requires **directly**.
+
+When a material is created, it automatically checks those dependencies, and if they exist, their dependencies, and adds them all to the list of components that need to be generated.
+
+This is why we can create a material with only the `gear` component, and it will automatically decide to also create the needed `rod`, `plate`, `ingot` and `dust` components.
+
+So, when you create a component, you need to set the component dependencies in order for this process to take place.
 
 For this we have the `.setDependencies()` method, as shown here:
 ```js
@@ -236,7 +278,4 @@ ComponentHandler.create('ingot')
     .setDependencies(['dust'])
     .register();
 ```
-This piece of code is the actual full code for the `ingot` component generation.
-As you can see, it is dependant on the `dust` component, and so whenever we create an `ingot` component for a material an accompanying `dust` component will be created.
-
-Currently, the only component without dependencies is the `dust` component
+As you can see, this ingot component is dependant on the `dust` component, and so whenever we create an `ingot` component for a material an accompanying `dust` component will be created.

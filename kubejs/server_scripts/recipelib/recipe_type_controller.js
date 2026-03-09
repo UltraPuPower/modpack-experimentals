@@ -1,4 +1,4 @@
-// priority: 10000
+// priority: 100000
 const RecipeTypeList = [];
 
 console.log('registering recipe types:');
@@ -9,19 +9,6 @@ const RecipeTypeHandler = {
 
     create: (id) => {
         RecipeTypeHandler.recipeTypeId = id;
-        return RecipeTypeHandler;
-    },
-
-    setUsableMachines: (usableMachines) => {
-        let availableMachines = []
-        MachineList.forEach(machine => {
-            availableMachines.push(machine.machineId);
-        });
-        usableMachines.forEach(usableMachine => {
-            if (availableMachines.includes(usableMachine)) {
-                RecipeTypeHandler.usableMachines.push(usableMachine);
-            } else console.warn(`invalid machine for ${RecipeTypeHandler.recipeTypeId}: ${usableMachine}`)
-        });
         return RecipeTypeHandler;
     },
 

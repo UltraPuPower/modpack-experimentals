@@ -1,7 +1,8 @@
-// priority: 50000
+// priority: 10000
 
 MachineHandler.create('shapeless')
     .setIO(9, 1, false, false)
+    .addToRecipeTypes(['shapeless'])
     .setRecipeFunction((event, itemI, itemO, fluidI, fluidO, recipeData, recipeId) => {
         let input = [];
         let output = [];
@@ -18,6 +19,7 @@ MachineHandler.create('shapeless')
 
 MachineHandler.create('shaped')
     .setIO(9, 1, false, false)
+    .addToRecipeTypes(['shaped'])
     .setRecipeFunction((event, itemI, itemO, fluidI, fluidO, recipeData, recipeId) => {
         if (!recipeData.shaped || !recipeData.shaped.pattern || !recipeData.shaped.key) {
             console.warn('unable to locate recipe data for shaped craft:');
@@ -38,6 +40,7 @@ MachineHandler.create('shaped')
 
 MachineHandler.create('crafting_compressor')
     .setIO(1, 1, false, false)
+    .addToRecipeTypes(['compressing'])
     .setRecipeFunction((event, itemI, itemO, fluidI, fluidO, recipeData, recipeId) => {
         let uncompressed = itemI[0].id
         let compressed = itemO[0].id
@@ -49,6 +52,7 @@ MachineHandler.create('crafting_compressor')
 
 MachineHandler.create('furnace')
     .setIO(1, 1, false, false)
+    .addToRecipeTypes(['smelting'])
     .setRecipeFunction((event, itemI, itemO, fluidI, fluidO, recipeData, recipeId) => {
         let input = [];
         let output = [];
@@ -65,6 +69,7 @@ MachineHandler.create('furnace')
     
 MachineHandler.create('smoker')
     .setIO(1, 1, false, false)
+    .addToRecipeTypes(['smoking'])
     .setRecipeFunction((event, itemI, itemO, fluidI, fluidO, recipeData, recipeId) => {
         let input = [];
         let output = [];
@@ -81,6 +86,7 @@ MachineHandler.create('smoker')
 
 MachineHandler.create('blast_furnace')
     .setIO(1, 1, false, false)
+    .addToRecipeTypes(['blasting'])
     .setRecipeFunction((event, itemI, itemO, fluidI, fluidO, recipeData, recipeId) => {
         let input = [];
         let output = [];

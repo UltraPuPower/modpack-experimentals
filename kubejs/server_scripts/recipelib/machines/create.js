@@ -1,8 +1,9 @@
-// priority: 50000
+// priority: 10000
 // requires: create
 
 MachineHandler.create('mechanical_press')
     .setIO(1, 1, false, false)
+    .addToRecipeTypes(['pressing'])
     .setRecipeFunction((event, itemI, itemO, fluidI, fluidO, recipeData, recipeId) => {
         let input = [];
         let output = [];
@@ -19,6 +20,7 @@ MachineHandler.create('mechanical_press')
 
 MachineHandler.create('mechanical_saw')
     .setIO(1, true, false, false)
+    .addToRecipeTypes(['cutting'])
     .setRecipeFunction((event, itemI, itemO, fluidI, fluidO, recipeData, recipeId) => {
         let input = [];
         let output = [];
@@ -35,6 +37,7 @@ MachineHandler.create('mechanical_saw')
 
 MachineHandler.create('mechanical_mixer')
     .setIO(true, true, true, true)
+    .addToRecipeTypes(['mixing', 'liquefying', 'solidifying'])
     .setRecipeFunction((event, itemI, itemO, fluidI, fluidO, recipeData, recipeId) => {
         let input = [];
         let output = [];
@@ -61,6 +64,7 @@ MachineHandler.create('mechanical_mixer')
 
 MachineHandler.create('millstone')
     .setIO(1, true, false, false)
+    .addToRecipeTypes(['crushing'])
     .setRecipeFunction((event, itemI, itemO, fluidI, fluidO, recipeData, recipeId) => {
         let input = [];
         let output = [];
@@ -78,6 +82,7 @@ MachineHandler.create('millstone')
 
 MachineHandler.create('crushing_wheel')
     .setIO(1, true, false, false)
+    .addToRecipeTypes(['crushing'])
     .setRecipeFunction((event, itemI, itemO, fluidI, fluidO, recipeData, recipeId) => {
         let input = [];
         let output = [];

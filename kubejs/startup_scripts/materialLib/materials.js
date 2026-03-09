@@ -1,9 +1,9 @@
-// priority: 10000
+// priority: 99996
 
 MaterialHandler.create('bronze')
     .setColors('#ffc370', '#69993B')
     .setComposition(['1x tin', '3x copper'])
-    .setComponents(['plate', 'nugget', 'liquid'])
+    .setComponents(['plate', 'nugget', 'liquid', 'block'])
     .register();
 
 MaterialHandler.create('brass')
@@ -28,11 +28,17 @@ MaterialHandler.create('diamond')
     .setColors('#93F6FB', 0)
     .setComposition([''])
     .setComponents(['gem'])
-    .setOverrideItem('gem', 'minecraft:diamond')
+    .setOverrideItem([{component: 'gem', item: 'minecraft:diamond'}])
     .register();
 
 MaterialHandler.create('sapphire')
     .setColors('#3442BF', 0)
     .setComposition([''])
     .setComponents(['gem', 'gem_block'])
+    .register();
+
+MaterialHandler.create('steel')
+    .setColors('#4D4545', '#303030')
+    .setComposition(['1x iron'])
+    .setComponents(['plate', 'nugget', 'liquid', 'block'])
     .register();

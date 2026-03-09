@@ -1,16 +1,9 @@
 // priority: -1
-const materialList = global.MaterialList;
 const componentList = global.ComponentList;
 
-const directMaterialDirection = {
-    item: 'kubejs/assets/kubejs/textures/item/materiallib',
-    block: 'kubejs/assets/kubejs/textures/block/materiallib'
-};
+const directMaterialDirection = 'kubejs/assets/kubejs/textures/item/materiallib';
 
-const readMaterialDirection = {
-    item: 'kubejs:item/materiallib',
-    block: 'kubejs:block/materiallib'
-};
+const readMaterialDirection = 'kubejs:item/materiallib';
 
 global.dataObject = {
     prefixList: [],
@@ -76,7 +69,7 @@ StartupEvents.registry('item', event => {
         let component = componentList[i]
         if(!component.generateMoldItem) continue
 
-        if(!fileExists(`${directMaterialDirection.item}/molds/${component.id}.png`)) {
+        if(!fileExists(`${directMaterialDirection}/molds/${component.id}.png`)) {
             console.warn(`Warning, could not find component texture for ${component.id} in molds`);
         }
 
@@ -108,28 +101,28 @@ StartupEvents.registry('item', event => {
                 continue;
             }
 
-            if(fileExists(`${directMaterialDirection.item}/overrides/${itemId}.png`)) {
-                newComponent.texture(`${readMaterialDirection.item}/overrides/${itemId}`);
+            if(fileExists(`${directMaterialDirection}/overrides/${itemId}.png`)) {
+                newComponent.texture(`${readMaterialDirection}/overrides/${itemId}`);
                 console.log(`found alternative texture for ${itemId}`)
                 continue;
             }
 
-            if(fileExists(`${directMaterialDirection.item}/${textureSet}/${component}.png`)) {
-                newComponent.texture('layer0', `${readMaterialDirection.item}/${textureSet}/${component}`).color(0, colors[0]);
+            if(fileExists(`${directMaterialDirection}/${textureSet}/${component}.png`)) {
+                newComponent.texture('layer0', `${readMaterialDirection}/${textureSet}/${component}`).color(0, colors[0]);
                 textureLayer++;
-            } else if (fileExists(`${directMaterialDirection.item}/deafult/${component}.png`)) {
-                newComponent.texture('layer0', `${readMaterialDirection.item}/default/${component}`).color(0, colors[0]);
+            } else if (fileExists(`${directMaterialDirection}/deafult/${component}.png`)) {
+                newComponent.texture('layer0', `${readMaterialDirection}/default/${component}`).color(0, colors[0]);
                 textureSet = 'default';
                 textureLayer++;
             } else console.warn(`No component texture found for ${itemId} in both ${textureSet} and default texture set`)
 
-            if(colors[1] && fileExists(`${directMaterialDirection.item}/${textureSet}/${component}_secondary.png`)) {
-                newComponent.texture(`layer${textureLayer}`, `${readMaterialDirection.item}/${textureSet}/${component}_secondary`).color(textureLayer, colors[1]);
+            if(colors[1] && fileExists(`${directMaterialDirection}/${textureSet}/${component}_secondary.png`)) {
+                newComponent.texture(`layer${textureLayer}`, `${readMaterialDirection}/${textureSet}/${component}_secondary`).color(textureLayer, colors[1]);
                 textureLayer++;
             }
 
-            if(fileExists(`${directMaterialDirection.item}/${textureSet}/${component}_overlay.png`)) {
-                newComponent.texture(`layer${textureLayer}`, `${readMaterialDirection.item}/${textureSet}/${component}_overlay`);
+            if(fileExists(`${directMaterialDirection}/${textureSet}/${component}_overlay.png`)) {
+                newComponent.texture(`layer${textureLayer}`, `${readMaterialDirection}/${textureSet}/${component}_overlay`);
                 textureLayer++;
             }
         }
@@ -159,16 +152,16 @@ StartupEvents.registry('block', event => {
                 continue;
             }
 
-            if(fileExists(`${directMaterialDirection.block}/overrides/${blockId}.png`)) {
-                newComponent.texture(`${readMaterialDirection.block}/overrides/${blockId}`);
+            if(fileExists(`${directMaterialDirection}/overrides/${blockId}.png`)) {
+                newComponent.texture(`${readMaterialDirection}/overrides/${blockId}`);
                 console.log(`found alternative texture for ${blockId}`)
                 continue;
             }
 
-            if(fileExists(`${directMaterialDirection.block}/${textureSet}/${component}.png`)) {
-                newComponent.texture(`${readMaterialDirection.block}/${textureSet}/${component}`).color(0, '#4AAE39');
-            } else if (fileExists(`${directMaterialDirection.block}/deafult/${component}.png`)) {
-                newComponent.texture(`${readMaterialDirection.block}/default/${component}`).color(0, 0x4AAE39);
+            if(fileExists(`${directMaterialDirection}/${textureSet}/${component}.png`)) {
+                newComponent.texture(`${readMaterialDirection}/${textureSet}/${component}`).color(0, colors[0]);
+            } else if (fileExists(`${directMaterialDirection}/deafult/${component}.png`)) {
+                newComponent.texture(`${readMaterialDirection}/default/${component}`).color(0, colors[0]);
             } else console.warn(`No component texture found for ${blockId} in both ${textureSet} and default texture set`)
         }
     });

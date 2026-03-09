@@ -1,10 +1,10 @@
-// priority: 100000
+// priority: 50000
 const MachineList = [];
 
 const itemHandler = global.itemHandler;
 const fluidHandler = global.fluidHandler;
 
-const functionBlockList = ['create', 'setIO', 'setRecipeFunction', 'register', 'reset']
+const functionBlockList = ['create', 'setIO', 'addToRecipeTypes', 'setRecipeFunction', 'register', 'reset']
 
 console.log('registering machines:');
 
@@ -32,6 +32,16 @@ const MachineHandler = {
         fluidInput: fluidI,
         fluidOutput: fluidO
         };
+        return MachineHandler;
+    },
+
+    addToRecipeTypes: (recipeTypes) => {
+        recipeTypes.forEach(recipeType => {
+            let recipeTypeObj = RecipeTypeList.find(RecipeType => RecipeType.recipeTypeId == recipeType);
+            let recipeTypeIndex = RecipeTypeList.indexOf(recipeTypeObj);
+            recipeTypeObj.usableMachines.push(MachineHandler.machineId);
+            RecipeTypeList[recipeTypeIndex] = recipeTypeObj;
+        });
         return MachineHandler;
     },
 

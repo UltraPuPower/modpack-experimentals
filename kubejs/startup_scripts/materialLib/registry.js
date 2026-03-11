@@ -95,6 +95,8 @@ StartupEvents.registry('item', event => {
 
             let newComponent = event.create(`materiallib:${itemId}`).tag(`c:${component}s`).tag(`c:${component}s/${id}`).tooltip(completeTooltipText);
 
+            if(id == 'aluminium') newComponent.tag(`c:${component}s/aluminum`)
+
             if(textureOverrides[component]) {
                 newComponent.texture(textureOverrides[component]);
                 console.log(`found overwrite texture for ${itemId}`)
@@ -132,6 +134,9 @@ StartupEvents.registry('item', event => {
 StartupEvents.registry('block', event => {
     materialList.forEach(material => {
         const { id, colors, components, composition, textureSet, textureOverrides, itemOverrides } = material
+
+        let completeTooltipText = Text.of('Composition: ').append(Text.of(global.dataObject['tooltipObject'][id])).color('#535361');
+
         for (let i = 0; i < components.length; i++) {
             let component = components[i];
 
@@ -146,6 +151,12 @@ StartupEvents.registry('block', event => {
 
             let newComponent = event.create(`materiallib:${blockId}`).tag(`c:${component}s`).tag(`c:${component}s/${id}`);
 
+            if(id == 'aluminium') newComponent.tag(`c:${component}s/aluminum`)
+
+            newComponent.item(ctx => {
+                ctx.tooltip(completeTooltipText);
+            });
+
             if(textureOverrides[component]) {
                 newComponent.texture(textureOverrides[component]);
                 console.log(`found overwrite texture for ${blockId}`)
@@ -158,11 +169,39 @@ StartupEvents.registry('block', event => {
                 continue;
             }
 
+            // newComponent.parentModel("kubejs:block/two_layer")
+
             if(fileExists(`${directMaterialDirection}/${textureSet}/${component}.png`)) {
-                newComponent.texture(`${readMaterialDirection}/${textureSet}/${component}`).color(0, colors[0]);
-            } else if (fileExists(`${directMaterialDirection}/deafult/${component}.png`)) {
-                newComponent.texture(`${readMaterialDirection}/default/${component}`).color(0, colors[0]);
+                newComponent.texture(/*'all',*/ `${readMaterialDirection}/${textureSet}/${component}`).color(0, colors[0]);
+                newComponent.item(ctx => {
+                ctx.texture(/*'all',*/ `${readMaterialDirection}/${textureSet}/${component}`).color(0, colors[0]);
+                });
+                textureLayer++;
+            } else if (fileExists(`${directMaterialDirection}/default/${component}.png`)) {
+                newComponent.texture(/*'all',*/ `${readMaterialDirection}/default/${component}`).color(0, colors[0]);
+                newComponent.item(ctx => {
+                    ctx.texture(/*'all',*/ `${readMaterialDirection}/default/${component}`).color(0, colors[0]);
+                });
+                textureSet = 'default';
+                textureLayer++;
             } else console.warn(`No component texture found for ${blockId} in both ${textureSet} and default texture set`)
+
+            // if(colors[1] && fileExists(`${directMaterialDirection}/${textureSet}/${component}_secondary.png`)) {
+            //     console.log(`texturing layer "overlay" of ${blockId} (colors: ${colors[0]}, ${colors[1]})`)
+            //     newComponent.texture(`overlay`, `${readMaterialDirection}/${textureSet}/${component}_secondary`).color(textureLayer, colors[1]);
+            //     newComponent.item(ctx => {
+            //         ctx.texture(`overlay`, `${readMaterialDirection}/${textureSet}/${component}_secondary`).color(textureLayer, colors[1]);
+            //     });
+            //     textureLayer++;
+            // }
+
+            // if(fileExists(`${directMaterialDirection}/${textureSet}/${component}_overlay.png`)) {
+            //     newComponent.texture(`layer${textureLayer}`, `${readMaterialDirection}/${textureSet}/${component}_overlay`);
+            //     newComponent.item(ctx => {
+            //         ctx.texture(`layer${textureLayer}`, `${readMaterialDirection}/${textureSet}/${component}_overlay`);
+            //     });
+            //     textureLayer++;
+            // }
         }
     });
 });

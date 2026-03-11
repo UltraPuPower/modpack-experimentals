@@ -1,5 +1,5 @@
 // priority: 99995
-global.BlackList = [];
+global.itemBlackList = [];
 
 const materialList = global.MaterialList;
 
@@ -12,23 +12,20 @@ const BlacklistHandler = {
         let materialObj = materialList.find(material => material.id == materialId);
         if (materialObj) {
             BlacklistHandler.material = materialId
-            let blackListObj = global.BlackList.find(entry => entry.material == BlacklistHandler.material);
+            let blackListObj = global.itemBlackList.find(entry => entry.material == BlacklistHandler.material);
             if (blackListObj) {
-                console.log(blackListObj.entries)
                 blackListObj.entries.forEach(entry => {
                     BlacklistHandler.entries.push(entry)
                 });
-                BlacklistHandler.discoveredIndex = global.BlackList.indexOf(blackListObj);
+                BlacklistHandler.discoveredIndex = global.itemBlackList.indexOf(blackListObj);
             }
         } else console.warn(`   Blacklisting ran into an issue: can't find material ${materialId}`)
         return BlacklistHandler;
     },
 
     setItems: (entries) => {
-        console.log(`   Going over entries`);
         entries.forEach(entry => {
             const {component, items} = entry
-            console.log(`   Component: ${component} with ${items.length} items`);
             let componentObj = BlacklistHandler.entries.find(componentEntry => componentEntry.component == component);
             if (!componentObj) {
                 BlacklistHandler.entries.push({component: component, itemEntries: items});
@@ -47,7 +44,6 @@ const BlacklistHandler = {
      * Finishes setting the blacklist by registering it and cleaning the handler
      */
     register: () => {
-        console.log(`   Registering Blacklist`)
         const blackListObj = {};
         const propertyArray = Object.getOwnPropertyNames(BlacklistHandler)
         for (let i = 0; i < propertyArray.length; i++) {
@@ -58,9 +54,9 @@ const BlacklistHandler = {
         };
         
         if (BlacklistHandler.discoveredIndex === false) {
-            global.BlackList.push(blackListObj);
+            global.itemBlackList.push(blackListObj);
         } else {
-            global.BlackList[BlacklistHandler.discoveredIndex] = blackListObj;
+            global.itemBlackList[BlacklistHandler.discoveredIndex] = blackListObj;
         }
         BlacklistHandler.reset()
     },

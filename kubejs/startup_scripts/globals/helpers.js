@@ -12,16 +12,19 @@ global.setToArray = (set) => {
     return newArray
 };
 
+global.recipeIdStorage = {
+    recipeIdList: [],
+
+    addRecipeId: (recipe) => {
+        global.recipeIdStorage.recipeIdList.push(recipe)
+    }
+}
+
 // Disallowed class: dev.latvian.mods.rhino.EvaluatorException: Failed to load Java class 'java.nio.file.Files': Class is not allowed by class filter!
 // const $Files = Java.loadClass('java.nio.file.Files');
-
 // const fileChecker = (path) => {
 //     return $Files.exists(path);
 // }
-
-// console.log('================');
-// console.log(fileChecker('kubejs/assets/kubejs/textures/item/materiallib/default/bolt.png'));
-// console.log(fileChecker('kubejs/assets/kubejs/textures/item/materiallib/default/fake.png'));
 
 const fileExists = (path) => { // Thanks to @lexxieblack for figuring this out (https://discord.com/channels/303440391124942858/1473769843172970577/1474759303301959844)
     try {
@@ -50,9 +53,17 @@ const generateName = (string) => {
     return returnString;
 };
 
-const subsciptNumbers = ['\u2080', '\u2081', '\u2082', '\u2083', '\u2084', '\u2085', '₆\u2086', '\u2087', '\u2088', '\u2089']
+const replaceAll = (string, filter, replacement) => {
+    while (string.includes(filter)) {
+        string = string.replace(filter, replacement);
+    }
+    return string
+}
+
+const subsciptNumbers = ['\u2080', '\u2081', '\u2082', '\u2083', '\u2084', '\u2085', '\u2086', '\u2087', '\u2088', '\u2089']
 
 const materialTooltipGenerator = (compositionArray, grade) => {
+    if (grade > 15) return '0=0'
     let isotopeTooltip = '';
     for (let i = 0; i < compositionArray.length; i++) {
         let isotope = compositionArray[i]
@@ -73,15 +84,15 @@ const materialTooltipGenerator = (compositionArray, grade) => {
                 isotopeTooltip += '?'
                 continue
             }
-            isotopeTooltipPart = `(${materialTooltipGenerator(materialObj.composition, grade++)})`;
+            isotopeTooltipPart = `(${materialTooltipGenerator(materialObj.composition, grade+1)})`;
         } else {
             isotopeTooltipPart = isotopeObj.symbol;
         }
-        isotopeTooltip += `${isotopeTooltipPart}${isotopeCount}`
+        isotopeTooltip += (isotopeCount == 1) ? `${isotopeTooltipPart}` :`${isotopeTooltipPart}${isotopeCount}`
     }
 
     subsciptNumbers.forEach((number, index) => {
-        isotopeTooltip = isotopeTooltip.replace(index, number);
+        isotopeTooltip = replaceAll(isotopeTooltip, index, number);
     });
     
     return isotopeTooltip

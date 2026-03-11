@@ -35,6 +35,7 @@ const MaterialHandler = {
     textureSet: "default",
     textureOverrides: {},
     itemOverrides: {},
+    dataObject: {},
 
     /**
      * Sets identifier for the material
@@ -114,6 +115,17 @@ const MaterialHandler = {
     },
 
     /**
+     * Flags a component to be skipped on material generation and provides an alternative item for recipe generation
+     * @param {string} component - The component that will be replaced
+     * @param {string} itemId - The id of the item that serves as the replacement for the auto generated item
+     * @returns {MaterialHandler} Material Handler, allows for method chaining
+     */
+    setMaterialData: (dataObject) => {
+        MaterialHandler.dataObject = dataObject;
+        return MaterialHandler;
+    },
+
+    /**
      * Finishes the creation of a material by registering it and cleaning the handler
      */
     register: () => {
@@ -152,6 +164,7 @@ const MaterialHandler = {
         MaterialHandler.textureSet = "default";
         MaterialHandler.textureOverrides = {};
         MaterialHandler.itemOverrides = {};
+        MaterialHandler.dataObject = {};
     },
 
     // ==========[Utils]========== \\

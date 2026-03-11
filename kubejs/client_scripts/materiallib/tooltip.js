@@ -1,47 +1,9 @@
 // priority: -2
 const materialList = global.MaterialList;
-
-ClientEvents.lang('en_us', event => {
-    materialList.forEach(materialObj => {
-        const { id, colors, components, composition, textureSet, textureOverrides, itemOverrides } = materialObj;
-        let materialName = 'Test';
-        event.add(`materiallib:${id}_liquid`, `Liquid ${materialName}`);
-        event.add(`materiallib:${id}_liquid_bucket`, `Liquid ${materialName} Bucket`);
-    });
-    event.renameItem('materiallib:liquid_bronze_bucket', 'Liquid Bronze Bucket');
-    // event.renameItem('materiallib:liquid_bronze', 'Liquid Bronze');
-    event.add('fluid_type.materiallib.liquid_bronze', 'Liquid Bronze')
-});
-
-// ItemEvents.
-
-ItemEvents.modifyTooltips(event => {
-    materialList.forEach(materialObj => {
-        const { id, colors, components, composition, textureSet, textureOverrides, itemOverrides } = materialObj;
-        let completeTooltipText = Text.of('Composition: ').append(Text.of(global.dataObject['tooltipObject'][id])).color('#535361');
-        for (let i = 0; i < components.length; i++) {
-            let component = components[i];
-            if (itemOverrides[component]) {
-                event.modify(itemOverrides[component], tooltip => {
-                    tooltip.insert(1, completeTooltipText);
-                });
-                continue;
-            }
-            if (!global.dataObject.blockList.includes(component)) continue;
-
-            let blockId = '';
-            if(global.dataObject.prefixList.includes(component)) blockId = `materiallib:${component}_${id}`;
-            if(global.dataObject.suffixList.includes(component)) blockId = `materiallib:${id}_${component}`;
-            event.modify(blockId, tooltip => {
-                tooltip.insert(1, completeTooltipText);
-            });
-        }
-    });
-});
-
 const $Component = Java.loadClass("net.minecraft.network.chat.Component")
 const $Either = Java.loadClass("com.mojang.datafixers.util.Either")
 
+// Composition tooltip for fluids
 NativeEvents.onEvent("net.neoforged.neoforge.client.event.RenderTooltipEvent$GatherComponents", event => {
     if (!event.getItemStack().isEmpty()) return;
     if (event.getTooltipElements().size() < 2) return;
@@ -63,4 +25,49 @@ NativeEvents.onEvent("net.neoforged.neoforge.client.event.RenderTooltipEvent$Gat
             if (fluid == fluidId) event.getTooltipElements().add(1, $Either.left($Component.literal(materialTooltip).color(0x535361)));
         }
     });
+});
+
+const disabledItemTooltip = Text.of('This item is disabled').bold().color('#D01B1B');
+const disabledUseTooltip = Text.of('Use this item in the crafting table to get the proper variant').color('#555555');
+
+ItemEvents.modifyTooltips(event => {
+    // Composition tooltip for overrides
+    materialList.forEach(materialObj => {
+        const { id, colors, components, composition, textureSet, textureOverrides, itemOverrides } = materialObj;
+        let completeTooltipText = Text.of('Composition: ').append(Text.of(global.dataObject['tooltipObject'][id])).color('#535361');
+        for (let i = 0; i < components.length; i++) {
+            let component = components[i];
+            if (itemOverrides[component]) {
+                event.modify(itemOverrides[component], tooltip => {
+                    tooltip.insert(1, completeTooltipText);
+                });
+                continue;
+            }
+        }
+    });
+
+    // Blacklist
+    for (let i = 0; i < itemBlackList.length; i++) {
+        let { material, entries } = itemBlackList[i];
+
+        let materialObj = materialList.find(materialObj => materialObj.id == material);
+        if (!materialObj) continue
+        console.log(`Blacklisting for material ${material}`)
+
+        for (let j = 0; j < entries.length; j++) {
+            let { component, itemEntries } = entries[j];
+
+            if (!materialObj.components.includes(component)) continue
+            console.log(`   Blacklisting entries for component ${component}`)
+
+            itemEntries.forEach(item => {
+                console.log('   adding tooltip to item')
+                event.modify(item, tooltip => {
+                    tooltip.removeLine(0)
+                    tooltip.insert(0, disabledItemTooltip);
+                    tooltip.insert(1, disabledUseTooltip);
+                });
+            });
+        };
+    };
 });

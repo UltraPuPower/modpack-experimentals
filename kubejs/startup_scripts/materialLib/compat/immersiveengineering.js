@@ -1,3 +1,6 @@
+// priority: 99994
+// requires: immersiveengineering
+
 // Compat
 BlacklistHandler.getMaterial('copper')
     .setItems([
@@ -19,10 +22,10 @@ BlacklistHandler.getMaterial('iron')
 BlacklistHandler.getMaterial('gold')
     .setItems([
         {component: 'dust', items: ['immersiveengineering:dust_gold']},
-        {component: 'plate', items: ['immersiveengineering:plate_gold']},
-        {component: 'rod', items: ['immersiveengineering:stick_gold']}
+        {component: 'plate', items: ['immersiveengineering:plate_gold']}
     ])
     .register();
+
 BlacklistHandler.getMaterial('netherite')
     .setItems([
         {component: 'nugget', items: ['immersiveengineering:nugget_netherite']},
@@ -36,7 +39,7 @@ BlacklistHandler.getMaterial('aluminium')
         {component: 'dust', items: ['immersiveengineering:dust_aluminum']},
         {component: 'nugget', items: ['immersiveengineering:nugget_aluminum']},
         {component: 'ingot', items: ['immersiveengineering:ingot_aluminum']},
-        {component: 'block', items: ['immersiveengineering:storage_aluminium']},
+        {component: 'block', items: ['immersiveengineering:storage_aluminum']},
         {component: 'plate', items: ['immersiveengineering:plate_aluminum']},
         {component: 'wire', items: ['immersiveengineering:wire_aluminum']},
         {component: 'rod', items: ['immersiveengineering:stick_aluminum']}

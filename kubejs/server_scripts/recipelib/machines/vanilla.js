@@ -45,8 +45,13 @@ MachineHandler.create('crafting_compressor')
         let uncompressed = itemI[0].id
         let compressed = itemO[0].id
 
-        event.shapeless(Item.of(uncompressed, 9), compressed).id(`materiallib:shapeless/decompressing/${compressed.split(':')[1]}`);
-        event.shaped(compressed, ['aaa', 'aaa', 'aaa'], {a: uncompressed}).id(`materiallib:shaped/compressing/${uncompressed.split(':')[1]}`);
+        if (!recipeData.compressionlevel || recipeData.compressionlevel == 9) {
+            event.shapeless(Item.of(uncompressed, 9), compressed).id(`materiallib:shapeless/decompressing/${compressed.split(':')[1]}`);
+            event.shaped(compressed, ['aaa', 'aaa', 'aaa'], {a: uncompressed}).id(`materiallib:shaped/compressing/${uncompressed.split(':')[1]}`);
+        } else if (recipeData.compressionlevel == 4) {
+            event.shapeless(Item.of(uncompressed, 4), compressed).id(`materiallib:shapeless/decompressing/${compressed.split(':')[1]}`);
+            event.shaped(compressed, ['aa ', 'aa ', '   '], {a: uncompressed}).id(`materiallib:shaped/compressing/${uncompressed.split(':')[1]}`);
+        }
     })
     .register();
 

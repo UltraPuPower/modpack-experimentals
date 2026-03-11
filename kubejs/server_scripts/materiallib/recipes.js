@@ -1,9 +1,7 @@
-ServerEvents.recipes(event => {
-    const materialList = global.MaterialList;
-    const componentList = global.ComponentList;
+const materialList = global.MaterialList;
+const componentList = global.ComponentList;
 
-    const itemHandler = global.itemHandler;
-    const fluidHandler = global.fluidHandler;
+ServerEvents.recipes(event => {
 
     const recipeRegistryHandler = (usedRecipeType, itemI, itemO, fluidI, fluidO, recipeData, recipeId) => {
         let recipeTypeRecipes = RecipeTypeList.find(recipeType => recipeType.recipeTypeId == usedRecipeType);
@@ -39,13 +37,13 @@ ServerEvents.recipes(event => {
     };
 
     materialList.forEach(materialObj => {
-        const { id, colors, components, composition, textureSet, textureOverrides, itemOverrides } = materialObj;
+        const { id, colors, components, composition, textureSet, textureOverrides, itemOverrides, dataObject } = materialObj;
 
         if(components.includes('liquid')) generateFluidRecipes(materialObj);
 
         // Basic ingot components
         if(components.includes('nugget')) {
-            recipeRegistryHandler('compressing', [itemHandler.createComponentItemStack(id, 'nugget', 1)], [itemHandler.createComponentItemStack(id, 'ingot', 1)], [], [], {}, false);
+            recipeRegistryHandler('compressing', [itemHandler.createComponentItemStack(id, 'nugget', 1)], [itemHandler.createComponentItemStack(id, 'ingot', 1)], [], [], dataObject, false);
         }
 
         if(components.includes('ingot')) {
@@ -54,7 +52,7 @@ ServerEvents.recipes(event => {
         }
 
         if(components.includes('block')) {
-            recipeRegistryHandler('compressing', [itemHandler.createComponentItemStack(id, 'ingot', 1)], [itemHandler.createComponentItemStack(id, 'block', 1)], [], [], {}, false);
+            recipeRegistryHandler('compressing', [itemHandler.createComponentItemStack(id, 'ingot', 1)], [itemHandler.createComponentItemStack(id, 'block', 1)], [], [], dataObject, false);
         }
 
         // Basic gem components
@@ -63,7 +61,11 @@ ServerEvents.recipes(event => {
         }
 
         if(components.includes('gem_block')) {
-            recipeRegistryHandler('compressing', [itemHandler.createComponentItemStack(id, 'gem', 1)], [itemHandler.createComponentItemStack(id, 'gem_block', 1)], [], [], {}, false);
+            recipeRegistryHandler('compressing', [itemHandler.createComponentItemStack(id, 'gem', 1)], [itemHandler.createComponentItemStack(id, 'gem_block', 1)], [], [], dataObject, false);
+        }
+
+        if(components.includes('dust_block')) {
+            recipeRegistryHandler('compressing', [itemHandler.createComponentItemStack(id, 'dust', 1)], [itemHandler.createComponentItemStack(id, 'dust_block', 1)], [], [], dataObject, false);
         }
 
         // Processed Components

@@ -24,15 +24,8 @@ MaterialHandler.create('rose_gold')
     .setComponents(['wire'])
     .register();
 
-MaterialHandler.create('diamond')
-    .setColors('#93F6FB', 0)
-    .setComposition([''])
-    .setComponents(['gem'])
-    .setOverrideItem([{component: 'gem', item: 'minecraft:diamond'}])
-    .register();
-
 MaterialHandler.create('sapphire')
-    .setColors('#3442BF', 0)
+    .setColors('#3442BF', '#3E4CCB')
     .setComposition([''])
     .setComponents(['gem', 'gem_block'])
     .register();
@@ -40,5 +33,17 @@ MaterialHandler.create('sapphire')
 MaterialHandler.create('steel')
     .setColors('#4D4545', '#303030')
     .setComposition(['1x iron'])
+    .setComponents(['wire', 'nugget', 'liquid', 'block', 'rod'])
+    .register();
+
+MaterialHandler.create('constantan')
+    .setColors('#54513C', '#6A6851')
+    .setComposition(['1x copper', '1x nickel'])
     .setComponents(['plate', 'nugget', 'liquid', 'block'])
+    .register();
+
+MaterialHandler.create('electrum')
+    .setColors('#FFFF8B', '#FF8533')
+    .setComposition(['1x silver', '1x gold'])
+    .setComponents(['wire', 'nugget', 'liquid', 'block'])
     .register();

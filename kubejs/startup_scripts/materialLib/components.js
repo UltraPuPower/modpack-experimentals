@@ -78,3 +78,13 @@ ComponentHandler.create('gem_block')
     .setDependencies(['gem'])
     .setComponentType('block')
     .register();
+
+ComponentHandler.create('dust_block')
+    .setDependencies(['dust'])
+    .setComponentType('block')
+    .register();
+
+ComponentHandler.create('gas')
+    .setComponentState('gas')
+    .setComponentType('fluid')
+    .register();

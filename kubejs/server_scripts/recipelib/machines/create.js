@@ -56,9 +56,9 @@ MachineHandler.create('mechanical_mixer')
         });
 
         let recipe = event.recipes.create.mixing(output, input).id(`materiallib:mixing/${recipeId}`);
-        if (!recipeData.heatlevel || recipeData.heatlevel > 1000) return;
-        if (recipeData.heatlevel > 500) {recipe.superheated(); return;}
-        if (recipeData.heatlevel > 300) recipe.heated()
+        if (!recipeData.melting_point || recipeData.melting_point > 1000) return;
+        if (recipeData.melting_point > 500) {recipe.superheated(); return;}
+        if (recipeData.melting_point > 300) recipe.heated()
     })
     .register();
 

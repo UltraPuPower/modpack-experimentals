@@ -24,7 +24,7 @@ ServerEvents.recipes(event => {
 
             if (!liquidVolume) continue;
 
-            recipeRegistryHandler('liquefying', [itemHandler.createComponentItemStack(id, component, 1)], [], [], [fluidHandler.createComponentFluidStack(id, 'liquid', liquidVolume)],  {heatlevel: 320}, `/liquefying/${id}_${component}`);
+            recipeRegistryHandler('liquefying', [itemHandler.createComponentItemStack(id, component, 1)], [], [], [fluidHandler.createComponentFluidStack(id, 'liquid', liquidVolume)],  {melting_point: 320}, `/liquefying/${id}_${component}`);
 
             if(!componentObj.generateMoldItem) continue;
 
@@ -47,7 +47,7 @@ ServerEvents.recipes(event => {
         }
 
         if(components.includes('ingot')) {
-            recipeRegistryHandler('blasting', [itemHandler.createComponentItemStack(id, 'dust', 1)], [itemHandler.createComponentItemStack(id, 'ingot', 1)], [], [], {heatlevel: 300}, `${id}_ingot`);
+            recipeRegistryHandler('blasting', [itemHandler.createComponentItemStack(id, 'dust', 1)], [itemHandler.createComponentItemStack(id, 'ingot', 1)], [], [], {melting_point: 300}, `${id}_ingot`);
             recipeRegistryHandler('crushing', [itemHandler.createComponentItemStack(id, 'ingot', 1)], [itemHandler.createComponentItemStack(id, 'dust', 1)], [], [], {toughness: 100}, `${id}_ingot`);
         }
 
@@ -65,6 +65,7 @@ ServerEvents.recipes(event => {
         }
 
         if(components.includes('dust_block')) {
+            console.log(`creating dust block recipes for ${id}`)
             recipeRegistryHandler('compressing', [itemHandler.createComponentItemStack(id, 'dust', 1)], [itemHandler.createComponentItemStack(id, 'dust_block', 1)], [], [], dataObject, false);
         }
 

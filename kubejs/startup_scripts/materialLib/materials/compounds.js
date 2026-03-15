@@ -13,8 +13,8 @@ MaterialHandler.create('wood')
     .register();
 
 MaterialHandler.create('hydrogen_chloride')
-    .setColors('#DCDCDC', '#9EB7D0')// adjust
+    .setColors('#DCDCDC', '#9EB7D0')
     .setComposition(['1x hydrogen', '1x chlorine'])
     .setComponents(['dust', 'dust_block'])
-    .setMaterialData({compressionlevel: 'small'})
+    .setMaterialData({compressionlevel: 4})
     .register();

@@ -3,11 +3,19 @@ global.itemBlackList = [];
 
 const materialList = global.MaterialList;
 
+/**
+ * @typedef {Object} BlacklistHandler The handler for material registry
+ */
 const BlacklistHandler = {
     material: '',
     discoveredIndex: false,
     entries: [],
 
+    /**
+     * Creates or pulls a material for blacklisting
+     * @param {string} materialId - The id of the material
+     * @returns {Handler} Component Handler, allows for method chaining
+     */
     getMaterial: (materialId) => {
         let materialObj = materialList.find(material => material.id == materialId);
         if (materialObj) {
@@ -23,6 +31,11 @@ const BlacklistHandler = {
         return BlacklistHandler;
     },
 
+    /**
+     * Sets items for blacklisting
+     * @param {Object[]} entries - Objects containing replacement
+     * @returns {Handler} Component Handler, allows for method chaining
+     */
     setItems: (entries) => {
         entries.forEach(entry => {
             const {component, items} = entry

@@ -45,6 +45,8 @@ MachineHandler.create('crafting_compressor')
         let uncompressed = itemI[0].id
         let compressed = itemO[0].id
 
+        // console.log(`compressing ${uncompressed} into ${compressed}`)
+
         if (!recipeData.compressionlevel || recipeData.compressionlevel == 9) {
             event.shapeless(Item.of(uncompressed, 9), compressed).id(`materiallib:shapeless/decompressing/${compressed.split(':')[1]}`);
             event.shaped(compressed, ['aaa', 'aaa', 'aaa'], {a: uncompressed}).id(`materiallib:shaped/compressing/${uncompressed.split(':')[1]}`);
@@ -102,11 +104,11 @@ MachineHandler.create('blast_furnace')
             output.push(itemHandler.getItemOf(item));
         });
 
-        if (!recipeData.heatlevel || recipeData.heatlevel < 500) {
+        if (!recipeData.melting_point || recipeData.melting_point < 500) {
             event.smelting(output[0], input[0]).id(`materiallib:smelting/${recipeId}`);
             event.blasting(output[0], input[0]).id(`materiallib:blasting/${recipeId}`);
             return
-        } else if (recipeData.heatlevel < 1000) {
+        } else if (recipeData.melting_point < 1000) {
             event.blasting(output[0], input[0]).id(`materiallib:blasting/${recipeId}`);
             return
         }

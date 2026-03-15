@@ -17,6 +17,9 @@ let componentStates = ['solid', 'liquid', 'gas', 'plasma'];
 let componentTypes = ['item', 'block', 'fluid'];
 let componentAffixes = ['prefix', 'suffix'];
 
+/**
+ * @typedef {Object} ComponentHandler The handler for material registry
+ */
 const ComponentHandler = {
     id: '',
     dependencies: new Set([]),

@@ -9,7 +9,7 @@ MaterialHandler.create('bronze')
 MaterialHandler.create('brass')
     .setColors('#A2EB66', 0)
     .setComposition(['1x zinc', '3x copper'])
-    .setComponents(['gear'])
+    .setComponents(['gear', 'block', 'nugget'])
     .register();
 
 MaterialHandler.create('invar')

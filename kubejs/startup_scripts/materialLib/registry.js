@@ -169,39 +169,40 @@ StartupEvents.registry('block', event => {
                 continue;
             }
 
-            // newComponent.parentModel("kubejs:block/two_layer")
+            newComponent.parentModel("kubejs:block/two_layer")
 
             if(fileExists(`${directMaterialDirection}/${textureSet}/${component}.png`)) {
-                newComponent.texture(/*'all',*/ `${readMaterialDirection}/${textureSet}/${component}`).color(0, colors[0]);
+                newComponent.texture('layer0', `${readMaterialDirection}/${textureSet}/${component}`)//.color(0, colors[0]);
                 newComponent.item(ctx => {
-                ctx.texture(/*'all',*/ `${readMaterialDirection}/${textureSet}/${component}`).color(0, colors[0]);
+                    ctx.parentModel("minecraft:item/generated")
+                    ctx.texture('layer0', `${readMaterialDirection}/${textureSet}/${component}`).color(0, colors[0]);
                 });
                 textureLayer++;
             } else if (fileExists(`${directMaterialDirection}/default/${component}.png`)) {
-                newComponent.texture(/*'all',*/ `${readMaterialDirection}/default/${component}`).color(0, colors[0]);
+                newComponent.texture('layer0', `${readMaterialDirection}/default/${component}`)//.color(0, colors[0]);
                 newComponent.item(ctx => {
-                    ctx.texture(/*'all',*/ `${readMaterialDirection}/default/${component}`).color(0, colors[0]);
+                    ctx.texture('layer0', `${readMaterialDirection}/default/${component}`).color(0, colors[0]);
                 });
                 textureSet = 'default';
                 textureLayer++;
             } else console.warn(`No component texture found for ${blockId} in both ${textureSet} and default texture set`)
 
-            // if(colors[1] && fileExists(`${directMaterialDirection}/${textureSet}/${component}_secondary.png`)) {
-            //     console.log(`texturing layer "overlay" of ${blockId} (colors: ${colors[0]}, ${colors[1]})`)
-            //     newComponent.texture(`overlay`, `${readMaterialDirection}/${textureSet}/${component}_secondary`).color(textureLayer, colors[1]);
-            //     newComponent.item(ctx => {
-            //         ctx.texture(`overlay`, `${readMaterialDirection}/${textureSet}/${component}_secondary`).color(textureLayer, colors[1]);
-            //     });
-            //     textureLayer++;
-            // }
+            if(colors[1] && fileExists(`${directMaterialDirection}/${textureSet}/${component}_secondary.png`)) {
+                console.log(`texturing layer "layer1" of ${blockId} (colors: ${colors[0]}, ${colors[1]})`)
+                newComponent.texture(`layer1`, `${readMaterialDirection}/${textureSet}/${component}_secondary`)//.color(textureLayer, colors[1]);
+                newComponent.item(ctx => {
+                    ctx.texture(`layer1`, `${readMaterialDirection}/${textureSet}/${component}_secondary`).color(textureLayer, colors[1]);
+                });
+                textureLayer++;
+            }
 
-            // if(fileExists(`${directMaterialDirection}/${textureSet}/${component}_overlay.png`)) {
-            //     newComponent.texture(`layer${textureLayer}`, `${readMaterialDirection}/${textureSet}/${component}_overlay`);
-            //     newComponent.item(ctx => {
-            //         ctx.texture(`layer${textureLayer}`, `${readMaterialDirection}/${textureSet}/${component}_overlay`);
-            //     });
-            //     textureLayer++;
-            // }
+            if(fileExists(`${directMaterialDirection}/${textureSet}/${component}_overlay.png`)) {
+                newComponent.texture(`layer${textureLayer}`, `${readMaterialDirection}/${textureSet}/${component}_overlay`);
+                newComponent.item(ctx => {
+                    ctx.texture(`layer${textureLayer}`, `${readMaterialDirection}/${textureSet}/${component}_overlay`);
+                });
+                textureLayer++;
+            }
         }
     });
 });

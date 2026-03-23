@@ -1,4 +1,5 @@
 // priority: 100000
+const isotopeConsole = Java.createConsole("MaterialLib/Isotope Console");
 
 /**
  * @typedef {Object} IsotopeObject
@@ -29,6 +30,7 @@ const IsotopeHandler = {
      */
     create: (id) => {
         IsotopeHandler.isotopeId = id;
+        isotopeConsole.log(`Creating isotope with id ${id}`);
         return IsotopeHandler;
     },
 
@@ -76,7 +78,7 @@ const IsotopeHandler = {
             
             isotopeObj[property] = IsotopeHandler[property];
         };
-        
+        isotopeConsole.log(`    Registering ${IsotopeHandler.isotopeId}`);
         global.IsotopeList.push(isotopeObj);
         IsotopeHandler.reset();
     },

@@ -35,3 +35,6 @@ RecipeTypeHandler.create('solidifying')
 
 RecipeTypeHandler.create('crushing')
     .register();
+
+RecipeTypeHandler.create('combining')
+    .register();

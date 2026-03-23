@@ -60,7 +60,8 @@ const replaceAll = (string, filter, replacement) => {
     return string
 }
 
-const subsciptNumbers = ['\u2080', '\u2081', '\u2082', '\u2083', '\u2084', '\u2085', '\u2086', '\u2087', '\u2088', '\u2089']
+const subsciptNumbers = ['\u2080', '\u2081', '\u2082', '\u2083', '\u2084', '\u2085', '\u2086', '\u2087', '\u2088', '\u2089'];
+const tooltipConsole = Java.createConsole("MaterialLib/Tooltip Console");
 
 const materialTooltipGenerator = (compositionArray, grade) => {
     if (grade > 15) return '0=0'
@@ -70,7 +71,7 @@ const materialTooltipGenerator = (compositionArray, grade) => {
         let isotopeTooltipPart = '';
         let isotopeData = isotope.match(global.isotopeRegex);
         if (!isotope || !isotope[1] || !isotope[2]) {
-            console.warn(`  Regex failed to match on "${isotope}", defaulting to "?"`)
+            tooltipConsole.warn(`  Regex failed to match on "${isotope}", defaulting to "?"`)
             isotopeTooltip += '?'
             continue
         }
@@ -80,7 +81,7 @@ const materialTooltipGenerator = (compositionArray, grade) => {
         if(!isotopeObj) {
             let materialObj = materialList.find(materialObj => materialObj.id == isotopeName);
             if (!materialObj) {
-                console.warn(`Can't find isotope or material by the id of ${isotopeName}, defaulting to "?"`);
+                tooltipConsole.warn(`Can't find isotope or material by the id of ${isotopeName}, defaulting to "?"`);
                 isotopeTooltip += '?'
                 continue
             }

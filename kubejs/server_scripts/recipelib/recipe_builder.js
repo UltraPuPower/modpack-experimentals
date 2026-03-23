@@ -3,8 +3,10 @@ const recipeBuilder = {
     usedRecipeType: '',
     itemI: [],
     itemO: [],
-    fluidI: [],
-    fluidO: [],
+    liquidI: [],
+    liquidO: [],
+    gasI: [],
+    gasO: [],
     recipeData: {},
 
     recipeType: (recipeType) => {
@@ -15,6 +17,7 @@ const recipeBuilder = {
         recipeBuilder.recipeId = recipeID;
         return recipeBuilder;
     },
+
     itemInputs: (itemI) => {
         itemI.forEach(item => {
             recipeBuilder.itemI.push(item);
@@ -27,15 +30,27 @@ const recipeBuilder = {
         });
         return recipeBuilder;
     },
-    fluidInputs: (fluidI) => {
-        fluidI.forEach(fluid => {
-            recipeBuilder.fluidI.push(fluid);
+    liquidInputs: (liquidI) => {
+        liquidI.forEach(liquid => {
+            recipeBuilder.liquidI.push(liquid);
         });
         return recipeBuilder;
     },
-    fluidOutputs: (fluidO) => {
-        fluidO.forEach(fluid => {
-            recipeBuilder.fluidO.push(fluid);
+    liquidOutputs: (liquidO) => {
+        liquidO.forEach(liquid => {
+            recipeBuilder.liquidO.push(liquid);
+        });
+        return recipeBuilder;
+    },
+    gasInputs: (gasI) => {
+        gasI.forEach(gas => {
+            recipeBuilder.gasI.push(gas);
+        });
+        return recipeBuilder;
+    },
+    gasOutputs: (gasO) => {
+        gasO.forEach(gas => {
+            recipeBuilder.gasO.push(gas);
         });
         return recipeBuilder;
     },
@@ -48,10 +63,12 @@ const recipeBuilder = {
     register: () => {
         let itemI = stackArrayBuilder(recipeBuilder.itemI, 'item');
         let itemO = stackArrayBuilder(recipeBuilder.itemO, 'item');
-        let fluidI = stackArrayBuilder(recipeBuilder.fluidI, 'fluid');
-        let fluidO = stackArrayBuilder(recipeBuilder.fluidO, 'fluid');
+        let liquidI = stackArrayBuilder(recipeBuilder.liquidI, 'fluid');
+        let liquidO = stackArrayBuilder(recipeBuilder.liquidO, 'fluid');
+        let gasI = stackArrayBuilder(recipeBuilder.gasI, 'fluid');
+        let gasO = stackArrayBuilder(recipeBuilder.gasO, 'fluid');
 
-        recipeRegistryHandler(recipeBuilder.usedRecipeType, itemI, itemO, fluidI, fluidO, recipeBuilder.recipeData, recipeBuilder.recipeId);
+        recipeRegistryHandler(recipeBuilder.usedRecipeType, itemI, itemO, liquidI, liquidO, gasI, gasO, recipeBuilder.recipeData, recipeBuilder.recipeId);
         recipeBuilder.reset()
     },
 
@@ -60,20 +77,22 @@ const recipeBuilder = {
         recipeBuilder.usedRecipeType = '';
         recipeBuilder.itemI = [];
         recipeBuilder.itemO = [];
-        recipeBuilder.fluidI = [];
-        recipeBuilder.fluidO = [];
+        recipeBuilder.liquidI = [];
+        recipeBuilder.liquidO = [];
+        recipeBuilder.gasI = [];
+        recipeBuilder.gasO = [];
         recipeBuilder.recipeData = {};
     }
 };
 
-const recipeRegistryHandler = (usedRecipeType, itemI, itemO, fluidI, fluidO, recipeData, recipeId) => {
+const recipeRegistryHandler = (usedRecipeType, itemI, itemO, liquidI, liquidO, gasI, gasO, recipeData, recipeId) => {
     let recipeTypeRecipes = RecipeTypeList.find(recipeType => recipeType.recipeTypeId == usedRecipeType);
     let machines = recipeTypeRecipes.usableMachines;
 
     ServerEvents.recipes(event => {
         machines.forEach(usableMachine => {
             let machineObj = MachineList.find(machine => machine.machineId == usableMachine);
-            machineObj.recipeFunction(event, itemI, itemO, fluidI, fluidO, recipeData, recipeId);
+            machineObj.recipeFunction(event, itemI, itemO, liquidI, liquidO, gasI, gasO, recipeData, recipeId);
         });
     })
 };
@@ -91,7 +110,7 @@ const stackArrayBuilder = (input, type) => {
         let inputArray = [];
         input.forEach(fluid => {
             let fluidData = fluid.match(global.fluidRegex);
-            let fluidStack = fluidHandler.createItemStack(fluidData[1], fluidData[2]);
+            let fluidStack = fluidHandler.createFluidStack(fluidData[1], fluidData[2]);
             inputArray.push(fluidStack);
         });
         return inputArray;

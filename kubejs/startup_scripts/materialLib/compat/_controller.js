@@ -1,6 +1,7 @@
 // priority: 99995
-global.itemBlackList = [];
+const blacklistConsole = Java.createConsole("MaterialLib/Blacklist Console");
 
+global.itemBlackList = [];
 const materialList = global.MaterialList;
 
 /**
@@ -26,8 +27,9 @@ const BlacklistHandler = {
                     BlacklistHandler.entries.push(entry)
                 });
                 BlacklistHandler.discoveredIndex = global.itemBlackList.indexOf(blackListObj);
-            }
-        } else console.warn(`   Blacklisting ran into an issue: can't find material ${materialId}`)
+                blacklistConsole.log(`Loaded material blacklist for ${materialId}`);
+            } else blacklistConsole.log(`Created material blacklist for ${materialId}`);
+        } else blacklistConsole.warn(`Blacklisting ran into an issue: can't find material ${materialId}`)
         return BlacklistHandler;
     },
 
@@ -68,8 +70,10 @@ const BlacklistHandler = {
         
         if (BlacklistHandler.discoveredIndex === false) {
             global.itemBlackList.push(blackListObj);
+            blacklistConsole.log(`  Registered material blacklist for ${BlacklistHandler.material}`);
         } else {
             global.itemBlackList[BlacklistHandler.discoveredIndex] = blackListObj;
+            blacklistConsole.log(`  Overwrote material blacklist for ${BlacklistHandler.material}`);
         }
         BlacklistHandler.reset()
     },

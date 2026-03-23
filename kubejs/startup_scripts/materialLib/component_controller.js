@@ -1,4 +1,5 @@
 // priority: 99999
+const componentConsole = Java.createConsole("MaterialLib/Component Console");
 
 /**
  * @typedef {Object} ComponentObject
@@ -36,6 +37,7 @@ const ComponentHandler = {
      */
     create: (id) => {
         ComponentHandler.id = id;
+        componentConsole.log(`Creating component with id ${id}`);
         return ComponentHandler
     },
 
@@ -49,7 +51,7 @@ const ComponentHandler = {
             let component = dependencies[i]
             let foundComponent = global.ComponentList.find(storedComponent => storedComponent.id == component)
             if (!foundComponent && component != "") {
-                console.error(`[ComponentHandler] component "${component}" does not exist (component: "${ComponentHandler.id}")`)
+                componentConsole.error(`Component "${component}" does not exist (at component: "${ComponentHandler.id}")`)
                 continue
             }
             ComponentHandler.dependencies.add(component)
@@ -74,7 +76,7 @@ const ComponentHandler = {
     setComponentState: (state) => {
         if (componentStates.includes(state)) {
             ComponentHandler.state = state;
-        } else console.warn(`Invalid state for ${ComponentHandler.id}: ${state}`)
+        } else componentConsole.warn(`Invalid state for ${ComponentHandler.id}: ${state}`)
         return ComponentHandler
     },
 
@@ -86,7 +88,7 @@ const ComponentHandler = {
     setComponentType: (type) => {
         if (componentTypes.includes(type)) {
             ComponentHandler.type = type;
-        } else console.warn(`Invalid type for ${ComponentHandler.id}: ${type}`)
+        } else componentConsole.warn(`Invalid type for ${ComponentHandler.id}: ${type}`)
         return ComponentHandler
     },
 
@@ -108,7 +110,7 @@ const ComponentHandler = {
     setComponentAffix: (affix) => {
         if (componentAffixes.includes(affix)) {
             ComponentHandler.affixType = affix;
-        } else console.warn(`Invalid affix for ${ComponentHandler.id}: ${affix}`)
+        } else componentConsole.warn(`Invalid affix for ${ComponentHandler.id}: ${affix}`)
         return ComponentHandler
     },
 
@@ -125,6 +127,7 @@ const ComponentHandler = {
             componentObj[property] = ComponentHandler[property];
         };
         
+        componentConsole.log(`  Registering ${ComponentHandler.id}`);
         global.ComponentList.push(componentObj);
         ComponentHandler.reset()
     },

@@ -53,7 +53,7 @@ MaterialHandler.create('netherite')
     .register();
 
 MaterialHandler.create('emerald')
-    .setColors('#657882', '#33302E')
+    .setColors('#17FF6C', '#003F00')
     .setComposition(['1x mystery'])
     .setComponents(['gem_block'])
     .setOverrideItem([
@@ -105,10 +105,10 @@ MaterialHandler.create('charcoal')
 MaterialHandler.create('redstone')
     .setColors('#ff0000', '#340605')
     .setComposition(['1x mystery'])
-    .setComponents(['gem_block'])
+    .setComponents(['dust_block'])
     .setOverrideItem([
-        {component: 'gem', item: 'minecraft:redstone'},
-        {component: 'gem_block', item: 'minecraft:redstone_block'}
+        {component: 'dust', item: 'minecraft:redstone'},
+        {component: 'dust_block', item: 'minecraft:redstone_block'}
     ])
     .register();
 

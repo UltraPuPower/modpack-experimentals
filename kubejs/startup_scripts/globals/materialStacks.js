@@ -40,9 +40,21 @@ global.itemHandler = {
     /**
      * Creates a valid json item object from an intermediate item stack
      * @param {intermediateItemStack} id - An intermediate item stack as created by .createItemStack()
-     * @returns {$ItemStack} Valid json item object
+     * @returns {$ItemStack} Valid json item object using "item" notation
      */
     getItemIngredient: (itemStack) => {
+        return {
+            "count": itemStack.count,
+            "item": itemStack.id
+        };
+    },
+
+    /**
+     * Creates a valid json item object from an intermediate item stack
+     * @param {intermediateItemStack} id - An intermediate item stack as created by .createItemStack()
+     * @returns {$ItemStack} Valid json item object using "id" notation
+     */
+    getIdIngredient: (itemStack) => {
         return {
             "count": itemStack.count,
             "id": itemStack.id
@@ -90,12 +102,36 @@ global.fluidHandler = {
     /**
      * Creates a valid json fluid object from an intermediate fluid stack
      * @param {intermediateFluidStack} id - An intermediate fluid stack as created by .createFluidStack()
-     * @returns {$fluidStack} Valid json fluid object
+     * @returns {$fluidStack} Valid json fluid object using "fluid" notation
      */
     getFluidIngredient: (fluidStack) => {
         return {
             "amount": fluidStack.amount,
+            "fluid": fluidStack.id
+        };
+    },
+
+    /**
+     * Creates a valid json fluid object from an intermediate fluid stack
+     * @param {intermediateFluidStack} id - An intermediate fluid stack as created by .createFluidStack()
+     * @returns {$fluidStack} Valid json fluid object using "id" notation
+     */
+    getIdIngredient: (fluidStack) => {
+        return {
+            "amount": fluidStack.amount,
             "id": fluidStack.id
+        };
+    },
+
+    /**
+     * Creates a valid json fluid object from an intermediate fluid stack
+     * @param {intermediateFluidStack} id - An intermediate fluid stack as created by .createFluidStack()
+     * @returns {$fluidStack} Valid json fluid object using "id" notation
+     */
+    getMekanismChemical: (fluidStack) => {
+        return {
+            "amount": fluidStack.amount,
+            "chemical": fluidStack.id
         };
     }
 };

@@ -3,7 +3,6 @@ const itemBlackList = global.itemBlackList;
 
 ServerEvents.recipes(event => {
     // Replace blacklisted items in recipes
-    console.log('replacing items')
     for (let i = 0; i < itemBlackList.length; i++) {
         let { material, entries } = itemBlackList[i];
 
@@ -63,7 +62,6 @@ ServerEvents.recipes(event => {
 
 ServerEvents.tags('item', event => {
     // Remove tags from items
-    console.log('removing tags')
     for (let i = 0; i < itemBlackList.length; i++) {
         let { material, entries } = itemBlackList[i];
 

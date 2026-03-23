@@ -1,4 +1,6 @@
 // priority: 99997
+const materialConsole = Java.createConsole("MaterialLib/Material Console");
+
 /**
  * @typedef {String} assetLocation String describing a valid minecraft asset location (e.g. minecraft:item/iron_ingot)
  */
@@ -44,6 +46,7 @@ const MaterialHandler = {
      */
     create: (id) => {
         MaterialHandler.id = id;
+        materialConsole.log(`Creating material with id ${id}`);
         return MaterialHandler;
     },
 
@@ -149,6 +152,7 @@ const MaterialHandler = {
             });
         };
         
+        materialConsole.log(`   Registering material ${MaterialHandler.id}`);
         global.MaterialList.push(materialObj);
         MaterialHandler.reset();
     },
@@ -177,7 +181,7 @@ const MaterialHandler = {
         let dependencies = [];
         let foundComponent = global.ComponentList.find(storedComponent => storedComponent.id == component);
         if (!foundComponent && component != "") {
-            console.error(`[MaterialHandler] component "${component}" does not exist (material: "${MaterialHandler.id}")`);
+            materialConsole.error(`Component "${component}" does not exist (at material: "${MaterialHandler.id}")`);
             return
         }
         MaterialHandler.components.add(component);

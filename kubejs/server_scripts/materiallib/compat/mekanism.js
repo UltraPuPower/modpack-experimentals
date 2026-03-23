@@ -3,7 +3,9 @@ ServerEvents.recipes(event => {
         /mekanism:processing\/.*\/ingot\/from_dust_(smelting|blasting)/,
         /mekanism:processing\/.*\/ingot\/from_(nuggets|block)/,
         /mekanism:processing\/.*\/from_block/,
+        /mekanism:processing\/.*\/ingot_to_dust/, /mekanism:processing\/.*\/dust\/from_ingot/, /mekanism:processing\/.*\/to_dust/,
         /mekanism:(nuggets|storage_blocks)\/.*/,
+        /mekanism:crushing\/.*_dust/,
     ];
 
     blacklistedRecipes.forEach(recipe => {

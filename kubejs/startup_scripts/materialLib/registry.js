@@ -1,4 +1,6 @@
 // priority: -1
+const registryConsole = Java.createConsole("MaterialLib/Registry Console");
+
 const componentList = global.ComponentList;
 
 const directMaterialDirection = 'kubejs/assets/kubejs/textures/item/materiallib';
@@ -60,6 +62,7 @@ StartupEvents.registry('fluid', event => {
             if(global.dataObject.suffixList.includes(component)) fluidId = `${id}_${component}`
 
             event.create(`materiallib:${fluidId}`, 'kubejs:thick').displayName(generateName(fluidId)).tint(material.colors[0]).noBlock().bucketItem.tooltip(completeTooltipText);
+            registryConsole.log(`Created fluid ${fluidId}`);
         }
     });
 });
@@ -69,11 +72,12 @@ StartupEvents.registry('item', event => {
         let component = componentList[i]
         if(!component.generateMoldItem) continue
 
-        if(!fileExists(`${directMaterialDirection}/molds/${component.id}.png`)) {
-            console.warn(`Warning, could not find component texture for ${component.id} in molds`);
-        }
-
         let newLiquidMold = event.create(`materiallib:empty_${component.id}_casting_mold`);
+        registryConsole.log(`Created mold for ${component.id}`);
+
+        if(!fileExists(`${directMaterialDirection}/molds/${component.id}.png`)) {
+            registryConsole.warn(`  Warning, could not find component texture for ${component.id} in molds folder`);
+        }
     };
 
     materialList.forEach(material => {
@@ -94,18 +98,19 @@ StartupEvents.registry('item', event => {
             let textureLayer = 0;
 
             let newComponent = event.create(`materiallib:${itemId}`).tag(`c:${component}s`).tag(`c:${component}s/${id}`).tooltip(completeTooltipText);
+            registryConsole.log(`Created item ${itemId}`);
 
             if(id == 'aluminium') newComponent.tag(`c:${component}s/aluminum`)
 
             if(textureOverrides[component]) {
                 newComponent.texture(textureOverrides[component]);
-                console.log(`found overwrite texture for ${itemId}`)
+                registryConsole.log(`   found overwrite texture for ${itemId}`)
                 continue;
             }
 
             if(fileExists(`${directMaterialDirection}/overrides/${itemId}.png`)) {
                 newComponent.texture(`${readMaterialDirection}/overrides/${itemId}`);
-                console.log(`found alternative texture for ${itemId}`)
+                registryConsole.log(`   found alternative texture for ${itemId}`)
                 continue;
             }
 
@@ -116,7 +121,7 @@ StartupEvents.registry('item', event => {
                 newComponent.texture('layer0', `${readMaterialDirection}/default/${component}`).color(0, colors[0]);
                 textureSet = 'default';
                 textureLayer++;
-            } else console.warn(`No component texture found for ${itemId} in both ${textureSet} and default texture set`)
+            } else registryConsole.warn(`   No component texture found for ${itemId} in both ${textureSet} and default texture set`)
 
             if(colors[1] && fileExists(`${directMaterialDirection}/${textureSet}/${component}_secondary.png`)) {
                 newComponent.texture(`layer${textureLayer}`, `${readMaterialDirection}/${textureSet}/${component}_secondary`).color(textureLayer, colors[1]);
@@ -150,6 +155,7 @@ StartupEvents.registry('block', event => {
             let textureLayer = 0;
 
             let newComponent = event.create(`materiallib:${blockId}`).tag(`c:${component}s`).tag(`c:${component}s/${id}`);
+            registryConsole.log(`Created block ${blockId}`);
 
             if(id == 'aluminium') newComponent.tag(`c:${component}s/aluminum`)
 
@@ -159,13 +165,13 @@ StartupEvents.registry('block', event => {
 
             if(textureOverrides[component]) {
                 newComponent.texture(textureOverrides[component]);
-                console.log(`found overwrite texture for ${blockId}`)
+                registryConsole.log(`   found overwrite texture for ${blockId}`)
                 continue;
             }
 
             if(fileExists(`${directMaterialDirection}/overrides/${blockId}.png`)) {
                 newComponent.texture(`${readMaterialDirection}/overrides/${blockId}`);
-                console.log(`found alternative texture for ${blockId}`)
+                registryConsole.log(`   found alternative texture for ${blockId}`)
                 continue;
             }
 
@@ -177,6 +183,7 @@ StartupEvents.registry('block', event => {
                     ctx.parentModel("minecraft:item/generated")
                     ctx.texture('layer0', `${readMaterialDirection}/${textureSet}/${component}`).color(0, colors[0]);
                 });
+                registryConsole.log(`   found set texture for ${blockId}`)
                 textureLayer++;
             } else if (fileExists(`${directMaterialDirection}/default/${component}.png`)) {
                 newComponent.texture('layer0', `${readMaterialDirection}/default/${component}`)//.color(0, colors[0]);
@@ -185,10 +192,11 @@ StartupEvents.registry('block', event => {
                 });
                 textureSet = 'default';
                 textureLayer++;
-            } else console.warn(`No component texture found for ${blockId} in both ${textureSet} and default texture set`)
+                registryConsole.log(`   found default texture for ${blockId}`)
+            } else registryConsole.warn(`   No component texture found for ${blockId} in both ${textureSet} and default texture set`)
 
             if(colors[1] && fileExists(`${directMaterialDirection}/${textureSet}/${component}_secondary.png`)) {
-                console.log(`texturing layer "layer1" of ${blockId} (colors: ${colors[0]}, ${colors[1]})`)
+                registryConsole.log(`   texturing layer "layer1" of ${blockId} (colors: ${colors[0]}, ${colors[1]})`)
                 newComponent.texture(`layer1`, `${readMaterialDirection}/${textureSet}/${component}_secondary`)//.color(textureLayer, colors[1]);
                 newComponent.item(ctx => {
                     ctx.texture(`layer1`, `${readMaterialDirection}/${textureSet}/${component}_secondary`).color(textureLayer, colors[1]);

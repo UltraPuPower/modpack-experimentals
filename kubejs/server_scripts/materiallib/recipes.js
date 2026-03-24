@@ -65,7 +65,6 @@ ServerEvents.recipes(event => {
         }
 
         if(components.includes('dust_block')) {
-            console.log(`creating dust block recipes for ${id}`)
             recipeRegistryHandler('compressing', [itemHandler.createComponentItemStack(id, 'dust', 1)], [itemHandler.createComponentItemStack(id, 'dust_block', 1)], [], [], [], [], dataObject, false);
         }
 

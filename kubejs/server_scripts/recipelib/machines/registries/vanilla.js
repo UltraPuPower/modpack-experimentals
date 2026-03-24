@@ -1,7 +1,9 @@
 // priority: 10000
+// requires: minecraft
+// Author: UltraPuPower1
 
 MachineHandler.create('shapeless')
-    .setIO(9, 1, false, false)
+    .setIO(9, 1, false, false, false, false)
     .addToRecipeTypes(['shapeless'])
     .setRecipeFunction((event, itemI, itemO, liquidI, liquidO, gasI, gasO, recipeData, recipeId) => {
         let input = [];
@@ -18,7 +20,7 @@ MachineHandler.create('shapeless')
     .register();
 
 MachineHandler.create('shaped')
-    .setIO(9, 1, false, false)
+    .setIO(9, 1, false, false, false, false)
     .addToRecipeTypes(['shaped'])
     .setRecipeFunction((event, itemI, itemO, liquidI, liquidO, gasI, gasO, recipeData, recipeId) => {
         if (!recipeData.shaped || !recipeData.shaped.pattern || !recipeData.shaped.key) {
@@ -39,7 +41,7 @@ MachineHandler.create('shaped')
     .register();
 
 MachineHandler.create('crafting_compressor')
-    .setIO(1, 1, false, false)
+    .setIO(1, 1, false, false, false, false)
     .addToRecipeTypes(['compressing'])
     .setRecipeFunction((event, itemI, itemO, liquidI, liquidO, gasI, gasO, recipeData, recipeId) => {
         let uncompressed = itemI[0].id
@@ -58,7 +60,7 @@ MachineHandler.create('crafting_compressor')
     .register();
 
 MachineHandler.create('furnace')
-    .setIO(1, 1, false, false)
+    .setIO(1, 1, false, false, false, false)
     .addToRecipeTypes(['smelting'])
     .setRecipeFunction((event, itemI, itemO, liquidI, liquidO, gasI, gasO, recipeData, recipeId) => {
         let input = [];
@@ -75,7 +77,7 @@ MachineHandler.create('furnace')
     .register();
     
 MachineHandler.create('smoker')
-    .setIO(1, 1, false, false)
+    .setIO(1, 1, false, false, false, false)
     .addToRecipeTypes(['smoking'])
     .setRecipeFunction((event, itemI, itemO, liquidI, liquidO, gasI, gasO, recipeData, recipeId) => {
         let input = [];
@@ -92,7 +94,7 @@ MachineHandler.create('smoker')
     .register();
 
 MachineHandler.create('blast_furnace')
-    .setIO(1, 1, false, false)
+    .setIO(1, 1, false, false, false, false)
     .addToRecipeTypes(['blasting'])
     .setRecipeFunction((event, itemI, itemO, liquidI, liquidO, gasI, gasO, recipeData, recipeId) => {
         let input = [];

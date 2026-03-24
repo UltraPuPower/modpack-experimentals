@@ -102,7 +102,7 @@ const stackArrayBuilder = (input, type) => {
         let inputArray = [];
         input.forEach(item => {
             let itemData = item.match(global.itemRegex);
-            let itemStack = itemHandler.createItemStack(itemData[2], itemData[1]);
+            let itemStack = itemHandler.createItemStack(itemData[2], Number(itemData[1]));
             inputArray.push(itemStack);
         });
         return inputArray;
@@ -110,16 +110,17 @@ const stackArrayBuilder = (input, type) => {
         let inputArray = [];
         input.forEach(fluid => {
             let fluidData = fluid.match(global.fluidRegex);
-            let fluidStack = fluidHandler.createFluidStack(fluidData[1], fluidData[2]);
+            let fluidStack = fluidHandler.createFluidStack(fluidData[1], Number(fluidData[2]));
             inputArray.push(fluidStack);
         });
         return inputArray;
     } else {
         console.warn(`unknown state: ${type}`)
     }
-}
+};
 
-recipeBuilder.recipeType('mixing').id('bronze')
-    .itemInputs(['3x minecraft:copper_ingot', '1x mekanism:ingot_tin'])
-    .itemOutputs(['4x mekanism:ingot_bronze'])
+// Test recipe
+recipeBuilder.recipeType('bulk_washing').id('test')
+    .itemInputs(['1x materiallib:iron_dust'])
+    .itemOutputs(['1x materiallib:steel_ingot'])
     .register();

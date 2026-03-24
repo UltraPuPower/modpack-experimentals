@@ -1,4 +1,6 @@
 // priority: 50000
+const machineConsole = Java.createConsole("MaterialLib/Machine Console");
+
 const MachineList = [];
 
 const itemHandler = global.itemHandler;
@@ -6,31 +8,34 @@ const fluidHandler = global.fluidHandler;
 
 const functionBlockList = ['create', 'setIO', 'addToRecipeTypes', 'setRecipeFunction', 'register', 'reset']
 
-console.log('registering machines:');
-
 const MachineHandler = {
     machineId: '',
     IOCapabilities: {
         itemInput: 0,
         itemOutput: 0,
-        fluidInput: 0,
-        fluidOutput: 0
+        liquidInput: 0,
+        liquidOutput: 0,
+        gasInput: 0,
+        gasOutput: 0
     },
     recipeFunction: (event, itemI, itemO, fluidI, fluidO, recipeData, recipeId) => {
-        console.warn(`Can't find a recipe function for ${MachineHandler.machineId}`);
+        console.error(`Can't find a recipe function for ${MachineHandler.machineId}`);
     },
 
     create: (id) => {
         MachineHandler.machineId = id;
+        machineConsole.log(`Created machine: ${id}`);
         return MachineHandler;
     },
 
-    setIO: (itemI, itemO, fluidI, fluidO) => {
+    setIO: (itemI, itemO, liquidI, liquidO, gasI, gasO) => {
         MachineHandler.IOCapabilities = {
-        itemInput: itemI,
-        itemOutput: itemO,
-        fluidInput: fluidI,
-        fluidOutput: fluidO
+            itemInput: itemI,
+            itemOutput: itemO,
+            fluidInput: liquidI,
+            fluidOutput: liquidO,
+            gasInput: gasI,
+            gasOutput: gasO
         };
         return MachineHandler;
     },
@@ -38,9 +43,15 @@ const MachineHandler = {
     addToRecipeTypes: (recipeTypes) => {
         recipeTypes.forEach(recipeType => {
             let recipeTypeObj = RecipeTypeList.find(RecipeType => RecipeType.recipeTypeId == recipeType);
-            let recipeTypeIndex = RecipeTypeList.indexOf(recipeTypeObj);
-            recipeTypeObj.usableMachines.push(MachineHandler.machineId);
-            RecipeTypeList[recipeTypeIndex] = recipeTypeObj;
+            if (recipeTypeObj) {
+                let recipeTypeIndex = RecipeTypeList.indexOf(recipeTypeObj);
+                recipeTypeObj.usableMachines.push(MachineHandler.machineId);
+                RecipeTypeList[recipeTypeIndex] = recipeTypeObj;
+            } else {
+                RecipeTypeHandler.create(recipeType)
+                    .setUsableMachine(MachineHandler.machineId)
+                    .register();
+            }
         });
         return MachineHandler;
     },
@@ -60,7 +71,7 @@ const MachineHandler = {
         });
         MachineList.push(machineObj);
         MachineHandler.reset()
-        console.log(`   register machine: ${machineObj.machineId}`);
+        machineConsole.log(`   Registered machine: ${machineObj.machineId}`);
     },
 
     reset: () => {
@@ -69,10 +80,12 @@ const MachineHandler = {
             itemInput: 0,
             itemOutput: 0,
             fluidInput: 0,
-            fluidOutput: 0
+            fluidOutput: 0,
+            gasInput: 0,
+            gasOutput: 0
         };
         MachineHandler.recipeFunction = (event, itemI, itemO, fluidI, fluidO, recipeData, recipeId) => {
-            console.warn(`Can't find a recipe function for ${MachineHandler.machineId}`);
+            console.error(`Can't find a recipe function for ${MachineHandler.machineId}`);
         }
     }
     

@@ -42,7 +42,7 @@ global.itemHandler = {
      * @param {intermediateItemStack} id - An intermediate item stack as created by .createItemStack()
      * @returns {$ItemStack} Valid json item object using "item" notation
      */
-    getItemIngredient: (itemStack) => {
+    getInputIngredient: (itemStack) => {
         return {
             "count": itemStack.count,
             "item": itemStack.id
@@ -54,7 +54,7 @@ global.itemHandler = {
      * @param {intermediateItemStack} id - An intermediate item stack as created by .createItemStack()
      * @returns {$ItemStack} Valid json item object using "id" notation
      */
-    getIdIngredient: (itemStack) => {
+    getOutputIngredient: (itemStack) => {
         return {
             "count": itemStack.count,
             "id": itemStack.id
@@ -104,7 +104,7 @@ global.fluidHandler = {
      * @param {intermediateFluidStack} id - An intermediate fluid stack as created by .createFluidStack()
      * @returns {$fluidStack} Valid json fluid object using "fluid" notation
      */
-    getFluidIngredient: (fluidStack) => {
+    getInputIngredient: (fluidStack) => {
         return {
             "amount": fluidStack.amount,
             "fluid": fluidStack.id
@@ -116,7 +116,7 @@ global.fluidHandler = {
      * @param {intermediateFluidStack} id - An intermediate fluid stack as created by .createFluidStack()
      * @returns {$fluidStack} Valid json fluid object using "id" notation
      */
-    getIdIngredient: (fluidStack) => {
+    getOutputIngredient: (fluidStack) => {
         return {
             "amount": fluidStack.amount,
             "id": fluidStack.id

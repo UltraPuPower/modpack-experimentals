@@ -1,14 +1,21 @@
 // priority: 100000
+const recipeConsole = Java.createConsole("MaterialLib/Recipe Console");
+
 const RecipeTypeList = [];
 
-console.log('registering recipe types:');
-
+// Meant for auto-gen
 const RecipeTypeHandler = {
     recipeTypeId: '',
     usableMachines: [],
 
     create: (id) => {
         RecipeTypeHandler.recipeTypeId = id;
+        recipeConsole.log(`Created recipe type: ${id}`);
+        return RecipeTypeHandler;
+    },
+
+    setUsableMachine: (machine) => {
+        RecipeTypeHandler.usableMachines.push(machine);
         return RecipeTypeHandler;
     },
 
@@ -22,7 +29,7 @@ const RecipeTypeHandler = {
         });
         RecipeTypeList.push(recipeObj);
         RecipeTypeHandler.reset()
-        console.log(`   register recipe type: ${recipeObj.recipeTypeId}`);
+        recipeConsole.log(`   Registered recipe type: ${recipeObj.recipeTypeId}`);
     },
 
     reset: () => {

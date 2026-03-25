@@ -18,10 +18,12 @@ global.IsotopeList = [];
  * @typedef {Object} IsotopeHandler The handler for isotope registry
  */
 const IsotopeHandler = {
-    isotopeId: '',
-    symbol: '',
-    protonCount: 0,
-    nucleonCount: 0,
+    result: {
+        isotopeId: '',
+        symbol: '',
+        protonCount: 0,
+        nucleonCount: 0
+    },
 
     /**
      * Sets the identifier of the isotope
@@ -29,7 +31,7 @@ const IsotopeHandler = {
      * @returns {IsotopeHandler} Isotope Handler, allows for method chaining
      */
     create: (id) => {
-        IsotopeHandler.isotopeId = id;
+        IsotopeHandler.result.isotopeId = id;
         isotopeConsole.log(`Creating isotope with id ${id}`);
         return IsotopeHandler;
     },
@@ -40,7 +42,7 @@ const IsotopeHandler = {
      * @returns {IsotopeHandler} Isotope Handler, allows for method chaining
      */
     setSymbol: (symbol) => {
-        IsotopeHandler.symbol = symbol;
+        IsotopeHandler.result.symbol = symbol;
         return IsotopeHandler;
     },
 
@@ -50,7 +52,7 @@ const IsotopeHandler = {
      * @returns {IsotopeHandler} Isotope Handler, allows for method chaining
      */
     setProtonCount: (protonCount) => {
-        IsotopeHandler.protonCount = protonCount;
+        IsotopeHandler.result.protonCount = protonCount;
         return IsotopeHandler;
     },
 
@@ -60,7 +62,7 @@ const IsotopeHandler = {
      * @returns {IsotopeHandler} Isotope Handler, allows for method chaining
      */
     setNucleonCount: (nucleonCount) => {
-        IsotopeHandler.nucleonCount = nucleonCount;
+        IsotopeHandler.result.nucleonCount = nucleonCount;
         return IsotopeHandler;
     },
 
@@ -68,16 +70,7 @@ const IsotopeHandler = {
      * Finishes the creation of an isotope by registering it and cleaning the handler
      */
     register: () => {
-        const isotopeObj = {};
-        const propertyArray = Object.getOwnPropertyNames(IsotopeHandler);
-        for (let i = 0; i < propertyArray.length; i++) {
-            let property = propertyArray[i];
-
-            let type = typeof IsotopeHandler[property];
-            if (type == 'function') continue;
-            
-            isotopeObj[property] = IsotopeHandler[property];
-        };
+        const isotopeObj = IsotopeHandler.result;
         isotopeConsole.log(`    Registering ${IsotopeHandler.isotopeId}`);
         global.IsotopeList.push(isotopeObj);
         IsotopeHandler.reset();
@@ -87,10 +80,12 @@ const IsotopeHandler = {
      * Resets the isotope creation handler, not meant for usage outside of handler
      */
     reset: () => {
-        IsotopeHandler.isotopeId = '';
-        IsotopeHandler.symbol = '';
-        IsotopeHandler.protonCount = 0;
-        IsotopeHandler.nucleonCount = 0;
+        IsotopeHandler.result = {
+            isotopeId: '',
+            symbol: '',
+            protonCount: 0,
+            nucleonCount: 0
+        };
     }
 
 };

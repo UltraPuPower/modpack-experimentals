@@ -51,7 +51,7 @@ MachineHandler.create('enrichment_chamber')
 
 MachineHandler.create('combiner')
     .setIO(2, 1, false, false)
-    .addToRecipeTypes(['applying'])
+    .addToRecipeTypes(['combining'])
     .setRecipeFunction((event, itemI, itemO, liquidI, liquidO, gasI, gasO, recipeData, recipeId) => {
         let recipeJson = {
             "type": "mekanism:combining",
@@ -118,7 +118,7 @@ MachineHandler.create('chemical_dissolution_chamber')
 
 MachineHandler.create('chemical_washer')
     .setIO(false, false, 1, false, 1, 1)
-    .addToRecipeTypes(['washing'])
+    .addToRecipeTypes(['chemical_washing'])
     .setRecipeFunction((event, itemI, itemO, liquidI, liquidO, gasI, gasO, recipeData, recipeId) => {
         let recipeJson = {
             "type": "mekanism:washing",

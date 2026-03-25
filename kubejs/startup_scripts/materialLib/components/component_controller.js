@@ -19,16 +19,18 @@ let componentTypes = ['item', 'block', 'fluid'];
 let componentAffixes = ['prefix', 'suffix'];
 
 /**
- * @typedef {Object} ComponentHandler The handler for material registry
+ * @typedef {Object} ComponentHandler The handler for component registry
  */
 const ComponentHandler = {
-    id: '',
-    dependencies: new Set([]),
-    liquidAmount: 0,
-    generateMoldItem: false,
-    state: 'solid',
-    type: 'item',
-    affixType: 'suffix',
+    result: {
+        id: '',
+        dependencies: new Set([]),
+        liquidAmount: 0,
+        generateMoldItem: false,
+        state: 'solid',
+        type: 'item',
+        affixType: 'suffix'
+    },
 
     /**
      * Initiates the creation of a component by setting the id
@@ -36,7 +38,7 @@ const ComponentHandler = {
      * @returns {Handler} Component Handler, allows for method chaining
      */
     create: (id) => {
-        ComponentHandler.id = id;
+        ComponentHandler.result.id = id;
         componentConsole.log(`Creating component with id ${id}`);
         return ComponentHandler
     },
@@ -54,8 +56,9 @@ const ComponentHandler = {
                 componentConsole.error(`Component "${component}" does not exist (at component: "${ComponentHandler.id}")`)
                 continue
             }
-            ComponentHandler.dependencies.add(component)
+            ComponentHandler.result.dependencies.add(component)
         }
+        ComponentHandler.result.dependencies = global.setToArray(ComponentHandler.result.dependencies)
         return ComponentHandler
     },
 
@@ -64,7 +67,7 @@ const ComponentHandler = {
      * @returns {Handler} Component Handler, allows for method chaining
      */
     generateMold: () => {
-        ComponentHandler.generateMoldItem = true;
+        ComponentHandler.result.generateMoldItem = true;
         return ComponentHandler
     },
 
@@ -75,7 +78,7 @@ const ComponentHandler = {
      */
     setComponentState: (state) => {
         if (componentStates.includes(state)) {
-            ComponentHandler.state = state;
+            ComponentHandler.result.state = state;
         } else componentConsole.warn(`Invalid state for ${ComponentHandler.id}: ${state}`)
         return ComponentHandler
     },
@@ -87,7 +90,7 @@ const ComponentHandler = {
      */
     setComponentType: (type) => {
         if (componentTypes.includes(type)) {
-            ComponentHandler.type = type;
+            ComponentHandler.result.type = type;
         } else componentConsole.warn(`Invalid type for ${ComponentHandler.id}: ${type}`)
         return ComponentHandler
     },
@@ -98,7 +101,7 @@ const ComponentHandler = {
      * @returns {Handler} Component Handler, allows for method chaining
      */
     setLiquidAmount: (amount) => {
-        ComponentHandler.liquidAmount = amount
+        ComponentHandler.result.liquidAmount = amount
         return ComponentHandler
     },
 
@@ -109,7 +112,7 @@ const ComponentHandler = {
      */
     setComponentAffix: (affix) => {
         if (componentAffixes.includes(affix)) {
-            ComponentHandler.affixType = affix;
+            ComponentHandler.result.affixType = affix;
         } else componentConsole.warn(`Invalid affix for ${ComponentHandler.id}: ${affix}`)
         return ComponentHandler
     },
@@ -118,15 +121,7 @@ const ComponentHandler = {
      * Finishes the creation of a component by registering it and cleaning the handler
      */
     register: () => {
-        const componentObj = {};
-        const propertyArray = Object.getOwnPropertyNames(ComponentHandler)
-        for (let i = 0; i < propertyArray.length; i++) {
-            let property = propertyArray[i];
-            let type = typeof ComponentHandler[property];
-            if (type == 'function') continue;
-            componentObj[property] = ComponentHandler[property];
-        };
-        
+        const componentObj = ComponentHandler.result;
         componentConsole.log(`  Registering ${ComponentHandler.id}`);
         global.ComponentList.push(componentObj);
         ComponentHandler.reset()
@@ -136,12 +131,14 @@ const ComponentHandler = {
      * Resets the component creation handler, not meant for usage outside of handler
      */
     reset: () => {
-        ComponentHandler.id = '';
-        ComponentHandler.dependencies = new Set([]);
-        ComponentHandler.liquidAmount = 0;
-        ComponentHandler.generateMoldItem = false;
-        ComponentHandler.state = 'solid';
-        ComponentHandler.type = 'item';
-        ComponentHandler.affixType = 'suffix';
+        ComponentHandler.result = {
+            id: '',
+            dependencies: new Set([]),
+            liquidAmount: 0,
+            generateMoldItem: false,
+            state: 'solid',
+            type: 'item',
+            affixType: 'suffix'
+        };
     }
 };

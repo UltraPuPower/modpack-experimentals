@@ -1,16 +1,27 @@
 // priority: 99995
 const blacklistConsole = Java.createConsole("MaterialLib/Blacklist Console");
 
+/**
+ * @typedef {Object} BlacklistObject
+ * @property {string} material - The material this blacklist entry governs
+ * @property {blacklistItemEntry[]} entries - Dependency components for this component{ component, itemEntries }
+ */
+
+/**
+ * @param {Array<BlacklistObject>} itemBlackList
+ */
 global.itemBlackList = [];
 const materialList = global.MaterialList;
 
 /**
- * @typedef {Object} BlacklistHandler The handler for material registry
+ * @typedef {Object} BlacklistHandler The handler for blacklist entry registry
  */
 const BlacklistHandler = {
-    material: '',
+    result: {
+        material: '',
+        entries: []
+    },
     discoveredIndex: false,
-    entries: [],
 
     /**
      * Creates or pulls a material for blacklisting
@@ -19,37 +30,39 @@ const BlacklistHandler = {
      */
     getMaterial: (materialId) => {
         let materialObj = materialList.find(material => material.id == materialId);
-        if (materialObj) {
-            BlacklistHandler.material = materialId
-            let blackListObj = global.itemBlackList.find(entry => entry.material == BlacklistHandler.material);
-            if (blackListObj) {
-                blackListObj.entries.forEach(entry => {
-                    BlacklistHandler.entries.push(entry)
-                });
-                BlacklistHandler.discoveredIndex = global.itemBlackList.indexOf(blackListObj);
-                blacklistConsole.log(`Loaded material blacklist for ${materialId}`);
-            } else blacklistConsole.log(`Created material blacklist for ${materialId}`);
-        } else blacklistConsole.warn(`Blacklisting ran into an issue: can't find material ${materialId}`)
+        if (!materialObj) {
+            blacklistConsole.warn(`Blacklisting ran into an issue: can't find material ${materialId}`);
+            return BlacklistHandler;
+        }
+        let blackListObj = global.itemBlackList.find(entry => entry.material == BlacklistHandler.result.material);
+        if (blackListObj) {
+            BlacklistHandler.result = blackListObj;
+            BlacklistHandler.discoveredIndex = global.itemBlackList.indexOf(blackListObj);
+            blacklistConsole.log(`Loaded material blacklist for ${materialId}`);
+        } else {
+            BlacklistHandler.result.material = materialId;
+            blacklistConsole.log(`Created material blacklist for ${materialId}`);
+        };
         return BlacklistHandler;
     },
 
     /**
      * Sets items for blacklisting
-     * @param {Object[]} entries - Objects containing replacement
+     * @param {blacklistItemEntry[]} entries - Objects containing replacement
      * @returns {Handler} Component Handler, allows for method chaining
      */
     setItems: (entries) => {
         entries.forEach(entry => {
             const {component, items} = entry
-            let componentObj = BlacklistHandler.entries.find(componentEntry => componentEntry.component == component);
+            let componentObj = BlacklistHandler.result.entries.find(componentEntry => componentEntry.component == component);
             if (!componentObj) {
-                BlacklistHandler.entries.push({component: component, itemEntries: items});
+                BlacklistHandler.result.entries.push({component: component, itemEntries: items});
             } else {
-                let componentIndex = BlacklistHandler.entries.indexOf(componentObj);
+                let componentIndex = BlacklistHandler.result.entries.indexOf(componentObj);
                 items.forEach(item => {
                     componentObj.itemEntries.push(item);
                 });
-                BlacklistHandler.entries[componentIndex] = componentObj;
+                BlacklistHandler.result.entries[componentIndex] = componentObj;
             }
         });
         return BlacklistHandler;
@@ -59,14 +72,7 @@ const BlacklistHandler = {
      * Finishes setting the blacklist by registering it and cleaning the handler
      */
     register: () => {
-        const blackListObj = {};
-        const propertyArray = Object.getOwnPropertyNames(BlacklistHandler)
-        for (let i = 0; i < propertyArray.length; i++) {
-            let property = propertyArray[i];
-            let type = typeof BlacklistHandler[property];
-            if (type == 'function' || property == 'discoveredIndex') continue;
-            blackListObj[property] = BlacklistHandler[property];
-        };
+        const blackListObj = BlacklistHandler.result;
         
         if (BlacklistHandler.discoveredIndex === false) {
             global.itemBlackList.push(blackListObj);
@@ -82,8 +88,10 @@ const BlacklistHandler = {
      * Resets the blacklist registry handler, not meant for usage outside of handler
      */
     reset: () => {
-        BlacklistHandler.material = '';
+        BlacklistHandler.result = {
+            material: '',
+            entries: []
+        };
         BlacklistHandler.discoveredIndex = false;
-        BlacklistHandler.entries = [];
     }
 };

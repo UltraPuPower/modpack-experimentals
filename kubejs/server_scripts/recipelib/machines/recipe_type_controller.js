@@ -5,36 +5,33 @@ const RecipeTypeList = [];
 
 // Meant for auto-gen
 const RecipeTypeHandler = {
-    recipeTypeId: '',
-    usableMachines: [],
+    result: {
+        recipeTypeId: '',
+        usableMachines: []
+    },
 
     create: (id) => {
-        RecipeTypeHandler.recipeTypeId = id;
+        RecipeTypeHandler.result.recipeTypeId = id;
         recipeConsole.log(`Created recipe type: ${id}`);
         return RecipeTypeHandler;
     },
 
     setUsableMachine: (machine) => {
-        RecipeTypeHandler.usableMachines.push(machine);
+        RecipeTypeHandler.result.usableMachines.push(machine);
         return RecipeTypeHandler;
     },
 
     register: () => {
-        let recipeObj = {};
-        let recipeKeys = Object.keys(RecipeTypeHandler);
-        recipeKeys.forEach(recipeKey => {
-            if (typeof RecipeTypeHandler[recipeKey] != 'function') {
-                recipeObj[recipeKey] = RecipeTypeHandler[recipeKey];
-            }
-        });
+        let recipeObj = RecipeTypeHandler.result;
         RecipeTypeList.push(recipeObj);
         RecipeTypeHandler.reset()
         recipeConsole.log(`   Registered recipe type: ${recipeObj.recipeTypeId}`);
     },
 
     reset: () => {
-        RecipeTypeHandler.recipeTypeId = '';
-        RecipeTypeHandler.usableMachines = [];
-        RecipeTypeHandler.componentTransformations = {};
+        RecipeTypeHandler.result = {
+            recipeTypeId: '',
+            usableMachines: []
+        };
     }
 };

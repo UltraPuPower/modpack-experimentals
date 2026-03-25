@@ -30,22 +30,24 @@ global.MaterialList = [];
  * @typedef {Object} MaterialHandler The handler for material registry
  */
 const MaterialHandler = {
-    id: '',
-    colors: [],
-    composition: [],
-    components: new Set([]),
-    textureSet: "default",
-    textureOverrides: {},
-    itemOverrides: {},
-    dataObject: {},
+    result: {
+        id: '',
+        colors: [],
+        composition: [],
+        components: new Set([]),
+        textureSet: "default",
+        textureOverrides: {},
+        itemOverrides: {},
+        dataObject: {}
+    },
 
     /**
      * Sets identifier for the material
-     * @param {string[]} amount - The id for the material
+     * @param {string[]} id - The id for the material
      * @returns {MaterialHandler} Material Handler, allows for method chaining
      */
     create: (id) => {
-        MaterialHandler.id = id;
+        MaterialHandler.result.id = id;
         materialConsole.log(`Creating material with id ${id}`);
         return MaterialHandler;
     },
@@ -57,7 +59,7 @@ const MaterialHandler = {
      * @returns {MaterialHandler} Material Handler, allows for method chaining
      */
     setColors: (primaryColor, secondaryColor) => {
-        MaterialHandler.colors = [primaryColor, secondaryColor];
+        MaterialHandler.result.colors = [primaryColor, secondaryColor];
         return MaterialHandler;
     },
 
@@ -67,7 +69,7 @@ const MaterialHandler = {
      * @returns {MaterialHandler} Material Handler, allows for method chaining
      */
     setComposition: (composition) => {
-        MaterialHandler.composition = composition;
+        MaterialHandler.result.composition = composition;
         return MaterialHandler;
     },
 
@@ -80,6 +82,7 @@ const MaterialHandler = {
         for (let i = 0; i < components.length; i++) {
             MaterialHandler.findNestedComponents(components[i], 1);
         }
+        MaterialHandler.result.components = global.setToArray(MaterialHandler.result.components);
         return MaterialHandler;
     },
 
@@ -89,7 +92,7 @@ const MaterialHandler = {
      * @returns {MaterialHandler} Material Handler, allows for method chaining
      */
     useTextureSet: (set) => {
-        MaterialHandler.textureSet = set;
+        MaterialHandler.result.textureSet = set;
         return MaterialHandler;
     },
 
@@ -100,7 +103,7 @@ const MaterialHandler = {
      * @returns {MaterialHandler} Material Handler, allows for method chaining
      */
     setOverrideTexture: (component, location) => {
-        MaterialHandler.textureOverrides[component] = location;
+        MaterialHandler.result.textureOverrides[component] = location;
         return MaterialHandler;
     },
 
@@ -112,7 +115,7 @@ const MaterialHandler = {
      */
     setOverrideItem: (overrideArray) => {
         overrideArray.forEach(override => {
-            MaterialHandler.itemOverrides[override.component] = override.item;
+            MaterialHandler.result.itemOverrides[override.component] = override.item;
         });
         return MaterialHandler;
     },
@@ -124,7 +127,7 @@ const MaterialHandler = {
      * @returns {MaterialHandler} Material Handler, allows for method chaining
      */
     setMaterialData: (dataObject) => {
-        MaterialHandler.dataObject = dataObject;
+        MaterialHandler.result.dataObject = dataObject;
         return MaterialHandler;
     },
 
@@ -132,26 +135,7 @@ const MaterialHandler = {
      * Finishes the creation of a material by registering it and cleaning the handler
      */
     register: () => {
-        const materialObj = {};
-        const propertyArray = Object.getOwnPropertyNames(MaterialHandler);
-        for (let i = 0; i < propertyArray.length; i++) {
-            let property = propertyArray[i];
-
-            let type = typeof MaterialHandler[property];
-            if (type == 'function') continue;
-            
-            // Done for debug purposes, Rhino does not like logging sets
-            if (!(property == 'components')) {
-                materialObj[property] = MaterialHandler[property];
-                continue;
-            }
-            
-            materialObj[property] = [];
-            MaterialHandler[property].forEach(component => {
-                materialObj[property].push(component);
-            });
-        };
-        
+        const materialObj = MaterialHandler.result;
         materialConsole.log(`   Registering material ${MaterialHandler.id}`);
         global.MaterialList.push(materialObj);
         MaterialHandler.reset();
@@ -161,14 +145,16 @@ const MaterialHandler = {
      * Resets the material creation handler, not meant for usage outside of handler
      */
     reset: () => {
-        MaterialHandler.id = '';
-        MaterialHandler.colors = [];
-        MaterialHandler.composition = [];
-        MaterialHandler.components = new Set([]);
-        MaterialHandler.textureSet = "default";
-        MaterialHandler.textureOverrides = {};
-        MaterialHandler.itemOverrides = {};
-        MaterialHandler.dataObject = {};
+        MaterialHandler.result = {
+            id: '',
+            colors: [],
+            composition: [],
+            components: new Set([]),
+            textureSet: "default",
+            textureOverrides: {},
+            itemOverrides: {},
+            dataObject: {}
+        };
     },
 
     // ==========[Utils]========== \\
@@ -184,7 +170,7 @@ const MaterialHandler = {
             materialConsole.error(`Component "${component}" does not exist (at material: "${MaterialHandler.id}")`);
             return
         }
-        MaterialHandler.components.add(component);
+        MaterialHandler.result.components.add(component);
         dependencies = global.setToArray(foundComponent.dependencies);
         if (dependencies) {
             for (let i = 0; i < dependencies.length; i++) {

@@ -51,11 +51,6 @@ const ComponentHandler = {
     setDependencies: (dependencies) => {
         for (let i = 0; i < dependencies.length; i++) {
             let component = dependencies[i]
-            let foundComponent = global.ComponentList.find(storedComponent => storedComponent.id == component)
-            if (!foundComponent && component != "") {
-                componentConsole.error(`Component "${component}" does not exist (at component: "${ComponentHandler.id}")`)
-                continue
-            }
             ComponentHandler.result.dependencies.add(component)
         }
         ComponentHandler.result.dependencies = global.setToArray(ComponentHandler.result.dependencies)

@@ -1,7 +1,6 @@
-// priority: 50000
+// priority: 99998
 
 IsotopeHandler.create('mystery')
-    .setSymbol('?')
     .setProtonCount(0)
     .setNucleonCount(0)
     .register();

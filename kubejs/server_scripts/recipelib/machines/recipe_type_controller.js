@@ -1,4 +1,4 @@
-// priority: 100000
+// priority: 99999
 const recipeConsole = Java.createConsole("MaterialLib/Recipe Console");
 
 const RecipeTypeList = [];

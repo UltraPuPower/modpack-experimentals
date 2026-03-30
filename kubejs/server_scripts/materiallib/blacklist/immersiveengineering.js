@@ -1,10 +1,10 @@
 ServerEvents.recipes(event => {
     let blacklistedRecipes = [
-        /immersiveengineering:smelting\/ingot_.*_from_dust(_from_blasting)?/,
-        /immersiveengineering:crafting\/ingot_.*_to_(storage|nugget)_.*/,
-        /immersiveengineering:crafting\/(storage|nugget)_.*_to_ingot_.*/,
+        /immersiveengineering:smelting\/(ingot_.*|.*_ingot)_from_dust(_from_blasting)?/,
+        /immersiveengineering:crafting\/(ingot_.*|.*_ingot)_to_(storage|nugget)_.*/,
+        /immersiveengineering:crafting\/(storage|nugget)_.*_to_(ingot_.*|.*_ingot)/,
         /immersiveengineering:metalpress\/(gear|plate|rod|wire)_.*/,
-        /immersiveengineering:crafting\/stick_.*/,
+        /immersiveengineering:crafting\/(stick|wire)_.*/,
         /immersiveengineering:crusher\/ingot_.*/
     ];
 

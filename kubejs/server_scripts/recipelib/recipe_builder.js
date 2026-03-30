@@ -1,3 +1,5 @@
+// priority: 99997
+
 /**
  * @typedef {Object} recipeBuilder The handler for machine registry
  */
@@ -60,7 +62,7 @@ const recipeBuilder = {
      * @param {string} liquidI - Array containing liquid inputs
      * @returns {recipeBuilder} Recipe Builder, allows for method chaining
      */
-    liquidInputs: (liquidI) => {
+    fluidInputs: (liquidI) => {
         liquidI.forEach(liquid => {
             recipeBuilder.liquidI.push(liquid);
         });
@@ -71,7 +73,7 @@ const recipeBuilder = {
      * @param {string} liquidO - Array containing liquid outputs
      * @returns {recipeBuilder} Recipe Builder, allows for method chaining
      */
-    liquidOutputs: (liquidO) => {
+    fluidOutputs: (liquidO) => {
         liquidO.forEach(liquid => {
             recipeBuilder.liquidO.push(liquid);
         });
@@ -82,7 +84,7 @@ const recipeBuilder = {
      * @param {string} gasI - Array containing gas inputs
      * @returns {recipeBuilder} Recipe Builder, allows for method chaining
      */
-    gasInputs: (gasI) => {
+    chemicalInputs: (gasI) => {
         gasI.forEach(gas => {
             recipeBuilder.gasI.push(gas);
         });
@@ -93,7 +95,7 @@ const recipeBuilder = {
      * @param {string} gasO - Array containing gas outputs
      * @returns {recipeBuilder} Recipe Builder, allows for method chaining
      */
-    gasOutputs: (gasO) => {
+    chemicalOutputs: (gasO) => {
         gasO.forEach(gas => {
             recipeBuilder.gasO.push(gas);
         });
@@ -148,7 +150,7 @@ const recipeRegistryHandler = (usedRecipeType, itemI, itemO, liquidI, liquidO, g
     ServerEvents.recipes(event => {
         machines.forEach(usableMachine => {
             let machineObj = MachineList.find(machine => machine.machineId == usableMachine);
-            machineObj.recipeFunction(event, itemI, itemO, liquidI, liquidO, gasI, gasO, recipeData, recipeId);
+            machineObj.recipeFunction(event, itemI, itemO, liquidI, liquidO, gasI, gasO, recipeData, `recipelib:${usedRecipeType}/${usableMachine}/${recipeId}`);
         });
     })
 };
@@ -157,16 +159,24 @@ const stackArrayBuilder = (input, type) => {
     if (type == 'item') {
         let inputArray = [];
         input.forEach(item => {
-            let itemData = item.match(global.itemRegex);
-            let itemStack = itemHandler.createItemStack(itemData[2], Number(itemData[1]));
+            let itemStack = {};
+            if (typeof item == 'string') {
+                let itemData = item.match(global.itemRegex);
+                itemStack = new ItemHandler(itemData[2], Number(itemData[1]));
+            } else if (typeof item == 'object') itemStack = item
+            else console.error(`Unsupported recipe ingredient: ${item}`)
             inputArray.push(itemStack);
         });
         return inputArray;
     } else if (type == 'fluid') {
         let inputArray = [];
         input.forEach(fluid => {
-            let fluidData = fluid.match(global.fluidRegex);
-            let fluidStack = fluidHandler.createFluidStack(fluidData[1], Number(fluidData[2]));
+            let fluidStack = {};
+            if (typeof fluid == 'string') {
+                let fluidData = fluid.match(global.fluidRegex);
+                fluidStack = new FluidHandler(fluidData[1], Number(fluidData[2]));
+            } else if (typeof fluid == 'object') fluidStack = fluid
+            else console.error(`Unsupported recipe ingredient: ${fluid}`)
             inputArray.push(fluidStack);
         });
         return inputArray;
@@ -174,9 +184,3 @@ const stackArrayBuilder = (input, type) => {
         console.warn(`unknown state: ${type}`)
     }
 };
-
-// Test recipe
-recipeBuilder.recipeType('bulk_washing').id('test')
-    .itemInputs(['1x materiallib:iron_dust'])
-    .itemOutputs(['1x materiallib:steel_ingot'])
-    .register();

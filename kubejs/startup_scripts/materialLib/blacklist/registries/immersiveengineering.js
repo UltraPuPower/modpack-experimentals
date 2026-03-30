@@ -1,5 +1,6 @@
 // priority: 99994
 // requires: immersiveengineering
+// author: UltraPuPower1
 
 // Compat
 BlacklistHandler.getMaterial('copper')

@@ -1,7 +1,7 @@
 ServerEvents.recipes(event => {
     let blacklistedRecipes = [
         /create:pressing\/.*_ingot/,
-        /create:crafting\/materials\/.*_(nugget|ingot|block)_from_(de)?compacting/,
+        /create:crafting\/materials\/.*_(nugget|ingot|block)(_from_(de)?compacting)?/,
         /create:cutting\/compat\/immersiveengineering\/wire_.*/
     ];
 

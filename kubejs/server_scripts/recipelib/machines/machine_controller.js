@@ -1,4 +1,4 @@
-// priority: 50000
+// priority: 99999
 const machineConsole = Java.createConsole("MaterialLib/Machine Console");
 
 /**
@@ -12,21 +12,16 @@ const machineConsole = Java.createConsole("MaterialLib/Machine Console");
  * @typedef {Object} IOCapabilitiesObject Either false (no capability), true (no limit to types) or a number for the amount of types
  * @property {number|boolean} itemInput - Amount of item inputs the machine can take
  * @property {number|boolean} itemOutput - Amount of item outputs the machine can take
- * @property {number|boolean} liquidInput - Amount of liquid inputs the machine can take (All minecraft fluids are liquids)
- * @property {number|boolean} liquidOutput - Amount of liquid outputs the machine can take (All minecraft fluids are liquids)
- * @property {number|boolean} gasInput - Amount of gas inputs the machine can take (Gases refer to Mekanism Chemicals)
- * @property {number|boolean} gasOutput - Amount of gas outputs the machine can take (Gases refer to Mekanism Chemicals)
+ * @property {number|boolean} fluidInput - Amount of fluid inputs the machine can take (All minecraft fluids are fluids)
+ * @property {number|boolean} fluidOutput - Amount of fluid outputs the machine can take (All minecraft fluids are fluids)
+ * @property {number|boolean} chemicalInput - Amount of chemical inputs the machine can take (Gases refer to Mekanism Chemicals)
+ * @property {number|boolean} chemicalOutput - Amount of chemical outputs the machine can take (Gases refer to Mekanism Chemicals)
  */
 
 /**
  * @param {Array<MachineObject>} MachineList
  */
 const MachineList = [];
-
-const itemHandler = global.itemHandler;
-const fluidHandler = global.fluidHandler;
-
-const functionBlockList = ['create', 'setIO', 'addToRecipeTypes', 'setRecipeFunction', 'register', 'reset']
 
 /**
  * @typedef {Object} MachineHandler The handler for machine registry
@@ -37,12 +32,12 @@ const MachineHandler = {
         IOCapabilities: {
             itemInput: 0,
             itemOutput: 0,
-            liquidInput: 0,
-            liquidOutput: 0,
-            gasInput: 0,
-            gasOutput: 0
+            fluidInput: 0,
+            fluidOutput: 0,
+            chemicalInput: 0,
+            chemicalOutput: 0
         },
-        recipeFunction: (event, itemI, itemO, fluidI, fluidO, recipeData, recipeId) => {
+        recipeFunction: () => {
             console.error(`Can't find a recipe function for ${MachineHandler.machineId}`);
         }
     },
@@ -63,20 +58,20 @@ const MachineHandler = {
      * - All parameters are either false (no capability), true (no limit to types) or a number for the amount of types
      * @param {number|boolean} itemI - Item inputs
      * @param {number|boolean} itemO - Item outputs
-     * @param {number|boolean} liquidI - Liquid inputs (Minecraft Fluids)
-     * @param {number|boolean} liquidO - Liquid outputs (Minecraft Fluids)
-     * @param {number|boolean} gasI - gas inputs (Mekanism Chemicals)
-     * @param {number|boolean} gasO - gas outputs (Mekanism Chemicals)
+     * @param {number|boolean} fluidI - Fluid inputs (Minecraft Fluids)
+     * @param {number|boolean} fluidO - Fluid outputs (Minecraft Fluids)
+     * @param {number|boolean} chemicalI - chemical inputs (Mekanism Chemicals)
+     * @param {number|boolean} chemicalO - chemical outputs (Mekanism Chemicals)
      * @returns {MachineHandler} Machine Handler, allows for method chaining
      */
-    setIO: (itemI, itemO, liquidI, liquidO, gasI, gasO) => {
+    setIO: (itemI, itemO, fluidI, fluidO, chemicalI, chemicalO) => {
         MachineHandler.result.IOCapabilities = {
             itemInput: itemI,
             itemOutput: itemO,
-            fluidInput: liquidI,
-            fluidOutput: liquidO,
-            gasInput: gasI,
-            gasOutput: gasO
+            fluidInput: fluidI,
+            fluidOutput: fluidO,
+            chemicalInput: chemicalI,
+            chemicalOutput: chemicalO
         };
         return MachineHandler;
     },
@@ -134,12 +129,12 @@ const MachineHandler = {
             IOCapabilities: {
                 itemInput: 0,
                 itemOutput: 0,
-                liquidInput: 0,
-                liquidOutput: 0,
-                gasInput: 0,
-                gasOutput: 0
+                fluidInput: 0,
+                fluidOutput: 0,
+                chemicalInput: 0,
+                chemicalOutput: 0
             },
-            recipeFunction: (event, itemI, itemO, fluidI, fluidO, recipeData, recipeId) => {
+            recipeFunction: () => {
                 console.error(`Can't find a recipe function for ${MachineHandler.machineId}`);
             }
         }

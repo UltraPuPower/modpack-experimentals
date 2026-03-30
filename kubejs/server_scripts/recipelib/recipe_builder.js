@@ -8,10 +8,10 @@ const recipeBuilder = {
     usedRecipeType: '',
     itemI: [],
     itemO: [],
-    liquidI: [],
-    liquidO: [],
-    gasI: [],
-    gasO: [],
+    fluidI: [],
+    fluidO: [],
+    chemicalI: [],
+    chemicalO: [],
     recipeData: {},
 
     /**
@@ -42,6 +42,9 @@ const recipeBuilder = {
      */
     itemInputs: (itemI) => {
         itemI.forEach(item => {
+            if (typeof item == 'string') {
+                item = evaluateIngredient('item', item)
+            }
             recipeBuilder.itemI.push(item);
         });
         return recipeBuilder;
@@ -53,51 +56,66 @@ const recipeBuilder = {
      */
     itemOutputs: (itemO) => {
         itemO.forEach(item => {
+            if (typeof item == 'string') {
+                item = evaluateIngredient('item', item)
+            }
             recipeBuilder.itemO.push(item);
         });
         return recipeBuilder;
     },
     /**
      * Adds liquid inputs to the recipe
-     * @param {string} liquidI - Array containing liquid inputs
+     * @param {string} fluidI - Array containing liquid inputs
      * @returns {recipeBuilder} Recipe Builder, allows for method chaining
      */
-    fluidInputs: (liquidI) => {
-        liquidI.forEach(liquid => {
-            recipeBuilder.liquidI.push(liquid);
+    fluidInputs: (fluidI) => {
+        fluidI.forEach(liquid => {
+            if (typeof liquid == 'string') {
+                liquid = evaluateIngredient('fluid', liquid)
+            }
+            recipeBuilder.fluidI.push(liquid);
         });
         return recipeBuilder;
     },
     /**
      * Adds liquid outputs to the recipe
-     * @param {string} liquidO - Array containing liquid outputs
+     * @param {string} fluidO - Array containing liquid outputs
      * @returns {recipeBuilder} Recipe Builder, allows for method chaining
      */
-    fluidOutputs: (liquidO) => {
-        liquidO.forEach(liquid => {
-            recipeBuilder.liquidO.push(liquid);
+    fluidOutputs: (fluidO) => {
+        fluidO.forEach(liquid => {
+            if (typeof liquid == 'string') {
+                liquid = evaluateIngredient('fluid', liquid)
+            }
+            recipeBuilder.fluidO.push(liquid);
         });
         return recipeBuilder;
     },
     /**
-     * Adds gas inputs to the recipe
-     * @param {string} gasI - Array containing gas inputs
+     * Adds chemical inputs to the recipe
+     * @param {string} chemicalI - Array containing chemical inputs
      * @returns {recipeBuilder} Recipe Builder, allows for method chaining
      */
-    chemicalInputs: (gasI) => {
-        gasI.forEach(gas => {
-            recipeBuilder.gasI.push(gas);
+    chemicalInputs: (chemicalI) => {
+        chemicalI.forEach(chemical => {
+            if (typeof chemical == 'string') {
+                chemical = evaluateIngredient('fluid', chemical)
+            }
+            recipeBuilder.chemicalI.push(chemical);
         });
         return recipeBuilder;
     },
     /**
-     * Adds gas outputs to the recipe
-     * @param {string} gasO - Array containing gas outputs
+     * Adds chemical outputs to the recipe
+     * @param {string} chemicalO - Array containing chemical outputs
      * @returns {recipeBuilder} Recipe Builder, allows for method chaining
      */
-    chemicalOutputs: (gasO) => {
-        gasO.forEach(gas => {
-            recipeBuilder.gasO.push(gas);
+    chemicalOutputs: (chemicalO) => {
+        chemicalO.forEach(chemical => {
+            if (typeof chemical == 'string') {
+                chemical = evaluateIngredient('fluid', chemical)
+            }
+            recipeBuilder.chemicalO.push(chemical);
         });
         return recipeBuilder;
     },
@@ -116,14 +134,7 @@ const recipeBuilder = {
      * Finishes the creation of a material by registering it and cleaning the handler
      */
     register: () => {
-        let itemI = stackArrayBuilder(recipeBuilder.itemI, 'item');
-        let itemO = stackArrayBuilder(recipeBuilder.itemO, 'item');
-        let liquidI = stackArrayBuilder(recipeBuilder.liquidI, 'fluid');
-        let liquidO = stackArrayBuilder(recipeBuilder.liquidO, 'fluid');
-        let gasI = stackArrayBuilder(recipeBuilder.gasI, 'fluid');
-        let gasO = stackArrayBuilder(recipeBuilder.gasO, 'fluid');
-
-        recipeRegistryHandler(recipeBuilder.usedRecipeType, itemI, itemO, liquidI, liquidO, gasI, gasO, recipeBuilder.recipeData, recipeBuilder.recipeId);
+        recipeRegistryHandler(recipeBuilder.usedRecipeType, recipeBuilder.itemI, recipeBuilder.itemO, recipeBuilder.fluidI, recipeBuilder.fluidO, recipeBuilder.chemicalI, recipeBuilder.chemicalO, recipeBuilder.recipeData, recipeBuilder.recipeId);
         recipeBuilder.reset()
     },
 
@@ -135,51 +146,37 @@ const recipeBuilder = {
         recipeBuilder.usedRecipeType = '';
         recipeBuilder.itemI = [];
         recipeBuilder.itemO = [];
-        recipeBuilder.liquidI = [];
-        recipeBuilder.liquidO = [];
-        recipeBuilder.gasI = [];
-        recipeBuilder.gasO = [];
+        recipeBuilder.fluidI = [];
+        recipeBuilder.fluidO = [];
+        recipeBuilder.chemicalI = [];
+        recipeBuilder.chemicalO = [];
         recipeBuilder.recipeData = {};
     }
 };
 
-const recipeRegistryHandler = (usedRecipeType, itemI, itemO, liquidI, liquidO, gasI, gasO, recipeData, recipeId) => {
+const recipeRegistryHandler = (usedRecipeType, itemI, itemO, fluidI, fluidO, chemicalI, chemicalO, recipeData, recipeId) => {
     let recipeTypeRecipes = RecipeTypeList.find(recipeType => recipeType.recipeTypeId == usedRecipeType);
     let machines = recipeTypeRecipes.usableMachines;
 
     ServerEvents.recipes(event => {
         machines.forEach(usableMachine => {
             let machineObj = MachineList.find(machine => machine.machineId == usableMachine);
-            machineObj.recipeFunction(event, itemI, itemO, liquidI, liquidO, gasI, gasO, recipeData, `recipelib:${usedRecipeType}/${usableMachine}/${recipeId}`);
+            machineObj.recipeFunction(event, itemI, itemO, fluidI, fluidO, chemicalI, chemicalO, recipeData, `recipelib:${usedRecipeType}/${usableMachine}/${recipeId}`);
         });
     })
 };
 
-const stackArrayBuilder = (input, type) => {
+const evaluateIngredient = (type, input) => {
     if (type == 'item') {
-        let inputArray = [];
-        input.forEach(item => {
-            let itemStack = {};
-            if (typeof item == 'string') {
-                let itemData = item.match(global.itemRegex);
-                itemStack = new ItemHandler(itemData[2], Number(itemData[1]));
-            } else if (typeof item == 'object') itemStack = item
-            else console.error(`Unsupported recipe ingredient: ${item}`)
-            inputArray.push(itemStack);
-        });
-        return inputArray;
+        let itemStack = {};
+        let itemData = item.match(global.itemRegex);
+        itemStack = new ItemHandler(itemData[3], Number(itemData[2]));
+        return itemStack;
     } else if (type == 'fluid') {
-        let inputArray = [];
-        input.forEach(fluid => {
-            let fluidStack = {};
-            if (typeof fluid == 'string') {
-                let fluidData = fluid.match(global.fluidRegex);
-                fluidStack = new FluidHandler(fluidData[1], Number(fluidData[2]));
-            } else if (typeof fluid == 'object') fluidStack = fluid
-            else console.error(`Unsupported recipe ingredient: ${fluid}`)
-            inputArray.push(fluidStack);
-        });
-        return inputArray;
+        let fluidStack = {};
+        let fluidData = item.match(global.itemRegex);
+        fluidStack = new FluidHandler(fluidData[1], Number(fluidData[3]));
+        return fluidStack;
     } else {
         console.warn(`unknown state: ${type}`)
     }

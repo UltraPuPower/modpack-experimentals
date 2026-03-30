@@ -11,7 +11,12 @@ ServerEvents.recipes(event => {
         "result": {
             "id": "minecraft:diamond_sword",
             "components": {
-                "minecraft:custom_name": "{\"text\":\"Sharp Stick\",\"color\":\"dark_red\",\"italic\":false,\"bold\":true}"
+                "minecraft:custom_name": `{
+                    \"text\":\"Sharp Stick\",
+                    \"color\":\"dark_red\",
+                    \"italic\":false,
+                    \"bold\":true
+                }`
             }
         }
     })

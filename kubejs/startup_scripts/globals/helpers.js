@@ -2,7 +2,7 @@
 
 global.packname = "example";
 
-global.id = (id) => {`example:${id}`};
+global.id = (id) => {`${global.pachname}:${id}`};
 
 global.setToArray = (set) => {
     let newArray = [];
@@ -99,7 +99,7 @@ const materialTooltipGenerator = (compositionArray, grade) => {
     return isotopeTooltip
 };
 
-global.itemRegex = /([0-9]*)x ([a-z_]*:[a-z_]*)/;
-global.fluidRegex = /([a-z_]*:[a-z_]*) ([0-9]*)/;
+global.itemRegex = /(([0-9]*)x )?([a-z_]*:[a-z_]*)/;
+global.fluidRegex = /([a-z_]*:[a-z_]*)( ([0-9]*))?/;
 
 global.isotopeRegex = /([0-9]*)x ([a-z_]*)/;

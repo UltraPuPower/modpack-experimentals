@@ -115,7 +115,7 @@ materialList.forEach(materialObj => {
     if(components.includes('rod')) {
         recipeBuilder.recipeType('cutting').id(`${id}_rod`)
             .itemInputs([createComponentItemStack(id, 'ingot', 1)])
-            .itemOutputs([createComponentItemStack(id, 'rod', 1)])
+            .itemOutputs([createComponentItemStack(id, 'rod', 2)])
             .setRecipeData(dataObject)
             .register();
     }
@@ -123,7 +123,7 @@ materialList.forEach(materialObj => {
     if(components.includes('bolt')) {
         recipeBuilder.recipeType('cutting').id(`${id}_bolt`)
             .itemInputs([createComponentItemStack(id, 'rod', 1)])
-            .itemOutputs([createComponentItemStack(id, 'bolt', 1)])
+            .itemOutputs([createComponentItemStack(id, 'bolt', 4)])
             .setRecipeData(dataObject)
             .register();
     }
@@ -138,7 +138,7 @@ materialList.forEach(materialObj => {
     if(components.includes('wire')) {
         recipeBuilder.recipeType('cutting').id(`${id}_wire`)
             .itemInputs([createComponentItemStack(id, 'plate', 1)])
-            .itemOutputs([createComponentItemStack(id, 'wire', 1)])
+            .itemOutputs([createComponentItemStack(id, 'wire', 4)])
             .setRecipeData(dataObject)
             .register();
     }

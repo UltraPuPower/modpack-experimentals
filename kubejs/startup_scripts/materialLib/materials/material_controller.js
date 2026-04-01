@@ -25,6 +25,13 @@ const materialConsole = Java.createConsole("MaterialLib/Material Console");
  */
 global.MaterialList = [];
 
+let materialTypes = {
+    'composite': {components: ['dust']},
+    'metal': {components: ['block', 'nugget', 'plate', 'liquid']},
+    'salt': {components: ['dust_block'], dataObject: {compressionlevel: 4}},
+    'plastic': {components: ['block', 'liquid']},
+    'gem': {components: ['gem_block']}
+};
 
 /**
  * @typedef {Object} MaterialHandler The handler for material registry
@@ -35,6 +42,7 @@ const MaterialHandler = {
         colors: [],
         composition: [],
         components: new Set([]),
+        type: 'composite',
         textureSet: "default",
         textureOverrides: {},
         itemOverrides: {},
@@ -78,11 +86,10 @@ const MaterialHandler = {
      * @param {string[]} components - All components that should be generated for the material
      * @returns {MaterialHandler} Material Handler, allows for method chaining
      */
-    setComponents: (components) => {
+    addComponents: (components) => {
         for (let i = 0; i < components.length; i++) {
-            MaterialHandler.findNestedComponents(components[i], 1);
+            findNestedComponents(components[i], 1);
         }
-        MaterialHandler.result.components = global.setToArray(MaterialHandler.result.components);
         return MaterialHandler;
     },
 
@@ -126,8 +133,26 @@ const MaterialHandler = {
      * @param {string} itemId - The id of the item that serves as the replacement for the auto generated item
      * @returns {MaterialHandler} Material Handler, allows for method chaining
      */
-    setMaterialData: (dataObject) => {
-        MaterialHandler.result.dataObject = dataObject;
+    addMaterialData: (dataObject) => {
+        let keys = Object.keys(dataObject)
+        keys.forEach(key => {
+            MaterialHandler.result.dataObject[key] = dataObject[key];
+        });
+        return MaterialHandler;
+    },
+    
+    /**
+     * Sets the type of the material (e.g. metal or composite)
+     * @param {string} type - The type of the material
+     * @returns {MaterialHandler} Material Handler, allows for method chaining
+     */
+    setMaterialType: (type) => {
+        if (Object.keys(materialTypes).includes(type)) {
+            MaterialHandler.result.type = type;
+            let keys = Object.keys(materialTypes[type])
+            if (keys.includes('components')) MaterialHandler.addComponents(materialTypes[type].components);
+            if (keys.includes('dataObject')) MaterialHandler.addMaterialData(materialTypes[type].dataObject);
+        } else materialConsole.warn(`Invalid type for ${ComponentHandler.id}: ${type}`);
         return MaterialHandler;
     },
 
@@ -135,6 +160,7 @@ const MaterialHandler = {
      * Finishes the creation of a material by registering it and cleaning the handler
      */
     register: () => {
+        MaterialHandler.result.components = global.setToArray(MaterialHandler.result.components);
         const materialObj = MaterialHandler.result;
         materialConsole.log(`   Registering material ${MaterialHandler.id}`);
         global.MaterialList.push(materialObj);
@@ -150,34 +176,34 @@ const MaterialHandler = {
             colors: [],
             composition: [],
             components: new Set([]),
+            type: 'composite',
             textureSet: "default",
             textureOverrides: {},
             itemOverrides: {},
             dataObject: {}
         };
-    },
-
-    // ==========[Utils]========== \\
-    /**
-     * Loops through component dependencies and adds all to the component set
-     * @param {string} component - Id of the root component
-     * @param {string[]} grade - The current nesting grade
-     */
-    findNestedComponents: (component, grade) => {        
-        let dependencies = [];
-        let foundComponent = global.ComponentList.find(storedComponent => storedComponent.id == component);
-        if (!foundComponent && component != "") {
-            materialConsole.error(`Component "${component}" does not exist (at material: "${MaterialHandler.id}")`);
-            return
-        }
-        MaterialHandler.result.components.add(component);
-        dependencies = global.setToArray(foundComponent.dependencies);
-        if (dependencies) {
-            for (let i = 0; i < dependencies.length; i++) {
-                MaterialHandler.findNestedComponents(dependencies[i], grade+1);
-            }
-        }
-        
     }
 
 };
+
+/**
+ * Loops through component dependencies and adds all to the component set
+ * @param {string} component - Id of the root component
+ * @param {string[]} grade - The current nesting grade
+ */
+function findNestedComponents(component, grade) {
+    let dependencies = [];
+    let foundComponent = global.ComponentList.find(storedComponent => storedComponent.id == component);
+    if (!foundComponent && component != "") {
+        materialConsole.error(`Component "${component}" does not exist (at material: "${MaterialHandler.id}")`);
+        return
+    }
+    MaterialHandler.result.components.add(component);
+    dependencies = global.setToArray(foundComponent.dependencies);
+    if (dependencies) {
+        for (let i = 0; i < dependencies.length; i++) {
+            findNestedComponents(dependencies[i], grade+1);
+        }
+    }
+    
+}

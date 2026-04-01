@@ -5,7 +5,8 @@ ServerEvents.recipes(event => {
         /immersiveengineering:crafting\/(storage|nugget)_.*_to_(ingot_.*|.*_ingot)/,
         /immersiveengineering:metalpress\/(gear|plate|rod|wire)_.*/,
         /immersiveengineering:crafting\/(stick|wire)_.*/,
-        /immersiveengineering:crusher\/ingot_.*/
+        /immersiveengineering:crusher\/ingot_.*/,
+        'immersiveengineering:arc_recycling_list'
     ];
 
     blacklistedRecipes.forEach(recipe => {
@@ -17,7 +18,7 @@ ServerEvents.recipes(event => {
     ];
 
     blacklistedInputs.forEach(input => {
-        event.remove({mod: 'immersiveengineering', id: input});
+        event.remove({mod: 'immersiveengineering', input: input});
     });
     
     let blacklistedOutputs = [
@@ -25,14 +26,14 @@ ServerEvents.recipes(event => {
     ];
 
     blacklistedOutputs.forEach(output => {
-        event.remove({mod: 'immersiveengineering', id: output});
+        event.remove({mod: 'immersiveengineering', output: output});
     });
     
     let blacklistedUsage = [
         
     ];
 
-    blacklistedOutputs.forEach(item => {
+    blacklistedUsage.forEach(item => {
         event.remove({mod: 'immersiveengineering', input: item});
         event.remove({mod: 'immersiveengineering', output: item});
     });

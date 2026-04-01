@@ -2,48 +2,47 @@
 
 MaterialHandler.create('bronze')
     .setColors('#ffc370', '#69993B')
+    .setMaterialType('metal')
     .setComposition(['1x tin', '3x copper'])
-    .setComponents(['plate', 'nugget', 'liquid', 'block'])
     .register();
 
 MaterialHandler.create('brass')
     .setColors('#A2EB66', 0)
+    .setMaterialType('metal')
     .setComposition(['1x zinc', '3x copper'])
-    .setComponents(['gear', 'block', 'nugget'])
+    .addComponents(['gear'])
     .register();
 
 MaterialHandler.create('invar')
     .setColors('#AAABAC', 0)
+    .setMaterialType('metal')
     .setComposition(['1x nickel', '2x iron'])
-    .setComponents(['screw'])
+    .addComponents(['screw'])
     .register();
 
 MaterialHandler.create('rose_gold')
     .setColors('#E59C3C', 0)
+    .setMaterialType('metal')
     .setComposition(['1x copper', '4x gold'])
-    .setComponents(['wire'])
-    .register();
-
-MaterialHandler.create('sapphire')
-    .setColors('#3442BF', '#3E4CCB')
-    .setComposition([''])
-    .setComponents(['gem', 'gem_block'])
+    .addComponents(['wire'])
     .register();
 
 MaterialHandler.create('steel')
     .setColors('#4D4545', '#303030')
+    .setMaterialType('metal')
     .setComposition(['1x iron'])
-    .setComponents(['wire', 'nugget', 'liquid', 'block', 'rod'])
+    .addComponents(['wire', 'rod'])
     .register();
 
 MaterialHandler.create('constantan')
     .setColors('#54513C', '#6A6851')
+    .setMaterialType('metal')
     .setComposition(['1x copper', '1x nickel'])
-    .setComponents(['plate', 'nugget', 'liquid', 'block'])
     .register();
 
 MaterialHandler.create('electrum')
     .setColors('#FFFF8B', '#FF8533')
+    .setMaterialType('metal')
     .setComposition(['1x silver', '1x gold'])
-    .setComponents(['wire', 'nugget', 'liquid', 'block'])
+    .addComponents(['wire'])
     .register();

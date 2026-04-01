@@ -30,12 +30,12 @@ const MachineHandler = {
     result: {
         machineId: '',
         IOCapabilities: {
-            itemInput: 0,
-            itemOutput: 0,
-            fluidInput: 0,
-            fluidOutput: 0,
-            chemicalInput: 0,
-            chemicalOutput: 0
+            itemI: 0,
+            itemO: 0,
+            fluidI: 0,
+            fluidO: 0,
+            chemicalI: 0,
+            chemicalO: 0
         },
         recipeFunction: () => {
             console.error(`Can't find a recipe function for ${MachineHandler.machineId}`);
@@ -66,12 +66,12 @@ const MachineHandler = {
      */
     setIO: (itemI, itemO, fluidI, fluidO, chemicalI, chemicalO) => {
         MachineHandler.result.IOCapabilities = {
-            itemInput: itemI,
-            itemOutput: itemO,
-            fluidInput: fluidI,
-            fluidOutput: fluidO,
-            chemicalInput: chemicalI,
-            chemicalOutput: chemicalO
+            itemI: itemI,
+            itemO: itemO,
+            fluidI: fluidI,
+            fluidO: fluidO,
+            chemicalI: chemicalI,
+            chemicalO: chemicalO
         };
         return MachineHandler;
     },
@@ -127,12 +127,12 @@ const MachineHandler = {
         MachineHandler.result = {
             machineId: '',
             IOCapabilities: {
-                itemInput: 0,
-                itemOutput: 0,
-                fluidInput: 0,
-                fluidOutput: 0,
-                chemicalInput: 0,
-                chemicalOutput: 0
+                itemI: 0,
+                itemO: 0,
+                fluidI: 0,
+                fluidO: 0,
+                chemicalI: 0,
+                chemicalO: 0
             },
             recipeFunction: () => {
                 console.error(`Can't find a recipe function for ${MachineHandler.machineId}`);

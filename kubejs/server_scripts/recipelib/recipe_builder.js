@@ -31,7 +31,7 @@ const recipeBuilder = {
      * @returns {recipeBuilder} Recipe Builder, allows for method chaining
      */
     id: (recipeID) => {
-        recipeBuilder.recipeId = recipeID;
+        recipeBuilder.recipeId = (recipeID) ? recipeID : '';
         return recipeBuilder;
     },
 
@@ -134,7 +134,7 @@ const recipeBuilder = {
      * Finishes the creation of a material by registering it and cleaning the handler
      */
     register: () => {
-        recipeRegistryHandler(recipeBuilder.usedRecipeType, recipeBuilder.itemI, recipeBuilder.itemO, recipeBuilder.fluidI, recipeBuilder.fluidO, recipeBuilder.chemicalI, recipeBuilder.chemicalO, recipeBuilder.recipeData, recipeBuilder.recipeId);
+        recipeRegistrate(recipeBuilder.usedRecipeType, recipeBuilder.itemI, recipeBuilder.itemO, recipeBuilder.fluidI, recipeBuilder.fluidO, recipeBuilder.chemicalI, recipeBuilder.chemicalO, recipeBuilder.recipeData, recipeBuilder.recipeId);
         recipeBuilder.reset()
     },
 
@@ -154,16 +154,54 @@ const recipeBuilder = {
     }
 };
 
-const recipeRegistryHandler = (usedRecipeType, itemI, itemO, fluidI, fluidO, chemicalI, chemicalO, recipeData, recipeId) => {
+const recipeRegistrate = (usedRecipeType, itemI, itemO, fluidI, fluidO, chemicalI, chemicalO, recipeData, recipeId) => {
     let recipeTypeRecipes = RecipeTypeList.find(recipeType => recipeType.recipeTypeId == usedRecipeType);
     let machines = recipeTypeRecipes.usableMachines;
+
+    let namespace = `recipelib`
+    if (recipeId.includes(':')) {
+        let idParts = recipeId.split(':')
+        namespace = idParts[0]
+        recipeId = idParts[1]
+    } else if (global.namespace) {
+        namespace = global.namespace
+    }
 
     ServerEvents.recipes(event => {
         machines.forEach(usableMachine => {
             let machineObj = MachineList.find(machine => machine.machineId == usableMachine);
-            machineObj.recipeFunction(event, itemI, itemO, fluidI, fluidO, chemicalI, chemicalO, recipeData, `recipelib:${usedRecipeType}/${usableMachine}/${recipeId}`);
+
+            let IO = machineObj.IOCapabilities;
+
+            let itemICheck = runComparisonCheck(IO.itemI, itemI, 'itemI')
+            let itemOCheck = runComparisonCheck(IO.itemO, itemO, 'itemO')
+            let fluidICheck = runComparisonCheck(IO.fluidI, fluidI, 'fluidI')
+            let fluidOCheck = runComparisonCheck(IO.fluidO, fluidO, 'fluidO')
+            let chemicalICheck = runComparisonCheck(IO.chemicalI, chemicalI, 'chemicalI')
+            let chemicalOCheck = runComparisonCheck(IO.chemicalO, chemicalO, 'chemicalO')
+
+            let generatedRecipeId = `${namespace}:${usedRecipeType}/${usableMachine}/${recipeId}`
+
+            if (itemICheck && itemOCheck && fluidICheck && fluidOCheck && chemicalICheck && chemicalOCheck) {
+                machineObj.recipeFunction(event, itemI, itemO, fluidI, fluidO, chemicalI, chemicalO, recipeData, generatedRecipeId);
+            } else {
+                console.warn(`failed IO check for recipe: "${generatedRecipeId}"`)
+            }
         });
     })
+};
+
+const runComparisonCheck = (boundary, value, type) => {
+    if (typeof boundary == 'boolean') {
+        if (boundary || value.length == 0) return true
+        console.warn(`Attempted IO on unsupported type; attempt: ${type}`)
+        return false
+    }
+    if (value.length > boundary) {
+        console.warn(`Attempted IO exceeding supported size; attempt: ${type}`)
+        return false
+    }
+    return true
 };
 
 const evaluateIngredient = (type, input) => {

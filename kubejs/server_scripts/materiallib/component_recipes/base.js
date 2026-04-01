@@ -16,7 +16,7 @@ const generateFluidRecipes = (materialObj) => {
 
         if (!dataObject.melting_point) dataObject.melting_point = 320
 
-        recipeBuilder.recipeType('liquefying').id(`${id}_${component}`)
+        recipeBuilder.recipeType('liquefying').id(`materiallib:${id}_${component}`)
             .itemInputs([createComponentItemStack(id, component, 1)])
             .fluidOutputs([createComponentFluidStack(id, 'liquid', liquidVolume)])
             .setRecipeData(dataObject)
@@ -27,7 +27,7 @@ const generateFluidRecipes = (materialObj) => {
 
         let fluidMold = new ItemHandler(`materiallib:empty_${component}_casting_mold`, 1)
 
-        recipeBuilder.recipeType('solidifying').id(`${id}_${component}`)
+        recipeBuilder.recipeType('solidifying').id(`materiallib:${id}_${component}`)
             .itemInputs([fluidMold])
             .fluidInputs([createComponentFluidStack(id, 'liquid', liquidVolume)])
             .itemOutputs([createComponentItemStack(id, component, 1), fluidMold])
@@ -44,7 +44,7 @@ materialList.forEach(materialObj => {
 
     // Basic ingot components
     if(components.includes('nugget')) {
-        recipeBuilder.recipeType('compressing').id(false)
+        recipeBuilder.recipeType('compressing').id('materiallib:')
             .itemInputs([createComponentItemStack(id, 'nugget', 1)])
             .itemOutputs([createComponentItemStack(id, 'ingot', 1)])
             .setRecipeData(dataObject)
@@ -52,13 +52,13 @@ materialList.forEach(materialObj => {
     }
 
     if(components.includes('ingot')) {
-        recipeBuilder.recipeType('blasting').id(`${id}_ingot`)
+        recipeBuilder.recipeType('blasting').id(`materiallib:${id}_ingot`)
             .itemInputs([createComponentItemStack(id, 'dust', 1)])
             .itemOutputs([createComponentItemStack(id, 'ingot', 1)])
             .setRecipeData(dataObject)
             .register();
 
-        recipeBuilder.recipeType('crushing').id(`${id}_ingot`)
+        recipeBuilder.recipeType('crushing').id(`materiallib:${id}_ingot`)
             .itemInputs([createComponentItemStack(id, 'ingot', 1)])
             .itemOutputs([createComponentItemStack(id, 'dust', 1)])
             .setRecipeData(dataObject)
@@ -66,7 +66,7 @@ materialList.forEach(materialObj => {
     }
 
     if(components.includes('block')) {
-        recipeBuilder.recipeType('compressing').id(false)
+        recipeBuilder.recipeType('compressing').id('materiallib:')
             .itemInputs([createComponentItemStack(id, 'ingot', 1)])
             .itemOutputs([createComponentItemStack(id, 'block', 1)])
             .setRecipeData(dataObject)
@@ -75,7 +75,7 @@ materialList.forEach(materialObj => {
 
     // Basic gem components
     if(components.includes('gem')) {
-        recipeBuilder.recipeType('crushing').id(`${id}_gem`)
+        recipeBuilder.recipeType('crushing').id(`materiallib:${id}_gem`)
             .itemInputs([createComponentItemStack(id, 'gem', 1)])
             .itemOutputs([createComponentItemStack(id, 'dust', 1)])
             .setRecipeData(dataObject)
@@ -83,7 +83,7 @@ materialList.forEach(materialObj => {
     }
 
     if(components.includes('gem_block')) {
-        recipeBuilder.recipeType('compressing').id(false)
+        recipeBuilder.recipeType('compressing').id('materiallib:')
             .itemInputs([createComponentItemStack(id, 'gem', 1)])
             .itemOutputs([createComponentItemStack(id, 'gem_block', 1)])
             .setRecipeData(dataObject)
@@ -91,7 +91,7 @@ materialList.forEach(materialObj => {
     }
 
     if(components.includes('dust_block')) {
-        recipeBuilder.recipeType('compressing').id(false)
+        recipeBuilder.recipeType('compressing').id('materiallib:')
             .itemInputs([createComponentItemStack(id, 'dust', 1)])
             .itemOutputs([createComponentItemStack(id, 'dust_block', 1)])
             .setRecipeData(dataObject)
@@ -100,12 +100,12 @@ materialList.forEach(materialObj => {
 
     // Processed Components
     if(components.includes('plate')) {
-        recipeBuilder.recipeType('pressing').id(`${id}_plate`)
+        recipeBuilder.recipeType('pressing').id(`materiallib:${id}_plate`)
             .itemInputs([createComponentItemStack(id, 'ingot', 1)])
             .itemOutputs([createComponentItemStack(id, 'plate', 1)])
             .register();
 
-        recipeBuilder.recipeType('crushing').id(`${id}_plate`)
+        recipeBuilder.recipeType('crushing').id(`materiallib:${id}_plate`)
             .itemInputs([createComponentItemStack(id, 'plate', 1)])
             .itemOutputs([createComponentItemStack(id, 'dust', 1)])
             .setRecipeData(dataObject)
@@ -113,7 +113,7 @@ materialList.forEach(materialObj => {
     }
 
     if(components.includes('rod')) {
-        recipeBuilder.recipeType('cutting').id(`${id}_rod`)
+        recipeBuilder.recipeType('cutting').id(`materiallib:${id}_rod`)
             .itemInputs([createComponentItemStack(id, 'ingot', 1)])
             .itemOutputs([createComponentItemStack(id, 'rod', 2)])
             .setRecipeData(dataObject)
@@ -121,7 +121,7 @@ materialList.forEach(materialObj => {
     }
 
     if(components.includes('bolt')) {
-        recipeBuilder.recipeType('cutting').id(`${id}_bolt`)
+        recipeBuilder.recipeType('cutting').id(`materiallib:${id}_bolt`)
             .itemInputs([createComponentItemStack(id, 'rod', 1)])
             .itemOutputs([createComponentItemStack(id, 'bolt', 4)])
             .setRecipeData(dataObject)
@@ -129,14 +129,14 @@ materialList.forEach(materialObj => {
     }
 
     if(components.includes('screw')) {
-        recipeBuilder.recipeType('pressing').id(`${id}_screw`)
+        recipeBuilder.recipeType('pressing').id(`materiallib:${id}_screw`)
             .itemInputs([createComponentItemStack(id, 'bolt', 1)])
             .itemOutputs([createComponentItemStack(id, 'screw', 1)])
             .register();
     }
 
     if(components.includes('wire')) {
-        recipeBuilder.recipeType('cutting').id(`${id}_wire`)
+        recipeBuilder.recipeType('cutting').id(`materiallib:${id}_wire`)
             .itemInputs([createComponentItemStack(id, 'plate', 1)])
             .itemOutputs([createComponentItemStack(id, 'wire', 4)])
             .setRecipeData(dataObject)
@@ -145,7 +145,7 @@ materialList.forEach(materialObj => {
 
     if(components.includes('gear')) {
         dataObject.shaped = {pattern: ['aba', 'b b', 'aba'], key: {a: `materiallib:${id}_rod`, b: `materiallib:${id}_plate`}}
-        recipeBuilder.recipeType('shaped').id(`${id}_gear`)
+        recipeBuilder.recipeType('shaped').id(`materiallib:${id}_gear`)
             .itemOutputs([createComponentItemStack(id, 'gear', 1)])
             .setRecipeData(dataObject)
             .register();

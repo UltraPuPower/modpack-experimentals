@@ -72,7 +72,7 @@ StartupEvents.registry('item', event => {
         let component = componentList[i]
         if(!component.generateMoldItem) continue
 
-        let newLiquidMold = event.create(`materiallib:empty_${component.id}_casting_mold`);
+        let newLiquidMold = event.create(`materiallib:empty_${component.id}_casting_mold`).tag('c:mold').tag(`c:mold/${component.id}`);
         registryConsole.log(`Created mold for ${component.id}`);
 
         if(!fileExists(`${directMaterialDirection}/molds/${component.id}.png`)) {

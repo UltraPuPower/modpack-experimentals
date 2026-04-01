@@ -18,7 +18,7 @@ Let's say we want to create an gold plate. To do so, we can use the following co
 > this code assumes a `plate` component already exists.
 ```js
 MaterialHandler.create('gold')
-    .setComponents(['plate'])
+    .addComponents(['plate'])
     .register();
 ```
 If we now open the game, we will see that there is now an item called `kubejs:gold_plate`
@@ -32,7 +32,7 @@ These are grayscale textures that represent how an item is shaded. Using some si
 Now, let's make our gold have the color `#fdf55f`:
 ```js
 MaterialHandler.create('gold')
-    .setComponents(['plate'])
+    .addComponents(['plate'])
     .setColors('#FDF55F', 0)
     .register();
 ```
@@ -54,7 +54,7 @@ For this, we can use a new method called `.setComposition()`:
 MaterialHandler.create('brass')
     .setColors('#A2EB66', 0)
     .setComposition(['1x zinc', '3x copper'])
-    .setComponents(['gear'])
+    .addComponents(['gear'])
     .register();
 ```
 Now, all of our brass items will have a tooltip showing their composition. This tooltip is also applied to overriden items (more about those later), to maintain consistency amongst items.
@@ -72,7 +72,7 @@ If you want to switch texture sets, you can use the following code:
 > this code assumes a `better_textures` texture set exists (more about that later)
 ```js
 MaterialHandler.create('gold')
-    .setComponents(['plate'])
+    .addComponents(['plate'])
     .useTextureSet('better_textures')
     .register();
 ```
@@ -92,7 +92,7 @@ The aformentioned `.setOverrideTexture()` method can be used for replacing a tex
 Here is a simple example that overrides the texture for the `dust` component of our `gold` material:
 ```js
 MaterialHandler.create('gold')
-    .setComponents(['plate'])
+    .addComponents(['plate'])
     .setOverrideTexture('dust', 'mekanism:item/dust_gold')
     .register();
 ```
@@ -111,7 +111,7 @@ This method is the similarly sounding `.setOverrideItem()`, and here is the abov
 MaterialHandler.create('diamond')
     .setColors('#93F6FB', 0)
     .setComposition([''])
-    .setComponents(['gem'])
+    .addComponents(['gem'])
     .setOverrideItem('gem', 'minecraft:diamond')
     .register();
 ```

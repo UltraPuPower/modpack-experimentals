@@ -61,7 +61,7 @@ StartupEvents.registry('fluid', event => {
             if(global.dataObject.prefixList.includes(component)) fluidId = `${component}_${id}`
             if(global.dataObject.suffixList.includes(component)) fluidId = `${id}_${component}`
 
-            event.create(`materiallib:${fluidId}`, 'kubejs:thick').displayName(generateName(fluidId)).tint(material.colors[0]).noBlock().bucketItem.tooltip(completeTooltipText);
+            event.create(`materiallib:${fluidId}`, 'kubejs:thick').displayName(toDisplayName(fluidId)).tint(material.colors[0]).noBlock().bucketItem.tooltip(completeTooltipText);
             registryConsole.log(`Created fluid ${fluidId}`);
         }
     });

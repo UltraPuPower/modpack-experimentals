@@ -27,7 +27,7 @@ global.MaterialList = [];
 
 let materialTypes = {
     'composite': {components: ['dust']},
-    'metal': {components: ['block', 'nugget', 'plate', 'liquid']},
+    'metal': {components: ['block', 'nugget', 'plate', 'liquid'], dataObject: {melting_point: 400, toughness: 50}},
     'salt': {components: ['dust_block'], dataObject: {compressionlevel: 4}},
     'plastic': {components: ['block', 'liquid']},
     'gem': {components: ['gem_block']}
@@ -162,7 +162,7 @@ const MaterialHandler = {
     register: () => {
         MaterialHandler.result.components = global.setToArray(MaterialHandler.result.components);
         const materialObj = MaterialHandler.result;
-        materialConsole.log(`   Registering material ${MaterialHandler.id}`);
+        materialConsole.log(`   Registering material ${MaterialHandler.result.id}`);
         global.MaterialList.push(materialObj);
         MaterialHandler.reset();
     },
@@ -192,6 +192,10 @@ const MaterialHandler = {
  * @param {string[]} grade - The current nesting grade
  */
 function findNestedComponents(component, grade) {
+    if (grade > 30) {
+        console.error(`Nested component 30 deep, breaking (${component})`)
+        return
+    }
     let dependencies = [];
     let foundComponent = global.ComponentList.find(storedComponent => storedComponent.id == component);
     if (!foundComponent && component != "") {

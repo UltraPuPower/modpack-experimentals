@@ -15,8 +15,8 @@ ServerEvents.recipes(event => {
             if (!materialObj.components.includes(component)) continue;
 
             let itemId = '';
-            if(global.dataObject.prefixList.includes(component)) itemId = `materiallib:${component}_${material}`;
-            if(global.dataObject.suffixList.includes(component)) itemId = `materiallib:${material}_${component}`;
+            if(global.materialLibData.affixLists.prefix.includes(component)) itemId = `materiallib:${component}_${material}`;
+            if(global.materialLibData.affixLists.suffix.includes(component)) itemId = `materiallib:${material}_${component}`;
 
             if (materialObj.itemOverrides[component]) itemId = materialObj.itemOverrides[component];
 

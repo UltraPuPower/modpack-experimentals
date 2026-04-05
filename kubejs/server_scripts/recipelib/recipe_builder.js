@@ -207,12 +207,12 @@ const runComparisonCheck = (boundary, value, type) => {
 const evaluateIngredient = (type, input) => {
     if (type == 'item') {
         let itemStack = {};
-        let itemData = item.match(global.itemRegex);
+        let itemData = input.match(global.itemRegex);
         itemStack = new ItemHandler(itemData[3], Number(itemData[2]));
         return itemStack;
     } else if (type == 'fluid') {
         let fluidStack = {};
-        let fluidData = item.match(global.itemRegex);
+        let fluidData = input.match(global.fluidRegex);
         fluidStack = new FluidHandler(fluidData[1], Number(fluidData[3]));
         return fluidStack;
     } else {

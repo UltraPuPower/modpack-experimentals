@@ -76,10 +76,10 @@ const BlacklistHandler = {
         
         if (BlacklistHandler.discoveredIndex === false) {
             global.itemBlackList.push(blackListObj);
-            blacklistConsole.log(`  Registered material blacklist for ${BlacklistHandler.material}`);
+            blacklistConsole.log(`  Registered material blacklist for ${BlacklistHandler.result.material}`);
         } else {
             global.itemBlackList[BlacklistHandler.discoveredIndex] = blackListObj;
-            blacklistConsole.log(`  Overwrote material blacklist for ${BlacklistHandler.material}`);
+            blacklistConsole.log(`  Overwrote material blacklist for ${BlacklistHandler.result.material}`);
         }
         BlacklistHandler.reset()
     },

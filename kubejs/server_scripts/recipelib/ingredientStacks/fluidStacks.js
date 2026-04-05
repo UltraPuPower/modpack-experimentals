@@ -66,10 +66,10 @@ FluidHandler.prototype.getOutputIngredient = function() {
  * Creates a valid json chemical object from an intermediate fluid stack
  * @returns {$fluidStack} Valid json chemical object using "id" notation
  */
-FluidHandler.prototype.getOutputIngredient = function() {
+FluidHandler.prototype.getMekanismChemical = function() {
     let chemicalObject = {
-        "amount": fluidStack.amount,
-        "chemical": fluidStack.id
+        "amount": this.amount,
+        "chemical": this.id
     };
     return chemicalObject;
 }

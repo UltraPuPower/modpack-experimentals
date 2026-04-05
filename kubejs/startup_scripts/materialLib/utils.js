@@ -1,3 +1,5 @@
+Platform.setModName("materiallib", "Material Lib");
+
 const subsciptNumbers = ['\u2080', '\u2081', '\u2082', '\u2083', '\u2084', '\u2085', '\u2086', '\u2087', '\u2088', '\u2089'];
 const tooltipConsole = Java.createConsole("MaterialLib/Tooltip Console");
 
@@ -36,3 +38,15 @@ const materialTooltipGenerator = (compositionArray, grade) => {
     
     return isotopeTooltip
 };
+
+global.generateComponentId = (material, component) => {
+    let id = '';
+    if (global.materialLibData.affixLists.prefix.includes(component)) id = `materiallib:${component}_${material}`;
+    else if (global.materialLibData.affixLists.suffix.includes(component)) id = `materiallib:${material}_${component}`;
+    else if (global.materialLibData.affixLists.plural.includes(component)) {
+        let componentObj = componentList.find(componentObj => componentObj.id == component);
+        let affixData = componentObj.affixData
+        id = `materiallib:${(affixData.prefix) ? `${affixData.prefix}_` : ''}${material}${(affixData.suffix) ? `_${affixData.suffix}` : ''}`
+    } else console.log(`Affix issue with component ${component}`)
+    return id
+}

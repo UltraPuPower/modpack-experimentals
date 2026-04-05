@@ -15,7 +15,7 @@ const componentConsole = Java.createConsole("MaterialLib/Component Console");
 global.ComponentList = [];
 
 let componentStates = ['solid', 'liquid', 'gas', 'plasma'];
-let componentTypes = ['item', 'block', 'fluid'];
+let componentTypes = ['item', 'block', 'fluid', 'chemical'];
 let componentAffixes = ['prefix', 'suffix'];
 
 /**
@@ -29,7 +29,8 @@ const ComponentHandler = {
         generateMoldItem: false,
         state: 'solid',
         type: 'item',
-        affixType: 'suffix'
+        affixData: 'suffix',
+        loader: 'base'
     },
 
     /**
@@ -102,13 +103,36 @@ const ComponentHandler = {
 
     /**
      * Sets the type of affix the component is
-     * @param {string} affix - The affix of the component: prefix, suffix
+     * @param {string} affix - The affix of the component: prefix, suffix, {prefix: '', suffix: ''}
      * @returns {Handler} Component Handler, allows for method chaining
      */
     setComponentAffix: (affix) => {
-        if (componentAffixes.includes(affix)) {
-            ComponentHandler.result.affixType = affix;
+        if ((typeof affix == 'string' && componentAffixes.includes(affix)) || (typeof affix == 'object' && Object.keys(affix).includes('prefix') && Object.keys(affix).includes('suffix'))) {
+            ComponentHandler.result.affixData = affix;
         } else componentConsole.warn(`Invalid affix for ${ComponentHandler.id}: ${affix}`)
+        return ComponentHandler
+    },
+
+    /**
+     * Dictates what loader file is used for generating the component
+     * @param {string} loader - The loader file that should be used
+     * @returns {Handler} Component Handler, allows for method chaining
+     */
+    setRegistryLoader: (loader) => {
+        ComponentHandler.result.loader = loader;
+        return ComponentHandler
+    },
+
+    /**
+     * Adds the current component as a dependency to a different one
+     * @param {string} component - The component that needs this component as a dependancy
+     * @returns {Handler} Component Handler, allows for method chaining
+     */
+    addAsDependant: (component) => {
+        let componentObj = global.ComponentList.find(componentObj => componentObj.id == component)
+        let index = global.ComponentList.indexOf(componentObj)
+        componentObj.dependencies.push(ComponentHandler.result.id)
+        global.ComponentList[index] = componentObj
         return ComponentHandler
     },
 
@@ -133,7 +157,8 @@ const ComponentHandler = {
             generateMoldItem: false,
             state: 'solid',
             type: 'item',
-            affixType: 'suffix'
+            affixData: 'suffix',
+            loader: 'base'
         };
     }
 };

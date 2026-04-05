@@ -1,4 +1,6 @@
 // priority: 99998
+// requires: minecraft
+// author: UltraPuPower1
 
 ComponentHandler.create('dust')
     .register();
@@ -87,4 +89,13 @@ ComponentHandler.create('dust_block')
 ComponentHandler.create('gas')
     .setComponentState('gas')
     .setComponentType('fluid')
+    .register();
+
+ComponentHandler.create('raw')
+    .setComponentAffix('prefix')
+    .register();
+
+ComponentHandler.create('ore')
+    .setDependencies(['dust', 'raw'])
+    .setComponentType('block')
     .register();

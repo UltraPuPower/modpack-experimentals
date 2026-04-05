@@ -71,7 +71,7 @@ const IsotopeHandler = {
      */
     register: () => {
         const isotopeObj = IsotopeHandler.result;
-        isotopeConsole.log(`    Registering ${IsotopeHandler.isotopeId}`);
+        isotopeConsole.log(`    Registering ${IsotopeHandler.result.isotopeId}`);
         global.IsotopeList.push(isotopeObj);
         IsotopeHandler.reset();
     },

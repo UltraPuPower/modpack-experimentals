@@ -12,13 +12,12 @@ NativeEvents.onEvent("net.neoforged.neoforge.client.event.RenderTooltipEvent$Gat
     //example
     materialList.forEach(materialObj => {
         const { id, colors, components, composition, textureSet, textureOverrides, itemOverrides } = materialObj;
-        let materialTooltip = global.dataObject['tooltipObject'][id];
+        let materialTooltip = global.materialLibData['tooltipObject'][id];
 
-        for (let i = 0; i < components.length; i++) {
-            let component = components[i]
-            let fluidId = '';
-            if(global.dataObject.prefixList.includes(component)) fluidId = `materiallib:${component}_${id}`;
-            if(global.dataObject.suffixList.includes(component)) fluidId = `materiallib:${id}_${component}`;
+        for (let component of components) {
+            let fluidId = ''
+            if(global.materialLibData.affixLists.prefix.includes(component)) fluidId = `materiallib:${component}_${id}`
+            if(global.materialLibData.affixLists.suffix.includes(component)) fluidId = `materiallib:${id}_${component}`
 
             if (itemOverrides[component]) fluidId = itemOverrides[component];
 
@@ -34,9 +33,8 @@ ItemEvents.modifyTooltips(event => {
     // Composition tooltip for overrides
     materialList.forEach(materialObj => {
         const { id, colors, components, composition, textureSet, textureOverrides, itemOverrides } = materialObj;
-        let completeTooltipText = Text.of('Composition: ').append(Text.of(global.dataObject['tooltipObject'][id])).color('#535361');
-        for (let i = 0; i < components.length; i++) {
-            let component = components[i];
+        let completeTooltipText = Text.of('Composition: ').append(Text.of(global.materialLibData['tooltipObject'][id])).color('#535361');
+        for (let component of components) {
             if (itemOverrides[component]) {
                 event.modify(itemOverrides[component], tooltip => {
                     tooltip.insert(1, completeTooltipText);

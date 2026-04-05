@@ -83,7 +83,7 @@ MachineHandler.create('electrolytic_separator')
     .register();
 
 MachineHandler.create('chemical_crystaliser')
-    .setIO(false, false, false, 1, 1, false)
+    .setIO(false, 1, false, false, 1, false)
     .addToRecipeTypes(['crystallising'])
     .setRecipeFunction((event, itemI, itemO, fluidI, fluidO, chemicalI, chemicalO, recipeData, recipeId) => {
         let recipeJson = {

@@ -23,3 +23,9 @@ MaterialHandler.create('sapphire')
     .setMaterialType('gem')
     .setComposition([''])
     .register();
+
+MaterialHandler.create('test')
+    .setColors('#7B7FA3', '#848697')
+    .addComponents(['ore'])
+    .setComposition([''])
+    .register();

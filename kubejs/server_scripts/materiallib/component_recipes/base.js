@@ -1,4 +1,5 @@
 // priority: 100
+// requires: minecraft
 // author: UltraPuPower1
 const materialList = global.MaterialList;
 const componentList = global.ComponentList;

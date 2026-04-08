@@ -14,43 +14,23 @@ ServerEvents.recipes(event => {
 
             if (!materialObj.components.includes(component)) continue;
 
-            let itemId = '';
-            if(global.materialLibData.affixLists.prefix.includes(component)) itemId = `materiallib:${component}_${material}`;
-            if(global.materialLibData.affixLists.suffix.includes(component)) itemId = `materiallib:${material}_${component}`;
+            let itemId = global.generateComponentId(material, component);
 
             if (materialObj.itemOverrides[component]) itemId = materialObj.itemOverrides[component];
 
             let tag = `#c:${component}s/${material}`
-            event.replaceInput({ input: tag },
-                tag,
-                itemId
-            );
-            event.replaceOutput({ output: tag },
-                tag,
-                itemId
-            );
+            event.replaceInput({ input: tag }, tag, itemId);
+            event.replaceOutput({ output: tag }, tag, itemId);
 
             if (material == 'aluminium') {
                 tag = `#c:${component}s/aluminum`
-                event.replaceInput({ input: tag },
-                    tag,
-                    itemId
-                );
-                event.replaceOutput({ output: tag },
-                    tag,
-                    itemId
-                );
+                event.replaceInput({ input: tag }, tag, itemId);
+                event.replaceOutput({ output: tag }, tag, itemId);
             }
 
             itemEntries.forEach(item => {
-                event.replaceInput({ input: item },
-                    item,
-                    itemId
-                );
-                event.replaceOutput({ output: item },
-                    item,
-                    itemId
-                );
+                event.replaceInput({ input: item }, item, itemId);
+                event.replaceOutput({ output: item }, item, itemId);
 
                 let recipeId = `materiallib:conversion/shapeless_${item.split(':')[0]}_${item.split(':')[1]}`
                 global.recipeIdStorage.addRecipeId(recipeId);

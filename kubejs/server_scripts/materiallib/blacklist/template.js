@@ -3,8 +3,8 @@ ServerEvents.recipes(event => {
         
     ];
 
-    blacklistedRecipes.forEach(recipe => {
-        event.remove({mod: 'modid', id: recipe});
+    blacklistedRecipes.forEach(id => {
+        event.remove({mod: 'modid', id: id});
     });
     
     let blacklistedInputs = [
@@ -12,7 +12,7 @@ ServerEvents.recipes(event => {
     ];
 
     blacklistedInputs.forEach(input => {
-        event.remove({mod: 'modid', id: input});
+        event.remove({mod: 'modid', input: item});
     });
     
     let blacklistedOutputs = [
@@ -20,14 +20,14 @@ ServerEvents.recipes(event => {
     ];
 
     blacklistedOutputs.forEach(output => {
-        event.remove({mod: 'modid', id: output});
+        event.remove({mod: 'modid', output: item});
     });
     
     let blacklistedUsage = [
         
     ];
 
-    blacklistedOutputs.forEach(item => {
+    blacklistedUsage.forEach(item => {
         event.remove({mod: 'modid', input: item});
         event.remove({mod: 'modid', output: item});
     });

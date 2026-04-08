@@ -73,6 +73,10 @@ BlacklistHandler.getMaterial('diamond')
 // New Materials
 BlacklistHandler.getMaterial('lead')
     .setItems([
+        {component: 'raw', items: ['mekanism:raw_lead']},
+        {component: 'raw_block', items: ['mekanism:block_raw_lead']},
+        {component: 'ore', items: ['mekanism:lead_ore']},
+        {component: 'deepslate_ore', items: ['mekanism:deepslate_lead_ore']},
         {component: 'dust', items: ['mekanism:dust_lead']},
         {component: 'nugget', items: ['mekanism:nugget_lead']},
         {component: 'ingot', items: ['mekanism:ingot_lead']},
@@ -82,6 +86,8 @@ BlacklistHandler.getMaterial('lead')
 
 BlacklistHandler.getMaterial('fluorite')
     .setItems([
+        {component: 'ore', items: ['mekanism:fluorite_ore']},
+        {component: 'deepslate_ore', items: ['mekanism:deepslate_fluorite_ore']},
         {component: 'dust', items: ['mekanism:dust_fluorite']},
         {component: 'gem', items: ['mekanism:fluorite_gem']},
         {component: 'gem_block', items: ['mekanism:block_fluorite']}
@@ -90,6 +96,10 @@ BlacklistHandler.getMaterial('fluorite')
 
 BlacklistHandler.getMaterial('uranium')
     .setItems([
+        {component: 'raw', items: ['mekanism:raw_uranium']},
+        {component: 'raw_block', items: ['mekanism:block_raw_uranium']},
+        {component: 'ore', items: ['mekanism:uranium_ore']},
+        {component: 'deepslate_ore', items: ['mekanism:deepslate_uranium_ore']},
         {component: 'dust', items: ['mekanism:dust_uranium']},
         {component: 'nugget', items: ['mekanism:nugget_uranium']},
         {component: 'ingot', items: ['mekanism:ingot_uranium']},
@@ -99,6 +109,10 @@ BlacklistHandler.getMaterial('uranium')
 
 BlacklistHandler.getMaterial('tin')
     .setItems([
+        {component: 'raw', items: ['mekanism:raw_tin']},
+        {component: 'raw_block', items: ['mekanism:block_raw_tin']},
+        {component: 'ore', items: ['mekanism:tin_ore']},
+        {component: 'deepslate_ore', items: ['mekanism:deepslate_tin_ore']},
         {component: 'dust', items: ['mekanism:dust_tin']},
         {component: 'nugget', items: ['mekanism:nugget_tin']},
         {component: 'ingot', items: ['mekanism:ingot_tin']},
@@ -108,6 +122,10 @@ BlacklistHandler.getMaterial('tin')
 
 BlacklistHandler.getMaterial('osmium')
     .setItems([
+        {component: 'raw', items: ['mekanism:raw_osmium']},
+        {component: 'raw_block', items: ['mekanism:block_raw_osmium']},
+        {component: 'ore', items: ['mekanism:osmium_ore']},
+        {component: 'deepslate_ore', items: ['mekanism:deepslate_osmium_ore']},
         {component: 'dust', items: ['mekanism:dust_osmium']},
         {component: 'nugget', items: ['mekanism:nugget_osmium']},
         {component: 'ingot', items: ['mekanism:ingot_osmium']},
@@ -152,6 +170,7 @@ BlacklistHandler.getMaterial('bronze')
     ])
     .register();
 
+// Compounds
 BlacklistHandler.getMaterial('hydrogen_chloride')
     .setItems([
         {component: 'dust', items: ['mekanism:salt']},

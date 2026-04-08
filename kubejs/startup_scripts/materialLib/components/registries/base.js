@@ -95,7 +95,20 @@ ComponentHandler.create('raw')
     .setComponentAffix('prefix')
     .register();
 
-ComponentHandler.create('ore')
-    .setDependencies(['dust', 'raw'])
+ComponentHandler.create('raw_block')
+    .setDependencies(['raw'])
     .setComponentType('block')
+    .setComponentAffix({prefix: 'raw', suffix: 'block'})
+    .setComponentAffix('prefix')
+    .register();
+
+ComponentHandler.create('ore')
+    .setDependencies(['dust', 'raw_block'])
+    .setComponentType('block')
+    .register();
+
+ComponentHandler.create('deepslate_ore')
+    .setComponentType('block')
+    .addAsDependant('ore')
+    .setComponentAffix({prefix: 'deepslate', suffix: 'ore'})
     .register();

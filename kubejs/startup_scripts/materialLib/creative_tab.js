@@ -3,7 +3,11 @@
     let componentIdList = ['bucket']
     components.forEach(component => {
         const { id } = component
-        componentIdList.push(id)
+        if (id.includes('_')) {
+            id.split('_').forEach(part => {
+                componentIdList = global.originalArrayPush(componentIdList, part);
+            });
+        } else componentIdList = global.originalArrayPush(componentIdList, id);
     })
 
     const itemObject = {

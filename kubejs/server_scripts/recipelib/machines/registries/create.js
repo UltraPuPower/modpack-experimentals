@@ -100,7 +100,7 @@ MachineHandler.create('millstone')
 
 MachineHandler.create('crushing_wheel')
     .setIO(1, true, false, false, false, false)
-    .addToRecipeTypes(['crushing'])
+    .addToRecipeTypes(['crushing', 'pulverizing'])
     .setRecipeFunction((event, itemI, itemO, fluidI, fluidO, chemicalI, chemicalO, recipeData, recipeId) => {
         let input = [];
         let output = [];
@@ -142,7 +142,7 @@ MachineHandler.create('spout')
 
 MachineHandler.create('encased_fan_water')
     .setIO(1, 1, 1, false, false, false)
-    .addToRecipeTypes(['bulk_washing'])
+    .addToRecipeTypes(['splashing'])
     .setRecipeFunction((event, itemI, itemO, fluidI, fluidO, chemicalI, chemicalO, recipeData, recipeId) => {
         let output = [];
         itemO.forEach(item => {

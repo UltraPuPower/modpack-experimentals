@@ -9,24 +9,24 @@ ServerEvents.recipes(event => {
         'immersiveengineering:arc_recycling_list'
     ];
 
-    blacklistedRecipes.forEach(recipe => {
-        event.remove({mod: 'immersiveengineering', id: recipe});
+    blacklistedRecipes.forEach(id => {
+        event.remove({mod: 'immersiveengineering', id: id});
     });
     
     let blacklistedInputs = [
         
     ];
 
-    blacklistedInputs.forEach(input => {
-        event.remove({mod: 'immersiveengineering', input: input});
+    blacklistedInputs.forEach(item => {
+        event.remove({mod: 'immersiveengineering', input: item});
     });
     
     let blacklistedOutputs = [
         
     ];
 
-    blacklistedOutputs.forEach(output => {
-        event.remove({mod: 'immersiveengineering', output: output});
+    blacklistedOutputs.forEach(item => {
+        event.remove({mod: 'immersiveengineering', output: item});
     });
     
     let blacklistedUsage = [

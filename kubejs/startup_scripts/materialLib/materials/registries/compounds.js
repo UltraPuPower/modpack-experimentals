@@ -27,5 +27,6 @@ MaterialHandler.create('sapphire')
 MaterialHandler.create('test')
     .setColors('#7B7FA3', '#848697')
     .addComponents(['ore'])
+    .useTextureSet('custom')
     .setComposition([''])
     .register();

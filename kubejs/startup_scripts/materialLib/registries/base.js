@@ -23,7 +23,8 @@ global.materialLibData = {
 
     loader: {
         base: [],
-        mekanism: []
+        mekanism: [],
+        create: []
     },
 
     itemList: [],

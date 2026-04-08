@@ -8,8 +8,8 @@ MachineHandler.create('crusher')
     .setRecipeFunction((event, itemI, itemO, fluidI, fluidO, chemicalI, chemicalO, recipeData, recipeId) => {
         let recipeJson = {
             "type": "mekanism:crushing",
-            "input": itemI[0].getInputIngredient(),
-            "output": itemO[0].getOutputIngredient()
+            "input": itemI[0].getIngredient(),
+            "output": itemO[0].getItemStack()
         };
 
         event.custom(recipeJson).id(recipeId);
@@ -22,12 +22,12 @@ MachineHandler.create('precision_sawmill')
     .setRecipeFunction((event, itemI, itemO, fluidI, fluidO, chemicalI, chemicalO, recipeData, recipeId) => {
         let recipeJson = {
             "type": "mekanism:sawing",
-            "input": itemI[0].getInputIngredient(),
-            "main_output": itemO[0].getOutputIngredient()
+            "input": itemI[0].getIngredient(),
+            "main_output": itemO[0].getItemStack()
         };
 
         if (itemO[1]) {
-            recipeJson["secondary_output"] = itemO[1].getOutputIngredient();
+            recipeJson["secondary_output"] = itemO[1].getItemStack();
             recipeJson["secondary_chance"] = recipeData.odds ? recipeData.odds: 0.5;
         };
 
@@ -41,8 +41,8 @@ MachineHandler.create('enrichment_chamber')
     .setRecipeFunction((event, itemI, itemO, fluidI, fluidO, chemicalI, chemicalO, recipeData, recipeId) => {
         let recipeJson = {
             "type": "mekanism:enriching",
-            "input": itemI[0].getInputIngredient(),
-            "output": itemO[0].getOutputIngredient()
+            "input": itemI[0].getIngredient(),
+            "output": itemO[0].getItemStack()
         };
 
         event.custom(recipeJson).id(recipeId);
@@ -55,12 +55,12 @@ MachineHandler.create('combiner')
     .setRecipeFunction((event, itemI, itemO, fluidI, fluidO, chemicalI, chemicalO, recipeData, recipeId) => {
         let recipeJson = {
             "type": "mekanism:combining",
-            "main_input": itemI[0].getInputIngredient(),
-            "output": itemO[0].getOutputIngredient()
+            "main_input": itemI[0].getIngredient(),
+            "output": itemO[0].getItemStack()
         };
 
         if (itemI[1]) {
-            recipeJson["extra_input"] = itemI[1].getInputIngredient();
+            recipeJson["extra_input"] = itemI[1].getIngredient();
         };
 
         event.custom(recipeJson).id(recipeId);
@@ -73,9 +73,9 @@ MachineHandler.create('electrolytic_separator')
     .setRecipeFunction((event, itemI, itemO, fluidI, fluidO, chemicalI, chemicalO, recipeData, recipeId) => {
         let recipeJson = {
             "type": "mekanism:separating",
-            "input": fluidI[0].getInputIngredient(),
-            "left_chemical_output": chemicalO[0].getOutputIngredient(),
-            "right_chemical_output": chemicalO[1].getOutputIngredient()
+            "input": fluidI[0].getIngredient(),
+            "left_chemical_output": chemicalO[0].getFluidStack(),
+            "right_chemical_output": chemicalO[1].getFluidStack()
         };
 
         event.custom(recipeJson).id(recipeId);
@@ -89,7 +89,7 @@ MachineHandler.create('chemical_crystaliser')
         let recipeJson = {
             "type": "mekanism:crystallizing",
             "input": chemicalI[0].getMekanismChemical(),
-            "output": itemO[0].getOutputIngredient()
+            "output": itemO[0].getItemStack()
         };
 
         event.custom(recipeJson).id(recipeId);
@@ -102,9 +102,9 @@ MachineHandler.create('chemical_dissolution_chamber')
     .setRecipeFunction((event, itemI, itemO, fluidI, fluidO, chemicalI, chemicalO, recipeData, recipeId) => {
         let recipeJson = {
             "type": "mekanism:dissolution",
-            "item_input": itemI[0].getInputIngredient(),
+            "item_input": itemI[0].getIngredient(),
             "chemical_input": chemicalI[0].getMekanismChemical(),
-            "output": chemicalO[0].getOutputIngredient(),
+            "output": chemicalO[0].getFluidStack(),
             "per_tick_usage": false
         };
 
@@ -122,9 +122,9 @@ MachineHandler.create('chemical_washer')
     .setRecipeFunction((event, itemI, itemO, fluidI, fluidO, chemicalI, chemicalO, recipeData, recipeId) => {
         let recipeJson = {
             "type": "mekanism:washing",
-            "fluid_input": fluidI[0].getInputIngredient(),
+            "fluid_input": fluidI[0].getIngredient(),
             "chemical_input": chemicalI[0].getMekanismChemical(),
-            "output": chemicalO[0].getOutputIngredient(),
+            "output": chemicalO[0].getFluidStack(),
         };
 
         event.custom(recipeJson).id(recipeId);
@@ -144,11 +144,11 @@ MachineHandler.create('pressurized_reaction_chamber')
         let output = false;
 
         if (itemI[0]) {
-            recipeJson["item_input"] = itemI[0].getInputIngredient();
+            recipeJson["item_input"] = itemI[0].getIngredient();
             input = true;
         }
         if (fluidI[0]) {
-            recipeJson["fluid_input"] = fluidI[0].getInputIngredient();
+            recipeJson["fluid_input"] = fluidI[0].getIngredient();
             input = true;
         }
         if (chemicalI[0]) {
@@ -156,11 +156,11 @@ MachineHandler.create('pressurized_reaction_chamber')
             input = true;
         }
         if (itemO[0]) {
-            recipeJson["item_output"] = itemO[0].getOutputIngredient();
+            recipeJson["item_output"] = itemO[0].getItemStack();
             output = true;
         }
         if (chemicalO[0]) {
-            recipeJson["chemical_output"] = chemicalO[0].getOutputIngredient();
+            recipeJson["chemical_output"] = chemicalO[0].getFluidStack();
             output = true;
         }
         
@@ -183,8 +183,8 @@ MachineHandler.create('chemical_oxidizer')
     .setRecipeFunction((event, itemI, itemO, fluidI, fluidO, chemicalI, chemicalO, recipeData, recipeId) => {
         let recipeJson = {
             "type": "mekanism:oxidizing",
-            "input": itemI[0].getInputIngredient(),
-            "output": chemicalO[0].getOutputIngredient()
+            "input": itemI[0].getIngredient(),
+            "output": chemicalO[0].getFluidStack()
         };
 
         event.custom(recipeJson).id(recipeId);
@@ -197,10 +197,10 @@ MachineHandler.create('rotary_condensator')
     .setRecipeFunction((event, itemI, itemO, fluidI, fluidO, chemicalI, chemicalO, recipeData, recipeId) => {
         let recipeJson = {
             "type": "mekanism:rotary",
-            "fluid_input": fluidI[0].getInputIngredient(),
+            "fluid_input": fluidI[0].getIngredient(),
             "chemical_input": chemicalI[0].getMekanismChemical(),
-            "fluid_output": fluidO[0].getOutputIngredient(fluidO[0]),
-            "chemical_output": chemicalO[0].getOutputIngredient()
+            "fluid_output": fluidO[0].getFluidStack(),
+            "chemical_output": chemicalO[0].getFluidStack()
         };
 
         event.custom(recipeJson).id(recipeId);
@@ -213,9 +213,9 @@ MachineHandler.create('metallurgic_infuser')
     .setRecipeFunction((event, itemI, itemO, fluidI, fluidO, chemicalI, chemicalO, recipeData, recipeId) => {
         let recipeJson = {
             "type": "mekanism:metallurgic_infusing",
-            "item_input": itemI[0].getInputIngredient(),
+            "item_input": itemI[0].getIngredient(),
             "chemical_input": chemicalI[0].getMekanismChemical(),
-            "output": itemO[0].getOutputIngredient(),
+            "output": itemO[0].getItemStack(),
             "per_tick_usage": false
         };
 
@@ -233,9 +233,9 @@ MachineHandler.create('chemical_injection_chamber')
     .setRecipeFunction((event, itemI, itemO, fluidI, fluidO, chemicalI, chemicalO, recipeData, recipeId) => {
         let recipeJson = {
             "type": "mekanism:injecting",
-            "item_input": itemI[0].getInputIngredient(),
+            "item_input": itemI[0].getIngredient(),
             "chemical_input": chemicalI[0].getMekanismChemical(),
-            "output": itemO[0].getOutputIngredient(),
+            "output": itemO[0].getItemStack(),
             "per_tick_usage": false
         };
 
@@ -253,9 +253,9 @@ MachineHandler.create('purification_chamber')
     .setRecipeFunction((event, itemI, itemO, fluidI, fluidO, chemicalI, chemicalO, recipeData, recipeId) => {
         let recipeJson = {
             "type": "mekanism:purifying",
-            "item_input": itemI[0].getInputIngredient(),
+            "item_input": itemI[0].getIngredient(),
             "chemical_input": chemicalI[0].getMekanismChemical(),
-            "output": itemO[0].getOutputIngredient(),
+            "output": itemO[0].getItemStack(),
             "per_tick_usage": false
         };
 
@@ -273,9 +273,9 @@ MachineHandler.create('osmium_compressor')
     .setRecipeFunction((event, itemI, itemO, fluidI, fluidO, chemicalI, chemicalO, recipeData, recipeId) => {
         let recipeJson = {
             "type": "mekanism:compressing",
-            "item_input": itemI[0].getInputIngredient(),
+            "item_input": itemI[0].getIngredient(),
             "chemical_input": chemicalI[0].getMekanismChemical(),
-            "output": itemO[0].getOutputIngredient(),
+            "output": itemO[0].getItemStack(),
             "per_tick_usage": false
         };
 
@@ -295,7 +295,7 @@ MachineHandler.create('chemical_infuser')
             "type": "mekanism:chemical_infusing",
             "left_input": chemicalI[0].getMekanismChemical(),
             "right_input": chemicalI[1].getMekanismChemical(),
-            "output": chemicalO[0].getOutputIngredient(),
+            "output": chemicalO[0].getFluidStack(),
         };
 
         if (recipeData.tickUsage) {

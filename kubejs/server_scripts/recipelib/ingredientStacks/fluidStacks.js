@@ -16,13 +16,16 @@ function FluidHandler(id, amount) {
     this.amount = (amount) ? amount : 1000;
 }
 
+/**
+ * Creates an intermediate item stack for usage by other functions
+ * @param {object} data - An intermediate item stack
+ */
 FluidHandler.prototype.addComponentData = function(data) {
     this.components = data;
 }
 
 /**
- * Creates an intermediate item stack for usage by other functions
- * @param {intermediateItemStack} stack - An intermediate item stack
+ * Modifies the amount in the stack
  * @param {number} amount - The new amount of items in the stack
  */
 FluidHandler.prototype.modifyAmount = function(amount) {
@@ -38,10 +41,10 @@ FluidHandler.prototype.getFluidOf = function() {
 }
 
 /**
- * Creates a valid json fluid object from the intermediate fluid stack
- * @returns {$fluidStack} Valid json fluid object using "fluid" notation
+ * Creates an Ingredient from the intermediate fluid stack
+ * @returns {$Ingredient} Minecraft recipe ingredient
  */
-FluidHandler.prototype.getInputIngredient = function() {
+FluidHandler.prototype.getIngredient = function() {
     let fluidObject = {
         "fluid": this.id,
         "amount": this.amount
@@ -50,10 +53,10 @@ FluidHandler.prototype.getInputIngredient = function() {
 }
 
 /**
- * Creates a valid json fluid object from the intermediate fluid stack
- * @returns {$fluidStack} Valid json fluid object using "id" notation
+ * Creates a FluidStack from the intermediate fluid stack
+ * @returns {$FluidStack} Minecraft recipe fluid stack
  */
-FluidHandler.prototype.getOutputIngredient = function() {
+FluidHandler.prototype.getFluidStack = function() {
     let fluidObject = {
         "id": this.id,
         "amount": this.amount
@@ -63,8 +66,8 @@ FluidHandler.prototype.getOutputIngredient = function() {
 }
 
 /**
- * Creates a valid json chemical object from an intermediate fluid stack
- * @returns {$fluidStack} Valid json chemical object using "id" notation
+ * Creates an Ingredient from the intermediate fluid stack, as a chemical
+ * @returns {$FluidStack} Minecraft recipe ingredient
  */
 FluidHandler.prototype.getMekanismChemical = function() {
     let chemicalObject = {

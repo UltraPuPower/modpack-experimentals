@@ -70,8 +70,8 @@ MachineHandler.create('crusher')
     .setRecipeFunction((event, itemI, itemO, fluidI, fluidO, chemicalI, chemicalO, recipeData, recipeId) => {
         let recipeJson = {
             "type": "mekanism:crushing",
-            "input": itemI[0].getInputIngredient(),
-            "output": itemO[0].getOutputIngredient()
+            "input": itemI[0].getItemStack(),
+            "output": itemO[0].getIngredient()
         };
 
         event.custom(recipeJson).id(recipeId);
@@ -89,22 +89,22 @@ All ingredient entries are given in a simplified itemstack format, using the mat
 - Items
     - `<item>.getItemOf()`
         - Gets the item using the KubeJS `Item.of()` method. Used for parsing recipes build with KubeJS events.
-    - `<item>.getInputIngredient()`
-        - Gives a formal item ingredient used for inputs in JSON based recipes.
-    - `<item>.getOutputIngredient()`
-        - Gives a formal id ingredient used for outputs in JSON based recipes.
+    - `<item>.getIngredient()`
+        - Gives a formal ingredient used for most inputs in JSON based recipes.
+    - `<item>.getItemStack()`
+        - Gives a formal item stack used for most outputs in JSON based recipes.
 - Fluids
     - `<fluid>.getFluidOf()`
         - Gets the fluid using the KubeJS `Fluid.of()` method. Used for parsing recipes build with KubeJS events.
-    - `<fluid>.getInputIngredient()`
-        - Gives a formal fluid ingredient used for inputs in JSON based recipes.
-    - `<fluid>.getOutputIngredient()`
-        - Gives a formal id ingredient used for outputs in JSON based recipes.
+    - `<fluid>.getIngredient()`
+        - Gives a formal ingredient used for most inputs in JSON based recipes.
+    - `<fluid>.getFluidStack()`
+        - Gives a formal fluid stack used for most outputs in JSON based recipes.
 - Chemicals
     - `<chemical>.getMekanismChemical()`
-        - Gives a formal chemical ingredient used for inputs in JSON based recipes.
-    - `<chemical>.getOutputIngredient()`
-        - Gives a formal id ingredient used for outputs in JSON based recipes. Yes, this is the same way you get fluids
+        - Gives a formal chemical ingredient used for most inputs in JSON based recipes.
+    - `<chemical>.getFluidStack()`
+        - Gives a formal ingredient used for most outputs in JSON based recipes. Yes, this is the same way you get fluids
 
 As you can see, inputs and outputs use a different method in JSON based recipes. This is due to the fact that they are formatted differently.
 If you find this behaviour annoying, I heavily encourage you to go to the responsible parties, get it changed, and let me know so I can change it here.
@@ -208,7 +208,7 @@ MachineHandler.create('chemical_infuser')
             "type": "mekanism:chemical_infusing",
             "left_input": chemicalI[0].getMekanismChemical(),
             "right_input": chemicalI[1].getMekanismChemical(),
-            "output": chemicalO[0].getOutputIngredient(),
+            "output": chemicalO[0].getIngredient(),
         };
 
         if (recipeData.tickUsage) {

@@ -2,27 +2,30 @@ ServerEvents.recipes(event => {
     let blacklistedRecipes = [
         /create:pressing\/.*_ingot/,
         /create:crafting\/materials\/.*_(nugget|ingot|block)(_from_(de)?compacting)?/,
-        /create:cutting\/compat\/immersiveengineering\/wire_.*/
+        /create:.*compat.*/,
+        /create:splashing\/.*crushed_raw_.*/,
+        /create:crushing\/.*ore.*/,
+        /create:crushing\/.*raw.*/
     ];
 
-    blacklistedRecipes.forEach(recipe => {
-        event.remove({mod: 'create', id: recipe});
+    blacklistedRecipes.forEach(id => {
+        event.remove({mod: 'create', id: id});
     });
     
     let blacklistedInputs = [
         
     ];
 
-    blacklistedInputs.forEach(input => {
-        event.remove({mod: 'create', id: input});
+    blacklistedInputs.forEach(item => {
+        event.remove({mod: 'create', input: item});
     });
     
     let blacklistedOutputs = [
         
     ];
 
-    blacklistedOutputs.forEach(output => {
-        event.remove({mod: 'create', id: output});
+    blacklistedOutputs.forEach(item => {
+        event.remove({mod: 'create', output: item});
     });
     
     let blacklistedUsage = [

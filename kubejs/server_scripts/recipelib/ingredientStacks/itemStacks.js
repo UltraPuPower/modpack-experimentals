@@ -16,13 +16,16 @@ function ItemHandler(id, count) {
     this.count = (count) ? count: 1;
 }
 
+/**
+ * Creates an intermediate item stack for usage by other functions
+ * @param {object} data - An intermediate item stack
+ */
 ItemHandler.prototype.addComponentData = function(data) {
     this.components = data;
 }
 
 /**
- * Creates an intermediate item stack for usage by other functions
- * @param {intermediateItemStack} stack - An intermediate item stack
+ * Modifies the amount in the stack
  * @param {number} amount - The new amount of items in the stack
  */
 ItemHandler.prototype.modifyAmount = function(count) {
@@ -38,10 +41,10 @@ ItemHandler.prototype.getItemOf = function() {
 }
 
 /**
- * Creates a valid json item object from the intermediate item stack
- * @returns {$ItemStack} Valid json item object using "item" notation for inputs
+ * Creates an Ingredient from the intermediate item stack
+ * @returns {$Ingredient} Minecraft recipe ingredient
  */
-ItemHandler.prototype.getInputIngredient = function() {
+ItemHandler.prototype.getIngredient = function() {
     let itemObject = {
         "item": this.id,
         "count": this.count
@@ -50,10 +53,10 @@ ItemHandler.prototype.getInputIngredient = function() {
 }
 
 /**
- * Creates a valid json item object from the intermediate item stack
- * @returns {$ItemStack} Valid json item object using "id" notation for outputs
+ * Creates an ItemStack from the intermediate item stack
+ * @returns {$ItemStack} Minecraft recipe itemstack
  */
-ItemHandler.prototype.getOutputIngredient = function() {
+ItemHandler.prototype.getItemStack = function() {
     let itemObject = {
         "id": this.id,
         "count": this.count

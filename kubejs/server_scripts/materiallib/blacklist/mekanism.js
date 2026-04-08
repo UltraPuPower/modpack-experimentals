@@ -1,23 +1,20 @@
 ServerEvents.recipes(event => {
     let blacklistedRecipes = [
-        /mekanism:processing\/.*\/ingot\/from_dust_(smelting|blasting)/,
-        /mekanism:processing\/.*\/ingot\/from_(nuggets|block)/,
-        /mekanism:processing\/.*\/from_block/,
-        /mekanism:processing\/.*\/ingot_to_dust/, /mekanism:processing\/.*\/dust\/from_ingot/, /mekanism:processing\/.*\/to_dust/,
         /mekanism:(nuggets|storage_blocks)\/.*/,
         /mekanism:crushing\/.*_dust/,
+        /mekanism:processing\/.*\/(clump|crystal|dirty_dust|dust|ingot|nugget|ore|raw|raw_storage_blocks|shard|slurry|storage_blocks)\/.*/
     ];
 
-    blacklistedRecipes.forEach(recipe => {
-        event.remove({mod: 'mekanism', id: recipe});
+    blacklistedRecipes.forEach(id => {
+        event.remove({mod: 'mekanism', id: id});
     });
     
     let blacklistedInputs = [
         
     ];
 
-    blacklistedInputs.forEach(input => {
-        event.remove({mod: 'mekanism', id: input});
+    blacklistedInputs.forEach(item => {
+        event.remove({mod: 'mekanism', input: item});
     });
     
     let blacklistedOutputs = [
@@ -25,14 +22,14 @@ ServerEvents.recipes(event => {
     ];
 
     blacklistedOutputs.forEach(output => {
-        event.remove({mod: 'mekanism', id: output});
+        event.remove({mod: 'mekanism', output: item});
     });
     
     let blacklistedUsage = [
         
     ];
 
-    blacklistedOutputs.forEach(item => {
+    blacklistedUsage.forEach(item => {
         event.remove({mod: 'mekanism', input: item});
         event.remove({mod: 'mekanism', output: item});
     });

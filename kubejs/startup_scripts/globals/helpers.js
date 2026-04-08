@@ -10,6 +10,11 @@ global.setToArray = (set) => {
     return newArray
 };
 
+global.originalArrayPush = (array, value) => {
+    if (!array.includes(value)) array.push(value)
+    return array
+};
+
 global.recipeIdStorage = {
     recipeIdList: [],
 

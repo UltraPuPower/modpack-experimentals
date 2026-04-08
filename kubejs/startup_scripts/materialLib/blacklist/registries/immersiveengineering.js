@@ -37,6 +37,10 @@ BlacklistHandler.getMaterial('netherite')
 // New Materials
 BlacklistHandler.getMaterial('aluminium')
     .setItems([
+        {component: 'raw', items: ['immersiveengineering:raw_aluminum']},
+        {component: 'raw_block', items: ['immersiveengineering:raw_block_aluminum']},
+        {component: 'ore', items: ['immersiveengineering:ore_aluminum']},
+        {component: 'deepslate_ore', items: ['immersiveengineering:deepslate_ore_aluminum']},
         {component: 'dust', items: ['immersiveengineering:dust_aluminum']},
         {component: 'nugget', items: ['immersiveengineering:nugget_aluminum']},
         {component: 'ingot', items: ['immersiveengineering:ingot_aluminum']},
@@ -49,6 +53,10 @@ BlacklistHandler.getMaterial('aluminium')
 
 BlacklistHandler.getMaterial('lead')
     .setItems([
+        {component: 'raw', items: ['immersiveengineering:raw_lead']},
+        {component: 'raw_block', items: ['immersiveengineering:raw_block_lead']},
+        {component: 'ore', items: ['immersiveengineering:ore_lead']},
+        {component: 'deepslate_ore', items: ['immersiveengineering:deepslate_ore_lead']},
         {component: 'dust', items: ['immersiveengineering:dust_lead']},
         {component: 'nugget', items: ['immersiveengineering:nugget_lead']},
         {component: 'ingot', items: ['immersiveengineering:ingot_lead']},
@@ -60,6 +68,10 @@ BlacklistHandler.getMaterial('lead')
 
 BlacklistHandler.getMaterial('silver')
     .setItems([
+        {component: 'raw', items: ['immersiveengineering:raw_silver']},
+        {component: 'raw_block', items: ['immersiveengineering:raw_block_silver']},
+        {component: 'ore', items: ['immersiveengineering:ore_silver']},
+        {component: 'deepslate_ore', items: ['immersiveengineering:deepslate_ore_silver']},
         {component: 'dust', items: ['immersiveengineering:dust_silver']},
         {component: 'nugget', items: ['immersiveengineering:nugget_silver']},
         {component: 'ingot', items: ['immersiveengineering:ingot_silver']},
@@ -70,6 +82,10 @@ BlacklistHandler.getMaterial('silver')
 
 BlacklistHandler.getMaterial('nickel')
     .setItems([
+        {component: 'raw', items: ['immersiveengineering:raw_nickel']},
+        {component: 'raw_block', items: ['immersiveengineering:raw_block_nickel']},
+        {component: 'ore', items: ['immersiveengineering:ore_nickel']},
+        {component: 'deepslate_ore', items: ['immersiveengineering:deepslate_ore_nickel']},
         {component: 'dust', items: ['immersiveengineering:dust_nickel']},
         {component: 'nugget', items: ['immersiveengineering:nugget_nickel']},
         {component: 'ingot', items: ['immersiveengineering:ingot_nickel']},
@@ -80,6 +96,10 @@ BlacklistHandler.getMaterial('nickel')
 
 BlacklistHandler.getMaterial('uranium')
     .setItems([
+        {component: 'raw', items: ['immersiveengineering:raw_uranium']},
+        {component: 'raw_block', items: ['immersiveengineering:raw_block_uranium']},
+        {component: 'ore', items: ['immersiveengineering:ore_uranium']},
+        {component: 'deepslate_ore', items: ['immersiveengineering:deepslate_ore_uranium']},
         {component: 'dust', items: ['immersiveengineering:dust_uranium']},
         {component: 'nugget', items: ['immersiveengineering:nugget_uranium']},
         {component: 'ingot', items: ['immersiveengineering:ingot_uranium']},

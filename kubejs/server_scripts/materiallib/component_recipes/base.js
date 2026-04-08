@@ -99,6 +99,30 @@ materialList.forEach(materialObj => {
             .register();
     }
 
+    // Basic ore components
+    if(components.includes('raw_block')) {
+        recipeBuilder.recipeType('compressing').id('materiallib:')
+            .itemInputs([createComponentItemStack(id, 'raw', 1)])
+            .itemOutputs([createComponentItemStack(id, 'raw_block', 1)])
+            .setRecipeData(dataObject)
+            .register();
+    }
+
+    if(components.includes('raw')) {
+        let componentResult = 'dust';
+        if (components.includes('gem')) componentResult = 'gem';
+        if (components.includes('ingot')) componentResult = 'ingot';
+
+        let resultSize = 1;
+        if (dataObject.ore && dataObject.ore.harvestSize) resultSize = dataObject.ore.harvestSize;
+
+        recipeBuilder.recipeType('blasting').id(`materiallib:raw_${id}_to_${componentResult}`)
+            .itemInputs([createComponentItemStack(id, 'raw', 1)])
+            .itemOutputs([createComponentItemStack(id, componentResult, resultSize)])
+            .setRecipeData(dataObject)
+            .register();
+    }
+
     // Processed Components
     if(components.includes('plate')) {
         recipeBuilder.recipeType('pressing').id(`materiallib:${id}_plate`)

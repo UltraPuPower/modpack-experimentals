@@ -37,21 +37,21 @@ To actually get usefull ingredients from your ingredient stacks, there are a few
 - Items
     - `<item>.getItemOf()`
         - Gets the item using the KubeJS `Item.of()` method. Used for parsing recipes build with KubeJS events.
-    - `<item>.getInputIngredient()`
-        - Gives a formal item ingredient used for inputs in JSON based recipes.
-    - `<item>.getOutputIngredient()`
-        - Gives a formal id ingredient used for outputs in JSON based recipes.
+    - `<item>.getIngredient()`
+        - Gives a formal ingredient used for most inputs in JSON based recipes.
+    - `<item>.getItemStack()`
+        - Gives a formal item stack used for most outputs in JSON based recipes.
 - Fluids
     - `<fluid>.getFluidOf()`
         - Gets the fluid using the KubeJS `Fluid.of()` method. Used for parsing recipes build with KubeJS events.
-    - `<fluid>.getInputIngredient()`
-        - Gives a formal fluid ingredient used for inputs in JSON based recipes.
-    - `<fluid>.getOutputIngredient()`
-        - Gives a formal id ingredient used for outputs in JSON based recipes.
-- Chemicals*
+    - `<fluid>.getIngredient()`
+        - Gives a formal ingredient used for most inputs in JSON based recipes.
+    - `<fluid>.getFluidStack()`
+        - Gives a formal fluid stack used for most outputs in JSON based recipes.
+- Chemicals
     - `<chemical>.getMekanismChemical()`
-        - Gives a formal chemical ingredient used for inputs in JSON based recipes.
-    - `<chemical>.getOutputIngredient()`
-        - Gives a formal id ingredient used for outputs in JSON based recipes. Yes, this is the same way you get fluids
+        - Gives a formal chemical ingredient used for most inputs in JSON based recipes.
+    - `<chemical>.getFluidStack()`
+        - Gives a formal ingredient used for most outputs in JSON based recipes. Yes, this is the same way you get fluids
 
 *Chemicals are just fluids with a funny hat on. You create them the same way you would a fluid

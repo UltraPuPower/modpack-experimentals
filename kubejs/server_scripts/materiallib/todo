@@ -1,1 +1,14 @@
-Rebalance arc furnace from immersive to avoid material dupe loops
+Block creation:
+- [Fix] Multi layer colored blocks for blocks, but most importantly ores
+
+Creative tabs:
+- [Fix] Dynamic creative menu harvesting
+
+Ores:
+- [Add] Ore generation :/
+
+Blacklisting:
+- [Add] Missing material loading (after material registry, if material/component for material does not exist it gets added)
+
+Recipes:
+- [Add] Custom recycling functions (based on rounding liquid amounts?)

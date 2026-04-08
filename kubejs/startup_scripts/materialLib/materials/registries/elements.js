@@ -3,31 +3,36 @@
 MaterialHandler.create('lead')
     .setColors('#7e6f82', '#290633')
     .setComposition(['1x lead'])
-    .addComponents(['wire', 'nugget', 'liquid', 'block'])
+    .setMaterialType('metal')
+    .addComponents(['wire', 'ore'])
     .register();
 
 MaterialHandler.create('aluminium')
     .setColors('#7DB9D8', '#756AC9')
     .setComposition(['1x aluminium'])
-    .addComponents(['wire', 'nugget', 'liquid', 'block', 'rod'])
+    .setMaterialType('metal')
+    .addComponents(['wire', 'rod', 'ore'])
     .register();
 
 MaterialHandler.create('silver')
     .setColors('#DCDCFF', '#5A4705')
     .setComposition(['1x silver'])
-    .addComponents(['plate', 'nugget', 'liquid', 'block'])
+    .setMaterialType('metal')
+    .addComponents(['ore'])
     .register();
 
 MaterialHandler.create('nickel')
     .setColors('#CCDFF5', '#59563A')
     .setComposition(['1x nickel'])
-    .addComponents(['plate', 'nugget', 'liquid', 'block'])
+    .setMaterialType('metal')
+    .addComponents(['ore'])
     .register();
 
 MaterialHandler.create('uranium')
     .setColors('#1D891D', '#33342C')
     .setComposition(['1x uranium'])
-    .addComponents(['plate', 'nugget', 'liquid', 'block'])
+    .setMaterialType('metal')
+    .addComponents(['ore'])
     .register();
 
 MaterialHandler.create('sulfur')
@@ -35,29 +40,32 @@ MaterialHandler.create('sulfur')
     .setComposition(['1x sulfur'])
     .addComponents(['dust'])
     .register();
-// break
+
 MaterialHandler.create('zinc')
     .setColors('#EBEBFA', '#232C30')
     .setComposition(['1x zinc'])
-    .addComponents(['nugget', 'block'])
+    .setMaterialType('metal')
+    .addComponents(['ore'])
     .register();
 
 MaterialHandler.create('tin')
     .setColors('#FAFEFF', '#4E676C')
-    .setComposition(['1x zinc'])
-    .addComponents(['nugget', 'block'])
+    .setComposition(['1x tin'])
+    .setMaterialType('metal')
+    .addComponents(['ore'])
     .register();
 
 MaterialHandler.create('osmium')
     .setColors('#54AFFF', '#6E6EFF')
-    .setComposition(['1x zinc'])
-    .addComponents(['nugget', 'block', 'liquid'])
+    .setComposition(['1x osmium'])
+    .setMaterialType('metal')
+    .addComponents(['ore'])
     .register();
 
 MaterialHandler.create('fluorite')
     .setColors('#589ED6', '#2C35BC')
     .setComposition(['1x fluorine'])
-    .addComponents(['gem_block'])
+    .addComponents(['gem_block', 'ore'])
     .register();
 
 MaterialHandler.create('lithium')

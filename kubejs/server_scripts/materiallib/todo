@@ -1,15 +1,25 @@
 Block creation:
 - [Fix] Multi layer colored blocks for blocks, but most importantly ores
+    - Halted, either layers or colors fail; overlaying is less seamless than by items
 
 Creative tabs:
 - [Fix] Dynamic creative menu harvesting
+    - Halted, registry is not populated with modded tabs at moment of harvest
+    - Explore alternative method of item deletion via direct interception at populating events?
 
 Ores:
 - [Add] Ore generation :/
+    - Seems relatively easy with world features, using datapacks, possible to add data using server events for automated process.
 
 Blacklisting:
 - [Add] Missing material loading (after material registry, if material/component for material does not exist it gets added)
+    - Unsure whether it is worth the time
 - [Fix] Unknown materials silently break the handler in its file
+    - Behaviour is weird, sometimes fails sometimes handles it fine
 
 Recipes:
-- [Add] Custom recycling functions (based on rounding liquid amounts?)
+- [Add] Custom recycling functions
+    - Calculate return based on liquid proportions
+    - No current plans for advanced recycling (e.g. harvesting components of recipe for gathering total cost)
+- [Add] Automated mixing/alloying
+    - If all component materials exist in proper form, add mixing of dusts/alloying of ingots/mixing of liquids recipe

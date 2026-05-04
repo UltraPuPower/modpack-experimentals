@@ -26,14 +26,8 @@
             }
         }
     ],
-    "neoforge_data": {
-      "layers": {
-         "0": {
-           "color": "0xffc370"
-         },
-         "1": {
-           "color": "0x69993B"
-         }
-      }
+    "textures": {
+        "layer0": "kubejs:item/materriallib/default/block",
+        "layer1": "kubejs:item/materriallib/default/ingot"
     }
 }

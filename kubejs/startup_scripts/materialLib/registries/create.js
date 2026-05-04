@@ -19,12 +19,13 @@ StartupEvents.registry('item', event => {
 
             let textureLayer = 0;
 
-            event.create(itemId)
+            let newComponent = event.create(itemId)
                 .displayName(toDisplayName(itemId))
                 .tag(`c:${component}s`)
                 .tag(`c:${component}s/${id}`)
-                .tooltip(completeTooltipText)
                 .texture('layer0', 'create:item/crushed_raw_tin').color(0, colors[0]);
+
+            if (global.materialLibData['tooltipObject'][id]) newComponent.tooltip(completeTooltipText);
                 
             registryConsole.log(`Created item: ${itemId}`);
         }

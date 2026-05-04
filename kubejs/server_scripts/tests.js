@@ -21,3 +21,11 @@ ServerEvents.recipes(event => {
         }
     })
 });
+
+recipeBuilder.recipeType('squeezing').id('test')
+    .itemInputs(['materiallib:iron_dust'])
+    // .fluidInputs(['minecraft:water 1000', 'materiallib:liquid_bronze'])
+    .itemOutputs(['materiallib:steel_ingot'])
+    .fluidOutputs(['minecraft:lava 5000'])
+    .setRecipeData({energy: 200})
+    .register();

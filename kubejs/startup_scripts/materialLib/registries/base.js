@@ -108,7 +108,10 @@ StartupEvents.registry('item', event => {
 
             let textureLayer = 0;
 
-            let newComponent = event.create(itemId).displayName(toDisplayName(itemId)).tag(`c:${component}s`).tag(`c:${component}s/${id}`).tooltip(completeTooltipText);
+            let newComponent = event.create(itemId).displayName(toDisplayName(itemId)).tag(`c:${component}s`).tag(`c:${component}s/${id}`);
+
+            if (global.materialLibData['tooltipObject'][id]) newComponent.tooltip(completeTooltipText);
+
             registryConsole.log(`Created item: ${itemId}`);
 
             if(id == 'aluminium') newComponent.tag(`c:${component}s/aluminum`)
@@ -180,9 +183,11 @@ StartupEvents.registry('block', event => {
 
             if(id == 'aluminium') newComponent.tag(`c:${component}s/aluminum`)
 
-            newComponent.item(ctx => {
-                ctx.tooltip(completeTooltipText);
-            });
+            if (1) {
+                newComponent.item(ctx => {
+                    ctx.tooltip(completeTooltipText);
+                });
+            }
 
             if(textureOverrides[component]) {
                 newComponent.texture(textureOverrides[component]);

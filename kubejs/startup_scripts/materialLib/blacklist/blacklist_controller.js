@@ -1,5 +1,6 @@
 // priority: 99995
-const blacklistConsole = Java.createConsole("MaterialLib/Blacklist Console");
+global.blacklistConsole = Java.createConsole("MaterialLib/Blacklist Console");
+const blacklistConsole = global.blacklistConsole;
 
 /**
  * @typedef {Object} BlacklistObject

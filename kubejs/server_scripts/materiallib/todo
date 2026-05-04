@@ -9,6 +9,7 @@ Ores:
 
 Blacklisting:
 - [Add] Missing material loading (after material registry, if material/component for material does not exist it gets added)
+- [Fix] Unknown materials silently break the handler in its file
 
 Recipes:
 - [Add] Custom recycling functions (based on rounding liquid amounts?)

@@ -21,7 +21,7 @@ BlacklistHandler.getMaterial('copper')
     ])
     .register();
 
-BlacklistHandler.getMaterial('lapis_lazuli')
+BlacklistHandler.getMaterial('lapis')
     .setItems([
         {component: 'dust', items: ['mekanism:dust_lapis_lazuli']}
     ])

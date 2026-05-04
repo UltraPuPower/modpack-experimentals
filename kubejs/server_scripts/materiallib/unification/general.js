@@ -2,7 +2,6 @@
 const itemBlackList = global.itemBlackList;
 
 ServerEvents.recipes(event => {
-    // Replace blacklisted items in recipes
     for (let i = 0; i < itemBlackList.length; i++) {
         let { material, entries } = itemBlackList[i];
 
@@ -41,7 +40,6 @@ ServerEvents.recipes(event => {
 });
 
 ServerEvents.tags('item', event => {
-    // Remove tags from items
     for (let i = 0; i < itemBlackList.length; i++) {
         let { material, entries } = itemBlackList[i];
 
@@ -52,11 +50,38 @@ ServerEvents.tags('item', event => {
             let { component, itemEntries } = entries[j];
 
             if (!materialObj.components.includes(component)) continue
+            if (!global.materialLibData.itemList.includes(component) && !global.materialLibData.blockList.includes(component)) continue
 
             itemEntries.forEach(item => {
+                if (component == 'deepslate_ore') {
+                    component = 'ore'
+                    event.remove('c:ores_in_ground/deepslate', item);
+                }
                 event.remove(`c:${component}s`, item);
                 event.remove(`c:${component}s/${material}`, item);
                 if (material == 'aluminium') event.remove(`c:${component}s/aluminum`, item);
+            });
+        };
+    };
+});
+
+ServerEvents.tags('block', event => {
+    for (let i = 0; i < itemBlackList.length; i++) {
+        let { material, entries } = itemBlackList[i];
+
+        let materialObj = materialList.find(materialObj => materialObj.id == material);
+        if (!materialObj) continue
+
+        for (let j = 0; j < entries.length; j++) {
+            let { component, itemEntries } = entries[j];
+
+            if (!materialObj.components.includes(component)) continue
+            if (!global.materialLibData.blockList.includes(component)) continue
+
+            itemEntries.forEach(block => {
+                event.remove(`c:${component}s`, block);
+                event.remove(`c:${component}s/${material}`, block);
+                if (material == 'aluminium') event.remove(`c:${component}s/aluminum`, block);
             });
         };
     };

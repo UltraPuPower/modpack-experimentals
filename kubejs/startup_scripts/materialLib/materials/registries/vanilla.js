@@ -74,7 +74,7 @@ MaterialHandler.create('netherite')
 MaterialHandler.create('emerald')
     .setColors('#17FF6C', '#003F00')
     .setMaterialType('gem')
-    .setComposition(['1x mystery'])
+    .setComposition(['3x beryllium', '2x aluminium', '6x silicon', '18x oxygen'])
     .addComponents(['ore'])
     .setOverrideItem([
         {component: 'ore', item: 'minecraft:emerald_ore'},
@@ -84,10 +84,10 @@ MaterialHandler.create('emerald')
     ])
     .register();
 
-MaterialHandler.create('lapis_lazuli')
+MaterialHandler.create('lapis')
     .setColors('#3D54FF', '#210D78')
     .setMaterialType('gem')
-    .setComposition(['1x mystery'])
+    .setComposition(['12x lazurite', '2x sodalite', '1x pyrite', '1x calcite'])
     .addComponents(['ore'])
     .setOverrideItem([
         {component: 'ore', item: 'minecraft:lapis_ore'},
@@ -100,7 +100,7 @@ MaterialHandler.create('lapis_lazuli')
 MaterialHandler.create('quartz')
     .setColors('#F8EFE3', '#E6C1BB')
     .setMaterialType('gem')
-    .setComposition(['1x silicon', '2x oxygen'])
+    .setComposition(['1x silicon_dioxide'])
     .setOverrideItem([
         {component: 'gem', item: 'minecraft:quartz'},
         {component: 'gem_block', item: 'minecraft:quartz_block'}
@@ -132,7 +132,7 @@ MaterialHandler.create('charcoal')
 MaterialHandler.create('redstone')
     .setColors('#ff0000', '#340605')
     .setMaterialType('composite')
-    .setComposition(['1x mystery'])
+    .setComposition(['1x silicon', '5x pyrite', '1x ruby', '3x mercury'])
     .addComponents(['dust_block', 'ore'])
     .setOverrideItem([
         {component: 'ore', item: 'minecraft:redstone_ore'},
@@ -145,7 +145,7 @@ MaterialHandler.create('redstone')
 MaterialHandler.create('obsidian')
     .setColors('#3B2754', '#000001')
     .setMaterialType('gem')
-    .setComposition(['1x mystery'])
+    .setComposition(['1x magnesium', '1x iron', '2x silicon', '4x oxygen'])
     .setOverrideItem([
         {component: 'gem_block', item: 'minecraft:obsidian'}
     ])
@@ -154,5 +154,5 @@ MaterialHandler.create('obsidian')
 MaterialHandler.create('deepslate')
     .setColors('#4B4B4B', '#2F2F30')
     .setMaterialType('composite')
-    .setComposition(['1x mystery'])
+    .setComposition(['4x silicon_dioxide', '1x biotite'])
     .register();

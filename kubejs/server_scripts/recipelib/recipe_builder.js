@@ -180,7 +180,7 @@ const recipeRegistrate = (usedRecipeType, itemI, itemO, fluidI, fluidO, chemical
             let chemicalICheck = runComparisonCheck(IO.chemicalI, chemicalI, 'chemicalI')
             let chemicalOCheck = runComparisonCheck(IO.chemicalO, chemicalO, 'chemicalO')
 
-            let generatedRecipeId = `${namespace}:${usedRecipeType}/${usableMachine}/${recipeId}`
+            let generatedRecipeId = `${namespace}:${usedRecipeType}/${usableMachine.split(':').join('_')}/${recipeId}`
 
             if (itemICheck && itemOCheck && fluidICheck && fluidOCheck && chemicalICheck && chemicalOCheck) {
                 machineObj.recipeFunction(event, itemI, itemO, fluidI, fluidO, chemicalI, chemicalO, recipeData, generatedRecipeId);
@@ -205,17 +205,34 @@ const runComparisonCheck = (boundary, value, type) => {
 };
 
 const evaluateIngredient = (type, input) => {
-    if (type == 'item') {
-        let itemStack = {};
+    let stack = {};
+    let id = '';
+    let amount = 0;
+    let tag = false;
+    if (input.includes('#') && type == 'item') {
+        let tagData = input.match(global.itemTagRegex);
+        id = tagData[3];
+        amount = Number(tagData[2]);
+        tag = true;
+    } else if (input.includes('#') && type == 'fluid') {
+        let tagData = input.match(global.fluidTagRegex);
+        id = tagData[3];
+        amount = Number(tagData[2]);
+        tag = true;
+    } else if (type == 'item') {
         let itemData = input.match(global.itemRegex);
-        itemStack = new ItemHandler(itemData[3], Number(itemData[2]));
-        return itemStack;
+        id = itemData[3];
+        amount = Number(itemData[2]);
     } else if (type == 'fluid') {
-        let fluidStack = {};
         let fluidData = input.match(global.fluidRegex);
-        fluidStack = new FluidHandler(fluidData[1], Number(fluidData[3]));
-        return fluidStack;
+        id = fluidData[1];
+        amount = Number(fluidData[3]);
     } else {
         console.warn(`unknown state: ${type}`)
+        return
     }
+    if (tag) stack = new TagHandler(id, amount);
+    else if (type == 'item') stack = new ItemHandler(id, amount);
+    else if (type == 'fluid') stack = new FluidHandler(id, amount);
+    return stack;
 };

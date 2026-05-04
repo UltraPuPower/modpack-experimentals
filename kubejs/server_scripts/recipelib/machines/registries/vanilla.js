@@ -2,7 +2,7 @@
 // requires: minecraft
 // author: UltraPuPower1
 
-MachineHandler.create('shapeless')
+MachineHandler.create('minecraft:shapeless')
     .setIO(9, 1, false, false, false, false)
     .addToRecipeTypes(['shapeless'])
     .setRecipeFunction((event, itemI, itemO, fluidI, fluidO, chemicalI, chemicalO, recipeData, recipeId) => {
@@ -19,7 +19,7 @@ MachineHandler.create('shapeless')
     })
     .register();
 
-MachineHandler.create('shaped')
+MachineHandler.create('minecraft:shaped')
     .setIO(9, 1, false, false, false, false)
     .addToRecipeTypes(['shaped'])
     .setRecipeFunction((event, itemI, itemO, fluidI, fluidO, chemicalI, chemicalO, recipeData, recipeId) => {
@@ -40,7 +40,7 @@ MachineHandler.create('shaped')
     })
     .register();
 
-MachineHandler.create('crafting_compressor')
+MachineHandler.create('minecraft:crafting_compressor')
     .setIO(1, 1, false, false, false, false)
     .addToRecipeTypes(['compressing'])
     .setRecipeFunction((event, itemI, itemO, fluidI, fluidO, chemicalI, chemicalO, recipeData, recipeId) => {
@@ -57,53 +57,91 @@ MachineHandler.create('crafting_compressor')
     })
     .register();
 
-MachineHandler.create('furnace')
+MachineHandler.create('minecraft:furnace')
     .setIO(1, 1, false, false, false, false)
     .addToRecipeTypes(['smelting'])
     .setRecipeFunction((event, itemI, itemO, fluidI, fluidO, chemicalI, chemicalO, recipeData, recipeId) => {
-        event.smelting(itemO[0].getItemOf(), itemI[0].getItemOf()).id(recipeId);
+        let recipeJson = {
+            "type": "minecraft:smelting",
+            "category": "misc",
+            "cookingtime": 200,
+            "ingredient": itemI[0].getIngredient(),
+            "result": itemO[0].getItemStack()
+        };
+
+        let categories = ['misc', 'blocks', 'food']
+        if (recipeData.category && recipeData.category in categories) recipeJson.category = recipeData.category
+        
+        if (recipeData.duration) recipeJson.cookingtime = recipeData.duration
+        
+        if (recipeData.experience) recipeJson.experience = recipeData.experience
+
+        event.custom(recipeJson).id(recipeId);
     })
     .register();
-    
-MachineHandler.create('smoker')
+
+MachineHandler.create('minecraft:smoker')
     .setIO(1, 1, false, false, false, false)
     .addToRecipeTypes(['smoking'])
     .setRecipeFunction((event, itemI, itemO, fluidI, fluidO, chemicalI, chemicalO, recipeData, recipeId) => {
-        let input = [];
-        let output = [];
-        itemI.forEach(item => {
-            input.push(item.getItemOf());
-        });
-        itemO.forEach(item => {
-            output.push(item.getItemOf());
-        });
+        let recipeJson = {
+            "type": "minecraft:smoking",
+            "category": "food",
+            "cookingtime": 200,
+            "ingredient": itemI[0].getIngredient(),
+            "result": itemO[0].getItemStack()
+        };
 
-        event.smoking(output[0], input[0]).id(recipeId);
+        let categories = ['misc', 'blocks', 'food']
+        if (recipeData.category && recipeData.category in categories) recipeJson.category = recipeData.category
+        
+        if (recipeData.duration) recipeJson.cookingtime = recipeData.duration
+        
+        if (recipeData.experience) recipeJson.experience = recipeData.experience
+
+        event.custom(recipeJson).id(recipeId);
     })
     .register();
 
-MachineHandler.create('blast_furnace')
+MachineHandler.create('minecraft:blast_furnace')
     .setIO(1, 1, false, false, false, false)
     .addToRecipeTypes(['blasting'])
     .setRecipeFunction((event, itemI, itemO, fluidI, fluidO, chemicalI, chemicalO, recipeData, recipeId) => {
-        let input = [];
-        let output = [];
-        itemI.forEach(item => {
-            input.push(item.getItemOf());
-        });
-        itemO.forEach(item => {
-            output.push(item.getItemOf());
-        });
+        let recipeJson = {
+            "type": "minecraft:blasting",
+            "category": "misc",
+            "cookingtime": 200,
+            "ingredient": itemI[0].getIngredient(),
+            "result": itemO[0].getItemStack()
+        };
 
-        let newRecipeId = recipeId.replace('blast_furnace', 'furnace');
+        let categories = ['misc', 'blocks', 'food']
+        if (recipeData.category && recipeData.category in categories) recipeJson.category = recipeData.category
+        
+        if (recipeData.duration) recipeJson.cookingtime = recipeData.duration
+        
+        if (recipeData.experience) recipeJson.experience = recipeData.experience
 
         if (!recipeData.melting_point || recipeData.melting_point < 500) {
-            event.smelting(output[0], input[0]).id(newRecipeId);
-            event.blasting(output[0], input[0]).id(recipeId);
-            return
+            event.custom(recipeJson).id(recipeId);
+            recipeJson.type = 'minecraft:smelting'
+            event.custom(recipeJson).id(recipeId.replace('blast_furnace', 'furnace'));
         } else if (recipeData.melting_point < 1000) {
-            event.blasting(output[0], input[0]).id(recipeId);
-            return
+            event.custom(recipeJson).id(recipeId);
         }
     })
     .register();
+
+/*
+stonecutter:
+{
+  "type": "minecraft:stonecutting",
+  "ingredient": {
+    "item": "immersiveengineering:concrete"
+  },
+  "result": {
+    "count": 1,
+    "id": "immersiveengineering:concrete_brick"
+  }
+}
+*/

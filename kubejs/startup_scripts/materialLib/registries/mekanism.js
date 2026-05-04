@@ -40,23 +40,21 @@ StartupEvents.registry('item', event => {
 
         for (let component of components) {
             if (!global.materialLibData.loader.mekanism.includes(component)) continue
-            if (itemOverrides[component] || !global.materialLibData.itemList.includes(component)) {
-                console.log(`broke item registry for component "${component}" of material "${id}"; O: ${!!itemOverrides[component]}, I: ${!global.materialLibData.itemList.includes(component)}`)
-                continue
-            };
+            if (itemOverrides[component] || !global.materialLibData.itemList.includes(component)) continue;
 
             let itemId = global.generateComponentId(id, component)
 
             let textureLayer = 0;
 
-            event.create(itemId)
+            let newComponent = event.create(itemId)
                 .displayName(toDisplayName(itemId))
                 .tag(`c:${component}s`)
                 .tag(`c:${component}s/${id}`)
-                .tooltip(completeTooltipText)
                 .texture('layer0', 'mekanism:item/empty')
                 .texture('layer1', (component == 'dirty_dust') ? 'kubejs:item/materiallib/default/dust' : `mekanism:item/${component}`).color(1, colors[0])
                 .texture('layer2', `mekanism:item/${component}_overlay`);
+
+            if (global.materialLibData['tooltipObject'][id]) newComponent.tooltip(completeTooltipText);
                 
             registryConsole.log(`Created item: ${itemId}`);
         }

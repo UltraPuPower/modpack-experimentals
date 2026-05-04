@@ -17,7 +17,7 @@ function ItemHandler(id, count) {
 }
 
 /**
- * Creates an intermediate item stack for usage by other functions
+ * Adds component data to the item stack
  * @param {object} data - An intermediate item stack
  */
 ItemHandler.prototype.addComponentData = function(data) {

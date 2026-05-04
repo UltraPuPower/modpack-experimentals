@@ -46,6 +46,9 @@ const replaceAll = (string, filter, replacement) => {
     return string
 }
 
+global.itemTagRegex = /(([0-9]*)x )?#([a-z_]*:[a-z_\/]*)/;
+global.fluidTagRegex = /#([a-z_]*:[a-z_\/]*)( ([0-9]*))?/;
+
 global.itemRegex = /(([0-9]*)x )?([a-z_]*:[a-z_]*)/;
 global.fluidRegex = /([a-z_]*:[a-z_]*)( ([0-9]*))?/;
 

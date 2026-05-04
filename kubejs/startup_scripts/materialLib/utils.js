@@ -12,7 +12,7 @@ const materialTooltipGenerator = (compositionArray, grade) => {
         let isotopeData = isotope.match(global.isotopeRegex);
         if (!isotope || !isotope[1] || !isotope[2]) {
             tooltipConsole.warn(`  Regex failed to match on "${isotope}", defaulting to "?"`)
-            isotopeTooltip += '?'
+            isotopeTooltipPart = '?'
             continue
         }
         let isotopeName = isotopeData[2];
@@ -22,7 +22,7 @@ const materialTooltipGenerator = (compositionArray, grade) => {
             let materialObj = materialList.find(materialObj => materialObj.id == isotopeName);
             if (!materialObj) {
                 tooltipConsole.warn(`Can't find isotope or material by the id of ${isotopeName}, defaulting to "?"`);
-                isotopeTooltip += '?'
+                isotopeTooltipPart = '?'
                 continue
             }
             isotopeTooltipPart = `(${materialTooltipGenerator(materialObj.composition, grade+1)})`;

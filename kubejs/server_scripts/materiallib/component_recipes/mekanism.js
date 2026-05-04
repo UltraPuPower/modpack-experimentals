@@ -12,7 +12,7 @@ materialList.forEach(materialObj => {
 
         // dirty slurry
         recipeBuilder.recipeType('dissolving').id(`materiallib:dirty_${id}_slurry_from_ore`)
-            .itemInputs([createComponentItemStack(id, 'ore', 1)])
+            .itemInputs([`1x #c:ores/${id}`])
             .chemicalInputs([new FluidHandler('mekanism:sulfuric_acid', 1)])
             .chemicalOutputs([createComponentFluidStack(id, 'dirty_slurry', 1000*resultSize)])
             .setRecipeData({tickUsage: true})
@@ -47,7 +47,7 @@ materialList.forEach(materialObj => {
         // shards
         recipeBuilder.recipeType('chemical_injection').id(`materiallib:${id}_shard_from_ore`)
             .chemicalInputs([new FluidHandler('mekanism:hydrogen_chloride', 1)])
-            .itemInputs([createComponentItemStack(id, 'ore', 1)])
+            .itemInputs([`1x #c:ores/${id}`])
             .itemOutputs([createComponentItemStack(id, 'shard', 4*resultSize)])
             .setRecipeData({tickUsage: true})
             .register();
@@ -83,7 +83,7 @@ materialList.forEach(materialObj => {
 
         recipeBuilder.recipeType('purifying').id(`materiallib:${id}_clump_from_ore`)
             .chemicalInputs([new FluidHandler('mekanism:oxygen', 1)])
-            .itemInputs([createComponentItemStack(id, 'ore', 1)])
+            .itemInputs([`1x #c:ores/${id}`])
             .itemOutputs([createComponentItemStack(id, 'clump', 3*resultSize)])
             .setRecipeData({tickUsage: true})
             .register();
@@ -115,7 +115,7 @@ materialList.forEach(materialObj => {
             .register();
             
         recipeBuilder.recipeType('enriching').id(`materiallib:${id}_dust_from_ore`)
-            .itemInputs([createComponentItemStack(id, 'ore', 1)])
+            .itemInputs([`1x #c:ores/${id}`])
             .itemOutputs([createComponentItemStack(id, 'dust', 2*resultSize)])
             .register();
             

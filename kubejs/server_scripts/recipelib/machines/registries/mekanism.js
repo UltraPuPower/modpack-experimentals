@@ -2,7 +2,7 @@
 // requires: mekanism
 // author: UltraPuPower1
 
-MachineHandler.create('crusher')
+MachineHandler.create('mekanism:crusher')
     .setIO(1, 1, false, false, false, false)
     .addToRecipeTypes(['crushing'])
     .setRecipeFunction((event, itemI, itemO, fluidI, fluidO, chemicalI, chemicalO, recipeData, recipeId) => {
@@ -16,7 +16,7 @@ MachineHandler.create('crusher')
     })
     .register();
 
-MachineHandler.create('precision_sawmill')
+MachineHandler.create('mekanism:precision_sawmill')
     .setIO(1, 2, false, false, false, false)
     .addToRecipeTypes(['cutting'])
     .setRecipeFunction((event, itemI, itemO, fluidI, fluidO, chemicalI, chemicalO, recipeData, recipeId) => {
@@ -35,7 +35,7 @@ MachineHandler.create('precision_sawmill')
     })
     .register();
 
-MachineHandler.create('enrichment_chamber')
+MachineHandler.create('mekanism:enrichment_chamber')
     .setIO(1, 1, false, false, false, false)
     .addToRecipeTypes(['enriching'])
     .setRecipeFunction((event, itemI, itemO, fluidI, fluidO, chemicalI, chemicalO, recipeData, recipeId) => {
@@ -49,7 +49,7 @@ MachineHandler.create('enrichment_chamber')
     })
     .register();
 
-MachineHandler.create('combiner')
+MachineHandler.create('mekanism:combiner')
     .setIO(2, 1, false, false)
     .addToRecipeTypes(['combining'])
     .setRecipeFunction((event, itemI, itemO, fluidI, fluidO, chemicalI, chemicalO, recipeData, recipeId) => {
@@ -67,7 +67,7 @@ MachineHandler.create('combiner')
     })
     .register();
 
-MachineHandler.create('electrolytic_separator')
+MachineHandler.create('mekanism:electrolytic_separator')
     .setIO(false, false, 1, false, false, 2)
     .addToRecipeTypes(['electrolysing'])
     .setRecipeFunction((event, itemI, itemO, fluidI, fluidO, chemicalI, chemicalO, recipeData, recipeId) => {
@@ -82,7 +82,7 @@ MachineHandler.create('electrolytic_separator')
     })
     .register();
 
-MachineHandler.create('chemical_crystaliser')
+MachineHandler.create('mekanism:chemical_crystaliser')
     .setIO(false, 1, false, false, 1, false)
     .addToRecipeTypes(['crystallising'])
     .setRecipeFunction((event, itemI, itemO, fluidI, fluidO, chemicalI, chemicalO, recipeData, recipeId) => {
@@ -96,7 +96,7 @@ MachineHandler.create('chemical_crystaliser')
     })
     .register();
 
-MachineHandler.create('chemical_dissolution_chamber')
+MachineHandler.create('mekanism:chemical_dissolution_chamber')
     .setIO(1, false, false, false, 1, 1)
     .addToRecipeTypes(['dissolving'])
     .setRecipeFunction((event, itemI, itemO, fluidI, fluidO, chemicalI, chemicalO, recipeData, recipeId) => {
@@ -116,7 +116,7 @@ MachineHandler.create('chemical_dissolution_chamber')
     })
     .register();
 
-MachineHandler.create('chemical_washer')
+MachineHandler.create('mekanism:chemical_washer')
     .setIO(false, false, 1, false, 1, 1)
     .addToRecipeTypes(['chemical_washing'])
     .setRecipeFunction((event, itemI, itemO, fluidI, fluidO, chemicalI, chemicalO, recipeData, recipeId) => {
@@ -131,7 +131,7 @@ MachineHandler.create('chemical_washer')
     })
     .register();
 
-MachineHandler.create('pressurized_reaction_chamber')
+MachineHandler.create('mekanism:pressurized_reaction_chamber')
     .setIO(1, 1, 1, false, 1, 1)
     .addToRecipeTypes(['pressurized_reaction'])
     .setRecipeFunction((event, itemI, itemO, fluidI, fluidO, chemicalI, chemicalO, recipeData, recipeId) => {
@@ -177,7 +177,7 @@ MachineHandler.create('pressurized_reaction_chamber')
     })
     .register();
 
-MachineHandler.create('chemical_oxidizer')
+MachineHandler.create('mekanism:chemical_oxidizer')
     .setIO(1, false, false, false, false, 1)
     .addToRecipeTypes(['oxidizing'])
     .setRecipeFunction((event, itemI, itemO, fluidI, fluidO, chemicalI, chemicalO, recipeData, recipeId) => {
@@ -191,7 +191,7 @@ MachineHandler.create('chemical_oxidizer')
     })
     .register();
 
-MachineHandler.create('rotary_condensator')
+MachineHandler.create('mekanism:rotary_condensator')
     .setIO(false, false, false, 1, 1, false)
     .addToRecipeTypes(['condensating'])
     .setRecipeFunction((event, itemI, itemO, fluidI, fluidO, chemicalI, chemicalO, recipeData, recipeId) => {
@@ -207,7 +207,7 @@ MachineHandler.create('rotary_condensator')
     })
     .register();
 
-MachineHandler.create('metallurgic_infuser')
+MachineHandler.create('mekanism:metallurgic_infuser')
     .setIO(1, 1, false, false, 1, false)
     .addToRecipeTypes(['infusing'])
     .setRecipeFunction((event, itemI, itemO, fluidI, fluidO, chemicalI, chemicalO, recipeData, recipeId) => {
@@ -227,7 +227,7 @@ MachineHandler.create('metallurgic_infuser')
     })
     .register();
 
-MachineHandler.create('chemical_injection_chamber')
+MachineHandler.create('mekanism:chemical_injection_chamber')
     .setIO(1, 1, false, false, 1, false)
     .addToRecipeTypes(['chemical_injection'])
     .setRecipeFunction((event, itemI, itemO, fluidI, fluidO, chemicalI, chemicalO, recipeData, recipeId) => {
@@ -247,7 +247,7 @@ MachineHandler.create('chemical_injection_chamber')
     })
     .register();
 
-MachineHandler.create('purification_chamber')
+MachineHandler.create('mekanism:purification_chamber')
     .setIO(1, 1, false, false, 1, false)
     .addToRecipeTypes(['purifying'])
     .setRecipeFunction((event, itemI, itemO, fluidI, fluidO, chemicalI, chemicalO, recipeData, recipeId) => {
@@ -267,7 +267,7 @@ MachineHandler.create('purification_chamber')
     })
     .register();
 
-MachineHandler.create('osmium_compressor')
+MachineHandler.create('mekanism:osmium_compressor')
     .setIO(1, 1, false, false, 1, false)
     .addToRecipeTypes(['injection_compression'])
     .setRecipeFunction((event, itemI, itemO, fluidI, fluidO, chemicalI, chemicalO, recipeData, recipeId) => {
@@ -287,7 +287,7 @@ MachineHandler.create('osmium_compressor')
     })
     .register();
 
-MachineHandler.create('chemical_infuser')
+MachineHandler.create('mekanism:chemical_infuser')
     .setIO(1, 1, false, false, 1, false)
     .addToRecipeTypes(['chemical_infusing'])
     .setRecipeFunction((event, itemI, itemO, fluidI, fluidO, chemicalI, chemicalO, recipeData, recipeId) => {

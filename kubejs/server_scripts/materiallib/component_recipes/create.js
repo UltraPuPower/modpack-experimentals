@@ -23,7 +23,7 @@ materialList.forEach(materialObj => {
             .register();
 
         recipeBuilder.recipeType('pulverizing').id(`materiallib:${id}_ore`)
-            .itemInputs([createComponentItemStack(id, 'ore', 1)])
+            .itemInputs([`1x #c:ores/${id}`])
             .itemOutputs([createComponentItemStack(id, 'crushed_raw', 3*resultSize)])
             .setRecipeData({tickUsage: true})
             .register();

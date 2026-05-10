@@ -303,22 +303,6 @@ MachineHandler.create('immersiveengineering:squeezer')
     })
     .register();
 
-MachineHandler.create('immersiveengineering:squeezer')
-    .setIO(1, 1, false, 1, false, false)
-    .addToRecipeTypes(['squeezing'])
-    .setRecipeFunction((event, itemI, itemO, fluidI, fluidO, chemicalI, chemicalO, recipeData, recipeId) => {
-        let recipeJson = {
-            "type": "immersiveengineering:squeezer",
-            "fluid": fluidO[0].getFluidStack(),
-            "input": immersiveItemFixer(itemI[0].getIngredient()),
-            "result": itemO[0].getIngredient(),
-            "energy": (recipeData.energy) ? recipeData.energy : 1600
-        };
-
-        event.custom(recipeJson).id(recipeId);
-    })
-    .register();
-
 MachineHandler.create('immersiveengineering:windmill')
     .setIO(false, false, false, false, false, false)
     .addToRecipeTypes(['windmill_biomes'])

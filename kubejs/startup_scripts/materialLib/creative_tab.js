@@ -5,9 +5,9 @@
         const { id } = component
         if (id.includes('_')) {
             id.split('_').forEach(part => {
-                componentIdList = global.originalArrayPush(componentIdList, part);
+                componentIdList.pushUnique(part);
             });
-        } else componentIdList = global.originalArrayPush(componentIdList, id);
+        } else componentIdList.pushUnique(id);
     })
 
     const itemObject = {

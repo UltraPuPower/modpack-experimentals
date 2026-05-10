@@ -160,7 +160,7 @@ const MaterialHandler = {
      * Finishes the creation of a material by registering it and cleaning the handler
      */
     register: () => {
-        MaterialHandler.result.components = global.setToArray(MaterialHandler.result.components);
+        MaterialHandler.result.components = MaterialHandler.result.components.toArray();
         const materialObj = MaterialHandler.result;
         materialConsole.log(`   Registering material ${MaterialHandler.result.id}`);
         global.MaterialList.push(materialObj);
@@ -203,7 +203,7 @@ function findNestedComponents(component, grade) {
         return
     }
     MaterialHandler.result.components.add(component);
-    dependencies = global.setToArray(foundComponent.dependencies);
+    dependencies = foundComponent.dependencies;
     if (dependencies) {
         for (let i = 0; i < dependencies.length; i++) {
             findNestedComponents(dependencies[i], grade+1);

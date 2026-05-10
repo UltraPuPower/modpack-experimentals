@@ -33,7 +33,7 @@ const materialTooltipGenerator = (compositionArray, grade) => {
     }
 
     subsciptNumbers.forEach((number, index) => {
-        isotopeTooltip = replaceAll(isotopeTooltip, index, number);
+        isotopeTooltip = isotopeTooltip.replaceAll(index, number);
     });
     
     return isotopeTooltip

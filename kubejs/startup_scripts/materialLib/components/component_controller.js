@@ -54,7 +54,7 @@ const ComponentHandler = {
             let component = dependencies[i]
             ComponentHandler.result.dependencies.add(component)
         }
-        ComponentHandler.result.dependencies = global.setToArray(ComponentHandler.result.dependencies)
+        ComponentHandler.result.dependencies = ComponentHandler.result.dependencies.toArray()
         return ComponentHandler
     },
 

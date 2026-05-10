@@ -1,19 +1,6 @@
 // priority: 1000000
 
-global.id = (id) => {`${global.pachname}:${id}`};
-
-global.setToArray = (set) => {
-    let newArray = [];
-    set.forEach(element => {
-        newArray.push(element);
-    });
-    return newArray
-};
-
-global.originalArrayPush = (array, value) => {
-    if (!array.includes(value)) array.push(value)
-    return array
-};
+global.id = (id) => {`${global.packname}:${id}`};
 
 global.recipeIdStorage = {
     recipeIdList: [],
@@ -39,13 +26,6 @@ const toDisplayName = (id) => {
     }).join(' ');
 };
 
-const replaceAll = (string, filter, replacement) => {
-    while (string.includes(filter)) {
-        string = string.replace(filter, replacement);
-    }
-    return string
-}
-
 global.itemTagRegex = /(([0-9]*)x )?#([a-z_]*:[a-z_\/]*)/;
 global.fluidTagRegex = /#([a-z_]*:[a-z_\/]*)( ([0-9]*))?/;
 
@@ -53,3 +33,42 @@ global.itemRegex = /(([0-9]*)x )?([a-z_]*:[a-z_]*)/;
 global.fluidRegex = /([a-z_]*:[a-z_]*)( ([0-9]*))?/;
 
 global.isotopeRegex = /([0-9]*)x ([a-z_]*)/;
+
+// New methods
+// String methods
+String.prototype.replaceAll = function(filter, replacement) {
+    let tempString = this
+    while (tempString.includes(filter)) {
+        tempString = tempString.replace(filter, replacement);
+    }
+    return tempString
+}
+
+// Array methods
+Array.prototype.pushUnique = function(value) {
+    if (!this.includes(value)) this.push(value);
+}
+
+Array.prototype.flat = function() {
+    let newArray = new Array();
+    for (let i = 0; i < this.length; i++) {
+        if (Array.isArray(this[i])) this[i].flat().forEach(element => newArray.push(element));
+        else newArray.push(this[i]);
+    }
+    return newArray
+};
+
+// Set methods
+Set.prototype.toArray = function() {
+    let newArray = new Array();
+    this.forEach(element => {
+        newArray.push(element);
+    });
+    return newArray
+}
+
+// Failsafe because I might do the stupid
+Array.prototype.toArray = function() {
+    console.log('array is now array')
+    return this
+}

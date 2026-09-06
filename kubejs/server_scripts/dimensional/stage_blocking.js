@@ -3,6 +3,13 @@
         onDimensionChangeMethod(event);
     });
 
+    PlayerEvents.loggedIn(event => {
+        for (let data of dimensionData) {
+            let { dimensionNamespace, dimensionId } = data;
+            event.player.persistentData.putInt(`${dimensionNamespace}_${dimensionId}_attempt_age`, 0);
+        }
+    });
+
     const cooldown = 20 * 10;
 
     const onDimensionChangeMethod = (event) => {
@@ -20,9 +27,9 @@
 
             let currentAge = entity.tickCount | 0;
 
-            let oldAge = entity.persistentData.getInt(`${dimensionId}_attempt_age`) | 0;
+            let oldAge = entity.persistentData.getInt(`${dimensionNamespace}_${dimensionId}_attempt_age`) | 0;
             if (oldAge > currentAge) {
-                entity.persistentData.putInt(`${dimensionId}_attempt_age`, Number(currentAge - cooldown));
+                entity.persistentData.putInt(`${dimensionNamespace}_${dimensionId}_attempt_age`, Number(currentAge - cooldown));
                 continue;
             }
 
@@ -44,16 +51,16 @@
             dimensionId: 'nether',
             stage: 'access_nether',
             color: 'dark_red',
-            title: 'effects.dimensions.title.nether',
-            subtitle: 'effects.dimensions.subtitle.nether'
+            title: 'effects.kjs_dimensional.title.nether',
+            subtitle: 'effects.kjs_dimensional.subtitle.nether'
         },
         {
             dimensionNamespace: 'minecraft',
             dimensionId: 'end',
             stage: 'access_end',
             color: 'dark_purple',
-            title: 'effects.dimensions.title.end',
-            subtitle: 'effects.dimensions.subtitle.end'
+            title: 'effects.kjs_dimensional.title.end',
+            subtitle: 'effects.kjs_dimensional.subtitle.end'
         }
     ];
 })();

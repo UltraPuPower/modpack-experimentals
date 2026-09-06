@@ -1,0 +1,27 @@
+{
+    "effects.kjs_dimensional.wand_cleared": "§dPortal Wand§f has been cleared",
+    "effects.kjs_dimensional.wand_recording": "§dPortal Wand§f is recording the location",
+    "effects.kjs_dimensional.wand_applying": "§dPortal Wand§f is applying the location",
+    "effects.kjs_dimensional.no_location": "§fThis §dPortal Wand§f has no location recorded inside of it",
+    "effects.kjs_dimensional.no_dimension": "§fThis §dPortal Wand§f has no dimension recorded inside of it",
+    "effects.kjs_dimensional.no_position": "§fThis §dPortal Wand§f has no position recorded inside of it",
+    "effects.kjs_dimensional.incomplete_position": "§fThis §dPortal Wand§f has an incomplete location recorded inside of it",
+    "effects.kjs_dimensional.unentangled_warp_stone": "§fUnentangled §dWarp Stone§f, link it to an anchor stone to use",
+    "effects.kjs_dimensional.corrupted_warp_stone": "§5Corrupted §dWarp Stone§f, re-establish an anchor stone link to use",
+    "effects.kjs_dimensional.blocked_warp_stone": "§dAnchor Stone§f is §c§lBlocked",
+    "effects.kjs_dimensional.unentangled_warp_scroll": "§fUnentangled §dWarp Scroll§f, link it to a location to use",
+    "effects.kjs_dimensional.corrupted_warp_scroll": "§5Corrupted §dWarp Scroll§f, re-establish a location link to use",
+    "effects.kjs_dimensional.blocked_warp_scroll": "§dWarp Scroll§f location is §c§lBlocked",
+    "effects.kjs_dimensional.scroll_recording": "§dWarp Scroll§f has recorded the location",
+    "effects.kjs_dimensional.warping": "§5Warping",
+
+    "effects.kjs_dimensional.title.nether": "You lack comprehension of the Burning Hells.",
+    "effects.kjs_dimensional.subtitle.nether": "Unlock the proper stage to access the nether",
+    "effects.kjs_dimensional.title.end": "You lack comprehension of the Draconic Void.",
+    "effects.kjs_dimensional.subtitle.end": "Unlock the proper stage to access the end",
+
+    "item.kjs_dimensional.portal_wand": "§dPortal Wand",
+    "block.kjs_dimensional.anchor_stone": "§dAnchor Stone",
+    "block.kjs_dimensional.warp_stone": "§dWarp Stone",
+    "block.kjs_dimensional.warp_scroll": "§dWarp Scroll"
+}

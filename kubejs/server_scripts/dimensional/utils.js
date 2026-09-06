@@ -89,12 +89,12 @@ function DimensionalUtils() {
         const destinationDimension = DimensionalUtils.getDimensionLevel(player, dimension);
 
         const locationBlock = destinationDimension.getBlock(x,y,z);
-        console.log(locationBlock.pos);
 
         if (type == 'warp_stone') {
-            if (locationBlock.down.id != 'kjs_dimensional:anchor_stone') {
+            let lower = locationBlock.down;
+            if (lower.id != 'kjs_dimensional:anchor_stone') {
                 DimensionalUtils.actionbar(player, `{"text":"${Text.translate(`effects.kjs_dimensional.corrupted_${type}`).getString()}"}`);
-                console.log(`No beacon for teleportation found at ${dimension} ${x}, ${y - 1}, ${z}`);
+                console.log(`No beacon for teleportation found at ${dimension} ${lower.pos}`);
                 return false;
             }
         }

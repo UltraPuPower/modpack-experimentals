@@ -17,7 +17,7 @@
         if (!entity.isPlayer()) return;
 
         for (let data of dimensionData) {
-            let { dimensionNamespace, dimensionId, stage, color, title, subtitle } = data;
+            let { dimensionNamespace, dimensionId, stage, title, subtitle } = data;
 
             if (dimension !== `${dimensionNamespace}:${dimensionNamespace === 'minecraft' ? `the_${dimensionId}` : dimensionId}`) continue;
 
@@ -41,7 +41,7 @@
             let titleText = Text.translate(title).getString();
 
             entity.server.runCommandSilent(`title ${entity.username} subtitle {"text":"${subtitleText}","color":"gray","italic":true}`);
-            entity.server.runCommandSilent(`title ${entity.username} title {"text":"${titleText}","color":"${color}"}`);
+            entity.server.runCommandSilent(`title ${entity.username} title {"text":"${titleText}"}`);
         }
     };
 
@@ -50,7 +50,6 @@
             dimensionNamespace: 'minecraft',
             dimensionId: 'nether',
             stage: 'access_nether',
-            color: 'dark_red',
             title: 'effects.kjs_dimensional.title.nether',
             subtitle: 'effects.kjs_dimensional.subtitle.nether'
         },
@@ -58,7 +57,6 @@
             dimensionNamespace: 'minecraft',
             dimensionId: 'end',
             stage: 'access_end',
-            color: 'dark_purple',
             title: 'effects.kjs_dimensional.title.end',
             subtitle: 'effects.kjs_dimensional.subtitle.end'
         }

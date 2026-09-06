@@ -111,11 +111,13 @@ function DimensionalUtils() {
     DimensionalUtils.warp = (player, location) => {
         const { x, y, z, dimension } = location;
 
-        player.potionEffects.add('minecraft:blindness', 21, 1, false, false);
+        player.potionEffects.add('minecraft:blindness', 40, 1, false, false);
 
-        DimensionalUtils.title(player, `{"text":"${Text.translate('effects.kjs_dimensional.warping').getString()}"}`, 18);
-
-        player.teleportTo(dimension, x + 0.5, y, z + 0.5, player.yaw, player.pitch);
+        DimensionalUtils.title(player, `{"text":"${Text.translate('effects.kjs_dimensional.warping').getString()}"}`, 20);
+    
+        player.server.scheduleInTicks(20, (ctx) => {
+            player.teleportTo(dimension, x + 0.5, y, z + 0.5, player.yaw, player.pitch);
+        });
     }
 
     DimensionalUtils.verifyLocationData = (player, data) => {

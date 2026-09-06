@@ -15,9 +15,14 @@
     "effects.kjs_dimensional.scroll_recording": "§dWarp Scroll§f has recorded the location",
     "effects.kjs_dimensional.warping": "§5Warping",
 
-    "effects.kjs_dimensional.title.nether": "You lack comprehension of the Burning Hells.",
+    "tooltip.kjs_dimensional.location.position": "Stored position: %s, %s, %s",
+    "tooltip.kjs_dimensional.location.dimension": "Inside %s",
+    "tooltip.kjs_dimensional.portal_wand.empty": "Right-click an anchor stone to store its location",
+    "tooltip.kjs_dimensional.warp_scroll.empty": "Shift Right-click to store a location",
+
+    "effects.kjs_dimensional.title.nether": "§4You lack comprehension of the Burning Hells.",
     "effects.kjs_dimensional.subtitle.nether": "Unlock the proper stage to access the nether",
-    "effects.kjs_dimensional.title.end": "You lack comprehension of the Draconic Void.",
+    "effects.kjs_dimensional.title.end": "§5You lack comprehension of the Draconic Void.",
     "effects.kjs_dimensional.subtitle.end": "Unlock the proper stage to access the end",
 
     "item.kjs_dimensional.portal_wand": "§dPortal Wand",

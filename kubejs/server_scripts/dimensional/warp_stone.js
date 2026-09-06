@@ -7,6 +7,10 @@ BlockEvents.rightClicked('kjs_dimensional:warp_stone', event => {
         return;
     }
 
+    if (item.id == 'minecraft:spyglass') {
+        return;
+    }
+
     const blockData = DimensionalUtils.getBlockData(block);
 
     const location = DimensionalUtils.validateWarpAdress(player, blockData, 'warp_stone');

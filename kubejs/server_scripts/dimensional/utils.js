@@ -1,155 +1,234 @@
-function DimensionalUtils() {
-    return this
-};
+// Rewritten by @konsola5 (discord)
 
-(()=>{
-    const $CompoundTag = Java.loadClass('net.minecraft.nbt.CompoundTag');
-    const $IntTag = Java.loadClass('net.minecraft.nbt.IntTag');
-    const $StringTag = Java.loadClass('net.minecraft.nbt.StringTag');
+const DimensionalUtils = (() => {
+  const $CompoundTag = Java.loadClass('net.minecraft.nbt.CompoundTag')
+  const $ComponentSerializer = Java.loadClass('net.minecraft.network.chat.Component$Serializer')
 
-    DimensionalUtils.addLocationData = (data, dimension, x, y, z) => {
-            const locationTag = new $CompoundTag;
+  const exports = {
+    /**
+     *
+     * @param {$CompoundTag} data
+     * @param {$ResourceLocation} dimension
+     * @param {number} x
+     * @param {number} y
+     * @param {number} z
+     * @returns {$CompoundTag}
+     */
+    addLocationData(data, dimension, x, y, z) {
+      const locationTag = new $CompoundTag()
 
-            const posTag = new $CompoundTag;
-            posTag.put("x", $IntTag.valueOf(x));
-            posTag.put("y", $IntTag.valueOf(y));
-            posTag.put("z", $IntTag.valueOf(z));
+      const posTag = new $CompoundTag()
+      posTag.put('x', NBT.intTag(x))
+      posTag.put('y', NBT.intTag(y))
+      posTag.put('z', NBT.intTag(z))
 
-            const dimTag = $StringTag.valueOf(dimension);
+      const dimTag = NBT.stringTag(dimension.toString())
 
-            locationTag.put("position", posTag);
-            locationTag.put("dimension", dimTag);
+      locationTag.put('position', posTag)
+      locationTag.put('dimension', dimTag)
 
-            data.put("kjs_dimensional:location", locationTag);
+      data.put('kjs_dimensional:location', locationTag)
 
-            return data;
-    };
+      return data
+    },
 
-    DimensionalUtils.getBlockData = (block) => {
-        const blockData = block.getEntityData();
+    /**
+     * @param {$LevelBlock} block
+     * @returns {$CompoundTag}
+     */
+    getBlockData(block) {
+      const blockData = block.getEntityData()
+      const customBlockData = blockData.getCompound('data')
+      return customBlockData
+    },
 
-        const customBlockData = blockData.get("data");
+    /**
+     * @param {$LevelBlock} block
+     * @param {$CompoundTag} data
+     */
+    setBlockData(block, data) {
+      const blockData = block.getEntityData()
+      blockData.put('data', data)
+      block.setEntityData(blockData)
+    },
 
-        return customBlockData;
-    }
+    /**
+     *
+     * @param {$Entity} entity
+     * @param {string} dimension
+     * @returns {$Level}
+     */
+    getDimensionLevel(entity, dimension) {
+      // Entity is needed to obtain access to the server
+      return entity.server['getLevel(net.minecraft.resources.ResourceLocation)'](dimension)
+    },
 
-    DimensionalUtils.setBlockData = (block, data) => {
-        const blockData = block.getEntityData();
+    /**
+     * @param {$Player} player
+     * @param {$Component} text
+     * @param {number} duration
+     */
+    title(player, text, duration) {
+      const { server } = player
+      server.runCommandSilent(
+        `title ${player.username} title ${$ComponentSerializer.toJson(text, player.registryAccess())}`
+      )
+      if (duration) {
+        server.scheduleInTicks(duration, ctx => {
+          server.runCommandSilent(`title ${player.username} clear`)
+        })
+      }
+    },
 
-        blockData.put("data", data);
-        
-        block.setEntityData(blockData);
-    }
+    /**
+     * @param {$Player} player
+     * @param {string} text
+     */
+    subtitle(player, text) {
+      player.server.runCommandSilent(`title ${player.username} subtitle ${$ComponentSerializer.toJson(text, player.registryAccess())}`)
+    },
 
-    DimensionalUtils.getDimensionLevel = (entity, dimension) => { // Entity is needed to obtain access to the server
-        return entity.server["getLevel(net.minecraft.resources.ResourceLocation)"](dimension);
-    }
+    /**
+     * @param {$Player} player
+     * @param {$Component_} text
+     */
+    actionbar(player, text) {
+      player.setStatusMessage(text)
+    },
 
-    DimensionalUtils.title = (player, text, duration) => {
-        const { server } = player;
-        server.runCommandSilent(`title ${player.username} title ${text}`);
-        if (duration) {
-            server.scheduleInTicks(duration, (ctx) => {
-                server.runCommandSilent(`title ${player.username} clear`);
-            });
+    /**
+     * @param {$Player} player
+     * @param {$CompoundTag} data
+     * @param {string} type
+     * @returns {false | {dimension: string, x: number, y: number, z: number}}
+     */
+    validateWarpAdress(player, data, type) {
+      if (!data.contains('kjs_dimensional:location')) {
+        exports.actionbar(
+          player,
+          Text.translate(`effects.kjs_dimensional.unentangled_${type}`)
+        )
+        return false
+      }
+
+      const location = data.getCompound('kjs_dimensional:location')
+
+      if (!location.contains('position') || !location.contains('dimension')) {
+        exports.actionbar(
+          player,
+          Text.translate(`effects.kjs_dimensional.corrupted_${type}`)
+        )
+        return false
+      }
+
+      const dimension = location.get('dimension').getAsString()
+      const position = location.getCompound('position')
+      if (!position.contains('x') || !position.contains('y') || !position.contains('z')) {
+        exports.actionbar(
+          player,
+          Text.translate(`effects.kjs_dimensional.corrupted_${type}`)
+        )
+        return false
+      }
+
+      const x = position.getInt('x')
+      const y = position.getInt('y')
+      const z = position.getInt('z')
+
+      const destinationDimension = exports.getDimensionLevel(player, dimension)
+
+      const locationBlock = destinationDimension.getBlock(x, y, z)
+
+      if (type == 'warp_stone') {
+        let lower = locationBlock.down
+        if (lower.id != 'kjs_dimensional:anchor_stone') {
+          exports.actionbar(
+            player,
+            Text.translate(`effects.kjs_dimensional.corrupted_${type}`)
+          )
+          console.log(`No beacon for teleportation found at ${dimension} ${lower.pos}`)
+          return false
         }
-    };
+      }
 
-    DimensionalUtils.subtitle = (player, text) => {
-        player.server.runCommandSilent(`title ${player.username} subtitle ${text}`);
-    };
+      if (locationBlock.id != 'minecraft:air' || locationBlock.up.id != 'minecraft:air') {
+        exports.actionbar(player, Text.translate(`effects.kjs_dimensional.blocked_${type}`))
+        console.log(`No space for teleportation found at ${dimension} ${x}, ${y}-${y + 1}, ${z}`)
+        return false
+      }
 
-    DimensionalUtils.actionbar = (player, text) => {
-        player.server.runCommandSilent(`title ${player.username} actionbar ${text}`);
-    };
+      return { dimension: dimension, x: x, y: y, z: z }
+    },
 
-    DimensionalUtils.validateWarpAdress = (player, data, type) => {
-        if (!data.contains("kjs_dimensional:location")) {
-            DimensionalUtils.actionbar(player, `{"text":"${Text.translate(`effects.kjs_dimensional.unentangled_${type}`).getString()}"}`);
-            return false;
-        }
+    /**
+     * @param {$Player} player
+     * @param {{dimension: string, x: number, y: number, z: number}} location
+     */
+    warp(player, location) {
+      const { x, y, z, dimension } = location
 
-        const location = data.get("kjs_dimensional:location");
-        if (!location.contains("position") || !location.contains("dimension")) {
-            DimensionalUtils.actionbar(player, `{"text":"${Text.translate(`effects.kjs_dimensional.corrupted_${type}`).getString()}"}`);
-            return false;
-        }
+      player.potionEffects.add('minecraft:blindness', 40, 1, false, false)
 
-        const dimension = location.get("dimension").getAsString();
-        const position = location.get("position");
-        if (!position.contains("x") || !position.contains("y") || !position.contains("z")) {
-            DimensionalUtils.actionbar(player, `{"text":"${Text.translate(`effects.kjs_dimensional.corrupted_${type}`).getString()}"}`);
-            return false;
-        }
+      exports.title(player, Text.translate('effects.kjs_dimensional.warping'), 20)
 
-        const x = position.x.getAsInt();
-        const y = position.y.getAsInt();
-        const z = position.z.getAsInt();
+      player.server.scheduleInTicks(20, ctx => {
+        player.teleportTo(dimension, x + 0.5, y, z + 0.5, player.yaw, player.pitch)
+      })
+    },
 
-        const destinationDimension = DimensionalUtils.getDimensionLevel(player, dimension);
+    /**
+     *
+     * @param {$Player} player
+     * @param {$CompoundTag} data
+     * @returns {boolean}
+     */
+    verifyLocationData(player, data) {
+      if (data.isEmpty() || !data.contains('kjs_dimensional:location')) {
+        exports.actionbar(player, Text.translate('effects.kjs_dimensional.no_location'))
+        return false
+      }
+      const location = data.getCompound('kjs_dimensional:location')
 
-        const locationBlock = destinationDimension.getBlock(x,y,z);
+      if (location.isEmpty()) {
+        exports.actionbar(player, Text.translate('effects.kjs_dimensional.no_location'))
+        return false
+      }
 
-        if (type == 'warp_stone') {
-            let lower = locationBlock.down;
-            if (lower.id != 'kjs_dimensional:anchor_stone') {
-                DimensionalUtils.actionbar(player, `{"text":"${Text.translate(`effects.kjs_dimensional.corrupted_${type}`).getString()}"}`);
-                console.log(`No beacon for teleportation found at ${dimension} ${lower.pos}`);
-                return false;
-            }
-        }
+      if (!location.contains('dimension')) {
+        exports.actionbar(player, Text.translate('effects.kjs_dimensional.no_dimension'))
+        return false
+      }
 
-        if (locationBlock.id != 'minecraft:air' || locationBlock.up.id != 'minecraft:air') {
-            DimensionalUtils.actionbar(player, `{"text":"${Text.translate(`effects.kjs_dimensional.blocked_${type}`).getString()}"}`);
-            console.log(`No space for teleportation found at ${dimension} ${x}, ${y}-${y + 1}, ${z}`);
-            return false;
-        }
+      if (!location.contains('position')) {
+        exports.actionbar(player, Text.translate('effects.kjs_dimensional.no_position'))
+        return false
+      }
+      const position = location.getCompound('position')
 
-        return { dimension: dimension, x: x, y: y, z: z }
-    };
+      if (!position.contains('x') || !position.contains('y') || !position.contains('z')) {
+        exports.actionbar(player, Text.translate('effects.kjs_dimensional.incomplete_position').getString())
+        return false
+      }
 
-    DimensionalUtils.warp = (player, location) => {
-        const { x, y, z, dimension } = location;
+      return true
+    },
+  }
+  return exports
+})()
 
-        player.potionEffects.add('minecraft:blindness', 40, 1, false, false);
+// DimensionalUtils.addLocationData();
 
-        DimensionalUtils.title(player, `{"text":"${Text.translate('effects.kjs_dimensional.warping').getString()}"}`, 20);
-    
-        player.server.scheduleInTicks(20, (ctx) => {
-            player.teleportTo(dimension, x + 0.5, y, z + 0.5, player.yaw, player.pitch);
-        });
-    }
-
-    DimensionalUtils.verifyLocationData = (player, data) => {
-            if (data.isEmpty() || !data.contains("kjs_dimensional:location")) {
-                DimensionalUtils.actionbar(player, `{"text":"${Text.translate('effects.kjs_dimensional.no_location').getString()}"}`);
-                return false;
-            }
-
-            const location = data.get("kjs_dimensional:location");
-
-            if (location.isEmpty()) {
-                DimensionalUtils.actionbar(player, `{"text":"${Text.translate('effects.kjs_dimensional.no_location').getString()}"}`);
-                return false;
-            }
-
-            if (!location.contains("dimension")) {
-                DimensionalUtils.actionbar(player, `{"text":"${Text.translate('effects.kjs_dimensional.no_dimension').getString()}"}`);
-                return false;
-            }
-
-            if (!location.contains("position")) {
-                DimensionalUtils.actionbar(player, `{"text":"${Text.translate('effects.kjs_dimensional.no_position').getString()}"}`);
-                return false;
-            }
-            const position = location.get("position");
-
-            if (!position.contains("x") || !position.contains("y") || !position.contains("z")) {
-                DimensionalUtils.actionbar(player, `{"text":"${Text.translate('effects.kjs_dimensional.incomplete_position').getString()}"}`);
-                return false;
-            }
-
-            return true;
-    };
-
-})();
+/**
+ * @typedef {import("net.minecraft.nbt.CompoundTag").$CompoundTag} $CompoundTag
+ * @typedef {import("net.minecraft.nbt.Tag").$Tag} $Tag
+ * @typedef {import("net.minecraft.network.chat.Component").$Component} $Component
+ * @typedef {import("net.minecraft.network.chat.Component").$Component$$Type} $Component_
+ * @typedef {import("net.minecraft.world.entity.Entity").$Entity} $Entity
+ * @typedef {import("net.minecraft.world.entity.player.Player").$Player} $Player
+ * @typedef {import("net.minecraft.world.level.Level").$Level} $Level
+ * @typedef {import("net.minecraft.core.BlockPos").$BlockPos} $BlockPos
+ * @typedef {import("net.minecraft.core.BlockPos").$BlockPos$$Type} $BlockPos_
+ * @typedef {import("net.minecraft.resources.ResourceLocation").$ResourceLocation} $ResourceLocation
+ * @typedef {import("net.minecraft.resources.ResourceLocation").$ResourceLocation$$Type} $ResourceLocation_
+ * @typedef {import("dev.latvian.mods.kubejs.level.LevelBlock").$LevelBlock} $LevelBlock
+ */

@@ -3,7 +3,7 @@ ItemEvents.rightClicked('kjs_dimensional:portal_wand', event => {
     const { block } = target;
 
     if (block == null && player.isShiftKeyDown()) {
-        DimensionalUtils.actionbar(player, `{"text":"${Text.translate('effects.kjs_dimensional.wand_cleared').getString()}"}`);
+        DimensionalUtils.actionbar(player, Text.translate('effects.kjs_dimensional.wand_cleared').getString());
 
         const data = item.getCustomData();
 
@@ -26,7 +26,7 @@ ItemEvents.rightClicked('kjs_dimensional:portal_wand', event => {
 
         item.setCustomData(data);
 
-        DimensionalUtils.actionbar(player, `{"text":"${Text.translate('effects.kjs_dimensional.wand_recording').getString()}"}`);
+        DimensionalUtils.actionbar(player, Text.translate('effects.kjs_dimensional.wand_recording').getString());
 
         return;
     }
@@ -44,7 +44,7 @@ ItemEvents.rightClicked('kjs_dimensional:portal_wand', event => {
 
         DimensionalUtils.setBlockData(block, blockData);
 
-        DimensionalUtils.actionbar(player, `{"text":"${Text.translate('effects.kjs_dimensional.wand_applying').getString()}"}`);
+        DimensionalUtils.actionbar(player, Text.translate('effects.kjs_dimensional.wand_applying').getString());
         
         return;
     }

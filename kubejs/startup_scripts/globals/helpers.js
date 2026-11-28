@@ -36,7 +36,7 @@ global.isotopeRegex = /([0-9]*)x ([a-z_]*)/;
 
 // New methods
 // String methods
-String.prototype.replaceAll = function(filter, replacement) {
+String.prototype.replaceAll = function(filter, replacement) { // perhaps refactor: https://stackoverflow.com/questions/1144783/how-do-i-replace-all-occurrences-of-a-string
     let tempString = this
     while (tempString.includes(filter)) {
         tempString = tempString.replace(filter, replacement);
@@ -49,7 +49,7 @@ Array.prototype.pushUnique = function(value) {
     if (!this.includes(value)) this.push(value);
 }
 
-Array.prototype.flat = function() {
+Array.prototype.flat = function() { // perhaps refactor: https://medium.com/swlh/how-to-flatten-an-array-in-javascript-6b3fef075655, https://stackoverflow.com/questions/29158723/javascript-flattening-an-array-of-arrays-of-objects, https://useaxentix.com/blog/javascript/6-ways-to-merge-arrays-together-in-javascript/
     let newArray = new Array();
     for (let i = 0; i < this.length; i++) {
         if (Array.isArray(this[i])) this[i].flat().forEach(element => newArray.push(element));

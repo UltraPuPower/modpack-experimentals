@@ -3,7 +3,7 @@ This file will serve as a basis for features, outlining requirements and functio
 
 ## Data structure
 ER-diagram of the preferred data structure:
-![ER-diagram](MaterialLib_Diagram.drawio.svg)
+![ER-diagram](diagram.svg)
 
 ### Attribute types
 What is the type of all of these attributes?
@@ -15,8 +15,30 @@ What is the type of all of these attributes?
 |Primary color|Hexcode (colorcode)|
 |Secondary color|Hexcode (colorcode)|
 |Composite|List\<Material> or Element|
-|Item overrides|List\<ItemOverride>|
-|Texture overrides|List\<TextureOverride>|
+|Item overrides|List\<ItemOverride(Component, Item)>|
+|Texture overrides|List\<TextureOverride(Component, textureLocation)>|
+
+|Component|Type|
+|-|-|
+|Id|String (unique)|
+|State|Enum (premade)|
+|Type|Enum (premade)|
+|Loader|Enum (loaded)|
+|Castable|boolean|
+|Liquid value|int|
+|Dependencies|List\<Component>|
+
+|Texture Set|Type|
+|-|-|
+|Id|String (unique)|
+
+|Isotope|Type|
+|-|-|
+|Id|String (unique)|
+|Symbol|String|
+|Protons|int|
+|Neutrons|int|
+
 
 ### Attribute access
 How should we be able to adjust data once stored?
@@ -45,6 +67,7 @@ Legend:
 |-|-|-|-|-|
 |Id|||||
 |State|X||||
+|Type|X||||
 |Loader|X||||
 |Castable|X|X|||
 |Liquid value|X|X|||
